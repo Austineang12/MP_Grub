@@ -1,0 +1,209 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Main.master.cs" Inherits="MP_Grub.Main" %>
+
+<!DOCTYPE html>
+<html>
+<head runat="server">
+    <title>Grub</title>
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
+    <style type="text/css">
+        body {
+            background-color: #f8f8f8;
+        }
+
+        .navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #FB8F52;
+            padding: 5px 15px;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+        }
+
+        .navMain, .navExtra {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .content-container {
+            background-color: white;
+            padding: 20px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            text-align: center;
+            justify-content: space-between;
+            background-color: #FB8F52;
+            padding: 10px;
+            box-shadow: 0px -4px 4px 0px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+        }
+
+        .footer a {
+            color: #663300;
+            text-decoration: none;
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .btnMenu, .btnBookmark, .btnCart {
+            height: 40px;
+            width: auto;
+        }
+
+        .logoDuck {
+            height: 50px;
+            width: auto;
+        }
+
+        .textLogo {
+            font-size: 40px;
+            font-family: 'Akshar', sans-serif;
+            text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            color: #404040;
+        }
+        .menuOverlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 990;
+        }
+
+        .menuOverlay.active {
+            display: block;
+        }
+
+        .menu-popup {
+            display: none;
+            position: fixed;
+            top: 65px;
+            left: -250px;
+            bottom: 0;
+            width: 250px;
+            background: #FB8F52;
+            padding: 15px;
+            box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .menu-popup.active {
+            display: block;
+            left: 0;
+        }
+
+
+        .textLogoLink {
+            text-decoration: none; 
+            color: inherit; 
+            font-size: inherit;
+            font-family: inherit; 
+            font-weight: inherit;
+        }
+
+        .textLogoLink:hover {
+            text-decoration: none; 
+        }
+
+        .menu-links {
+            list-style-type: none; 
+            padding: 0;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .menu-links li {
+            margin: 15px 0;
+        }
+
+        .menu-link {
+            text-decoration: none;
+            color: #404040;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            padding: 10px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .menu-link:hover {
+            color: white;
+        }
+
+    </style>
+    <script>
+        function toggleMenuPopup() {
+            var popup = document.getElementById("menuPopup");
+            var menuOverlay = document.getElementById("menuOverlay");
+            var isActive = popup.classList.contains("active");
+
+            if (isActive) {
+                popup.classList.remove("active");
+                menuOverlay.classList.remove("active");
+                menuOverlay.style.display = "none"; // Hide overlay when menu is closed
+            } else {
+                popup.classList.add("active");
+                menuOverlay.classList.add("active");
+                menuOverlay.style.display = "block"; // Show overlay when menu is open
+            }
+        }
+    </script>
+</head>
+<body>
+    <form id="grubForm" runat="server">
+        <div id="menuOverlay" class="menuOverlay" onclick="toggleMenuPopup()"></div>
+        <div class="navigation">
+            <div class="navMain">
+                <asp:ImageButton ID="menu" runat="server" CssClass="btnMenu" ImageUrl="~/images/Menu.png" OnClientClick="toggleMenuPopup(); return false;" />
+                <h1 class="textLogo">
+                    <asp:HyperLink ID="HyperLinkHome" runat="server" NavigateUrl="~/Home.aspx" CssClass="textLogoLink">GRUB</asp:HyperLink>
+                </h1>
+                <asp:Image ID="logoDuck" runat="server" CssClass="logoDuck" ImageUrl="~/images/Duck.png" />
+            </div>
+            <div class="navExtra">
+                <asp:ImageButton ID="bookmark" runat="server" CssClass="btnBookmark" ImageUrl="~/images/Bookmark.png" OnClick="Bookmark_Click" />
+                <asp:ImageButton ID="cart" runat="server" CssClass="btnCart" ImageUrl="~/images/Add to Cart.png" OnClick="AddToCart_Click" />
+            </div>
+        </div>
+
+        <%-- Put contents here for menu --%>
+        <div class="menu-popup" id="menuPopup">
+            <ul class="menu-links">
+                <li><asp:HyperLink ID="HyperLinkProfile" runat="server" NavigateUrl="~/Profile.aspx" CssClass="menu-link">Profile</asp:HyperLink></li>
+                <li><asp:HyperLink ID="HyperLinkOrder" runat="server" NavigateUrl="~/Order.aspx" CssClass="menu-link">Order</asp:HyperLink></li>
+                <li><asp:HyperLink ID="HyperLinkSupport" runat="server" NavigateUrl="~/CustomerSupport.aspx" CssClass="menu-link">Customer Support</asp:HyperLink></li>
+            </ul>
+        </div>
+
+        <asp:ContentPlaceHolder ID="content" runat="server">
+            <div class="content-container">
+            </div>
+        </asp:ContentPlaceHolder>
+
+        <div class="footer">
+            <asp:HyperLink ID="HyperLinkAboutUs" runat="server" NavigateUrl="~/AboutUs.aspx">About Us</asp:HyperLink>
+        </div>
+    </form>
+</body>
+</html>
