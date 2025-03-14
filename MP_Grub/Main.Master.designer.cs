@@ -114,12 +114,21 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.ContentPlaceHolder content;
 
         /// <summary>
-        /// HyperLinkAboutUs control.
+        /// footerGrubName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLinkAboutUs;
+        protected global::System.Web.UI.WebControls.Label footerGrubName;
+
+        /// <summary>
+        /// aboutUsLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink aboutUsLink;
     }
 }
