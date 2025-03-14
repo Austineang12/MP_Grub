@@ -3,20 +3,42 @@
 <!DOCTYPE html>
 <html>
 <head runat="server">
-    <title>Grub</title>
-    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
-    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
+    <title>GRUB Master</title>
     <style type="text/css">
-        body {
-            background-color: #f8f8f8;
+        html{
+            scroll-behavior: smooth;
         }
 
-        .navigation {
+        body{
+            overflow-y: auto;
+            scroll-snap-type: y mandatory;
+            overflow-x:hidden;
+        }
+        
+        section{
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: antiquewhite;
+            scroll-snap-align: start;
+            overflow: hidden;
+        }
+
+        #grubForm{
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+        }
+
+
+        .navigationArea {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
+            width: 100vw;
+            height: 10vh;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -31,30 +53,29 @@
             align-items: center;
             gap: 15px;
         }
-
-        .content-container {
-            background-color: white;
+        .contentArea{
+            background: #32a89d;
             padding: 20px;
+            height: 100vh;
+            /*margin-top: 12vh;*/
         }
 
         .footer {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
             display: flex;
             text-align: center;
             justify-content: space-between;
-            background-color: #FB8F52;
+            background: #FB8F52;
             padding: 10px;
-            box-shadow: 0px -4px 4px 0px rgba(0, 0, 0, 0.25);
-            z-index: 100;
+            width: 100vw;
+            height: 90vh;
+            /*margin-top: 13vh;*/
         }
 
         .footer a {
             color: #663300;
             text-decoration: none;
             font-family: 'Arial Black', sans-serif;
+
         }
 
         .footer a:hover {
@@ -152,6 +173,13 @@
         }
 
     </style>
+
+    <%--CONTENT HEAD TAGS--%>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <title></title>
+    </asp:ContentPlaceHolder>
+
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
     <script type="text/javascript">
         function toggleMenuPopup() {
             var popup = document.getElementById("menuPopup");
@@ -172,8 +200,12 @@
 </head>
 <body>
     <form id="grubForm" runat="server">
-        <div id="menuOverlay" class="menuOverlay" onclick="toggleMenuPopup()"></div>
-        <div class="navigation">
+
+        <%--MENU OVERLAY--%>
+        <%--<div id="menuOverlay" class="menuOverlay" onclick="toggleMenuPopup()"></div>--%>
+
+        <%--HEADER AS NAVIGATION--%>
+        <section class="navigationArea">
             <div class="navMain">
                 <asp:ImageButton ID="menu" runat="server" CssClass="btnMenu" ImageUrl="~/images/Menu.png" OnClientClick="toggleMenuPopup(); return false;" />
                 <h1 class="textLogo">
@@ -185,9 +217,9 @@
                 <asp:ImageButton ID="bookmark" runat="server" CssClass="btnBookmark" ImageUrl="~/images/Bookmark.png" OnClick="Bookmark_Click" />
                 <asp:ImageButton ID="cart" runat="server" CssClass="btnCart" ImageUrl="~/images/Add to Cart.png" OnClick="AddToCart_Click" />
             </div>
-        </div>
+        </section>
 
-        <%-- Put contents here for menu --%>
+        <%--MENU TAB--%>
         <div class="menu-popup" id="menuPopup">
             <ul class="menu-links">
                 <li><asp:HyperLink ID="HyperLinkProfile" runat="server" NavigateUrl="~/Profile.aspx" CssClass="menu-link">Profile</asp:HyperLink></li>
@@ -196,14 +228,18 @@
             </ul>
         </div>
 
-        <asp:ContentPlaceHolder ID="content" runat="server">
-            <div class="content-container">
-            </div>
-        </asp:ContentPlaceHolder>
+        
+        <section class="contentArea">
+            <asp:ContentPlaceHolder ID="content" runat="server">
+                <%-- PUT CONTENTS HERE --%>
+            </asp:ContentPlaceHolder>
+        </section>
 
-        <div class="footer">
-            <asp:HyperLink ID="HyperLinkAboutUs" runat="server" NavigateUrl="~/AboutUs.aspx">About Us</asp:HyperLink>
-        </div>
+
+        <%--FOOTER--%>
+        <section class="footer">
+            <asp:HyperLink ID="HyperLinkAboutUs" runat="server" NavigateUrl="~/Payment.aspx">About Us</asp:HyperLink>
+        </section>
     </form>
 </body>
 </html>
