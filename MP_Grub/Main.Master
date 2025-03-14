@@ -152,7 +152,7 @@
         }
 
     </style>
-    <script>
+    <script type="text/javascript">
         function toggleMenuPopup() {
             var popup = document.getElementById("menuPopup");
             var menuOverlay = document.getElementById("menuOverlay");
