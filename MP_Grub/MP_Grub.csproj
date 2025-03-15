@@ -71,9 +71,13 @@
     <Content Include="CustomerSupport.aspx" />
     <Content Include="EditProfile.aspx" />
     <Content Include="Home.aspx" />
+    <Content Include="images\bg Duck.png" />
+    <Content Include="images\BonAppetea_Order.png" />
+    <Content Include="images\Jamaican_Order.png" />
     <Content Include="images\Pinkscoop_Scrumble.png" />
     <Content Include="images\Jamaican_Beef.png" />
     <Content Include="images\Izakaya Dohjima_Maki.png" />
+    <Content Include="images\Saucy_Order.png" />
     <Content Include="images\Saucy_Pasta.png" />
     <Content Include="images\Add to Cart.png" />
     <Content Include="images\Back.png" />
@@ -87,10 +91,12 @@
     <Content Include="images\Grub Name.svg" />
     <Content Include="images\Menu.png" />
     <Content Include="images\CryingDuck.png" />
-    <Content Include="images\Navigation.aspx" />
     <Content Include="images\Shawarma.jpg" />
+    <Content Include="images\SOC_Order.png" />
+    <Content Include="images\Wingspot_Order.png" />
     <Content Include="Login.aspx" />
     <Content Include="Navigation.aspx" />
+    <Content Include="Order.aspx" />
     <Content Include="payment-style.css" />
     <Content Include="Payment.aspx" />
     <Content Include="Profile.aspx" />
@@ -140,13 +146,6 @@
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
     </Compile>
-    <Compile Include="images\Navigation.aspx.cs">
-      <DependentUpon>Navigation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="images\Navigation.aspx.designer.cs">
-      <DependentUpon>Navigation.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -167,6 +166,13 @@
     </Compile>
     <Compile Include="Navigation.aspx.designer.cs">
       <DependentUpon>Navigation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Order.aspx.cs">
+      <DependentUpon>Order.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Order.aspx.designer.cs">
+      <DependentUpon>Order.aspx</DependentUpon>
     </Compile>
     <Compile Include="Payment.aspx.cs">
       <DependentUpon>Payment.aspx</DependentUpon>

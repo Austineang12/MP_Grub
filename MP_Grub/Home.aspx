@@ -48,6 +48,18 @@
             font-weight: bold;
             color: black;
         }
+
+        .background-duck {
+            position: fixed; /* Ensure the background stays in place */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover; /* Ensures the image covers the entire area */
+            z-index: -1; /* Puts it behind other content */
+        }
+
+
     </style>
 
     
@@ -61,4 +73,6 @@
             <span class="clickMe">CLICK ME!</span>
         </div>
     </div>
+    <asp:Image ID="bgimage" runat="server" CssClass="background-duck" ImageUrl="~/images/bg Duck.png" />
+
 </asp:Content>

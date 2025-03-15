@@ -4,16 +4,37 @@
     <title>GRUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/>  
     <style>
+        .navigation-outline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            max-height: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .page-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
         .button-container {
             display: flex;
-            justify-content: center; /* Horizontal centering */
-            align-items: center; /* Vertical centering */
-            height: 80vh; /* Adjust this to control vertical positioning */
+            justify-content: center;
+            align-items: center;
             gap: 30px;
         }
 
         .options {
-            width: 200px; /* Adjust as needed */
+            width: 200px;
             height: auto;
         }
 
@@ -79,12 +100,16 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="button-container">
-        <asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClientClick="swipeLeft(); return false;" />
-        <div class="image-container">
-            <img id="carouselImage" src="images/SOC_Coffee.png" alt="Carousel Image" class="options active" />
+    <div class="page-container">
+        <div class="navigation-outline">
+            <div class="button-container">
+                <asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClientClick="swipeLeft(); return false;" />
+                <div class="image-container">
+                    <img id="carouselImage" src="images/SOC_Coffee.png" alt="Carousel Image" class="options active" />
+                </div>
+                <asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClientClick="swipeRight(); return false;" />
+            </div>
         </div>
-        <asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClientClick="swipeRight(); return false;" />
     </div>
 </asp:Content>
 
