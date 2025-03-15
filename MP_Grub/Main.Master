@@ -230,7 +230,7 @@
     <form id="grubForm" runat="server">
 
         <%--MENU OVERLAY--%>
-        <%--<div id="menuOverlay" class="menuOverlay" onclick="toggleMenuPopup()"></div>--%>
+        <div id="menuOverlay" class="menuOverlay" onclick="toggleMenuPopup()"></div>
 
         <%--NAVIGATION HEADER--%>
         <section class="navigationArea">
