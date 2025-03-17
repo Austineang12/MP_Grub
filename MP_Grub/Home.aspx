@@ -21,6 +21,7 @@
             box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
             max-width: 300px;
             text-align: center;
+            z-index: 5;
         }
 
         .Navigation_text {
@@ -28,6 +29,7 @@
             font-weight: bold;
             margin-bottom: 20px;
             text-align: center;
+            color: black;
         }
 
         .duck-container {
@@ -50,13 +52,13 @@
         }
 
         .background-duck {
-            position: fixed; /* Ensure the background stays in place */
+            position: absolute; /* Ensure the background stays in place */
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             object-fit: cover; /* Ensures the image covers the entire area */
-            z-index: -1; /* Puts it behind other content */
+            z-index: 1; /* Puts it behind other content */
         }
 
 
@@ -70,9 +72,11 @@
         <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
         <div class="duck-container">
             <asp:ImageButton ID="Navigation" runat="server" CssClass="btnNavigation" ImageUrl="~/images/CryingDuck.png" OnClick="Navigation_Click" />
-            <span class="clickMe">CLICK ME!</span>
+            <spa
+                n class="clickMe">CLICK ME!</spa>
         </div>
     </div>
-    <asp:Image ID="bgimage" runat="server" CssClass="background-duck" ImageUrl="~/images/bg Duck.png" />
-
+    <div>
+        <asp:Image ID="bgimage" runat="server" CssClass="background-duck" ImageUrl="~/images/bg_Duck.png" />
+    </div>
 </asp:Content>

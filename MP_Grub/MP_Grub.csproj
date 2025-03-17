@@ -71,18 +71,20 @@
     <Content Include="CustomerSupport.aspx" />
     <Content Include="EditProfile.aspx" />
     <Content Include="Home.aspx" />
-    <Content Include="images\bg Duck.png" />
-    <Content Include="images\BonAppetea_Order.png" />
-    <Content Include="images\Jamaican_Order.png" />
+    <Content Include="images\bg_Duck.png" />
     <Content Include="images\Pinkscoop_Scrumble.png" />
     <Content Include="images\Jamaican_Beef.png" />
     <Content Include="images\Izakaya Dohjima_Maki.png" />
-    <Content Include="images\Saucy_Order.png" />
     <Content Include="images\Saucy_Pasta.png" />
     <Content Include="images\Add to Cart.png" />
     <Content Include="images\Back.png" />
     <Content Include="images\Bookmark.png" />
     <Content Include="images\Cash on Delivery.png" />
+    <Content Include="images\Jamaican_Order.png" />
+    <Content Include="images\BonAppetea_Order.png" />
+    <Content Include="images\Saucy_Order.png" />
+    <Content Include="images\Wingspot_Order.png" />
+    <Content Include="images\SOC_Order.png" />
     <Content Include="images\SOC_Coffee.png" />
     <Content Include="images\Duck.png" />
     <Content Include="images\Duck.svg" />
@@ -92,8 +94,6 @@
     <Content Include="images\Menu.png" />
     <Content Include="images\CryingDuck.png" />
     <Content Include="images\Shawarma.jpg" />
-    <Content Include="images\SOC_Order.png" />
-    <Content Include="images\Wingspot_Order.png" />
     <Content Include="Login.aspx" />
     <Content Include="Navigation.aspx" />
     <Content Include="Order.aspx" />
@@ -199,6 +199,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Main.Master" />
+    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
