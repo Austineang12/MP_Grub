@@ -97,7 +97,6 @@
     <Content Include="Login.aspx" />
     <Content Include="Navigation.aspx" />
     <Content Include="Order.aspx" />
-    <Content Include="payment-style.css" />
     <Content Include="Payment.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="SpecificIssues.aspx" />

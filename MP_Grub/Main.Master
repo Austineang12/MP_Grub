@@ -4,11 +4,6 @@
 <html>
 <head runat="server">
     <title>GRUB Master</title>
-    
-    <%--CONTENT HEAD TAGS--%>
-    <asp:ContentPlaceHolder ID="head" runat="server">
-        <title></title>
-    </asp:ContentPlaceHolder>
 
     <%--MASTER PAGE STYLE--%>
     <style type="text/css">
@@ -17,6 +12,7 @@
         }
 
         body{
+            box-sizing: border-box;
             overflow-y: auto;
             scroll-snap-type: y mandatory;
             overflow-x:hidden;
@@ -45,27 +41,49 @@
         .navigationArea {
             position: fixed;
             top: 0;
-            width: 100vw;
+            width: calc(100% - 55px); /* Adjusted for scrollbar width */
             height: 10vh;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #FB8F52;
-            padding: 5px 15px;
+            padding: 0 35px; 
             box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
             z-index: 100;
         }
+
 
         .navMain, .navExtra {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+        
+        .btnMenu, .btnBookmark, .btnCart {
+            height: 40px;
+            width: auto;
+        }
+
+        .logoDuck {
+            height: 50px;
+            width: auto;
+        }
+
+        .textLogo {
+            font-size: 40px;
+            font-family: 'Akshar', sans-serif;
+            text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            color: #404040;
+        }
+
         .contentArea{
             background: #fff;
             padding: 20px;
+            max-width: 100%;
             min-height: 80vh;
             height: auto;
+            overflow-x: hidden;
             margin-top: 12vh; /*adjust for the height of navigation bar*/
         }
 
@@ -112,23 +130,6 @@
             text-decoration: underline;
         }
 
-        .btnMenu, .btnBookmark, .btnCart {
-            height: 40px;
-            width: auto;
-        }
-
-        .logoDuck {
-            height: 50px;
-            width: auto;
-        }
-
-        .textLogo {
-            font-size: 40px;
-            font-family: 'Akshar', sans-serif;
-            text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
-            font-weight: 700;
-            color: #404040;
-        }
         .menuOverlay {
             display: none;
             position: fixed;
@@ -203,6 +204,11 @@
         }
 
     </style>
+
+    <%--CONTENT HEAD TAGS--%>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <title></title>
+    </asp:ContentPlaceHolder>
     
     <%--FONT OF WHOLE WEBFORMS--%>
     <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
