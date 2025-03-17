@@ -51,7 +51,7 @@
 
         .restaurant-name {
             background-color: #ff7f50;
-            color: white;
+            color: blue;
             padding: 20px;
             font-size: 24px;
             font-weight: bold;
