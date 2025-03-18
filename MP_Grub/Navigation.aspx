@@ -52,7 +52,7 @@
 
         .left-button {
             background-color: #E74C3C;
-            color: white;
+            color: blue;
         }
 
         .left-button:hover {
