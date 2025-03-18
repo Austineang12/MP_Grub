@@ -258,6 +258,7 @@
             <ul class="menu-links">
                 <li><asp:HyperLink ID="HyperLinkProfile" runat="server" NavigateUrl="~/Profile.aspx" CssClass="menu-link">Profile</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkOrder" runat="server" NavigateUrl="~/Order.aspx" CssClass="menu-link">Order</asp:HyperLink></li>
+                <li><asp:HyperLink ID="HyperLinkVoucher" runat="server" NavigateUrl="~/Voucher.aspx" CssClass="menu-link">Voucher</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkSupport" runat="server" NavigateUrl="~/CustomerSupport.aspx" CssClass="menu-link">Customer Support</asp:HyperLink></li>
             </ul>
         </div>
