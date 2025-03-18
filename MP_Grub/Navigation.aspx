@@ -22,7 +22,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 30vh;
             padding: 20px;
         }
 
@@ -34,8 +34,9 @@
         }
 
         .options {
-            width: 200px;
+            width: 300px;
             height: auto;
+            border-radius: 12px;
         }
 
         .left-button, .right-button {
@@ -66,35 +67,42 @@
         .right-button:hover {
             background-color: #1E8449;
         }
-
     </style>
 
     <script>
-        let currentIndex = 0;
         const images = [
-            'images/SOC_Coffee.png',
-            'images/Saucy_Pasta.png',
-            'images/Izakaya Dohjima_Maki.png',
-            'images/Jamaican_Beef.png',
-            'images/Pinkscoop_Scrumble.png'
+            'Navigation_Images/1.png',
+            'Navigation_Images/2.png',
+            'Navigation_Images/3.png',
+            'Navigation_Images/4.png',
+            'Navigation_Images/5.png',
+            'Navigation_Images/6.png',
+            'Navigation_Images/7.png',
+            'Navigation_Images/8.png',
+            'Navigation_Images/9.png',
+            'Navigation_Images/10.png',
+            'Navigation_Images/11.png',
+            'Navigation_Images/12.png',
+            'Navigation_Images/13.png',
+            'Navigation_Images/14.png',
+            'Navigation_Images/15.png'
         ];
 
-        function showImage(index) {
+        function getRandomImage() {
             const imgElement = document.getElementById('carouselImage');
-            if (index >= 0 && index < images.length) {
-                imgElement.src = images[index];
-                currentIndex = index;
-            }
+            const randomIndex = Math.floor(Math.random() * images.length);
+            imgElement.src = images[randomIndex];
+            imgElement.setAttribute('data-index', randomIndex);
         }
 
         function swipeLeft() {
-            if (currentIndex < images.length - 1) {
-                showImage(currentIndex + 1);
-            }
+            getRandomImage();
         }
 
         function swipeRight() {
-            window.location.href = 'Payment.aspx';
+            const imgElement = document.getElementById('carouselImage');
+            const currentIndex = imgElement.getAttribute('data-index');
+            window.location.href = `AddToCart.aspx?item=${encodeURIComponent(images[currentIndex])}`;
         }
     </script>
 </asp:Content>
@@ -105,11 +113,10 @@
             <div class="button-container">
                 <asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClientClick="swipeLeft(); return false;" />
                 <div class="image-container">
-                    <img id="carouselImage" src="images/SOC_Coffee.png" alt="Carousel Image" class="options active" />
+                    <img id="carouselImage" src="Navigation_Images/1.png" class="options active=" data-index="0" />
                 </div>
                 <asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClientClick="swipeRight(); return false;" />
             </div>
         </div>
     </div>
 </asp:Content>
-
