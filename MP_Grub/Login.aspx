@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="grub.Login" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="MP_Grub.Login" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,7 +49,7 @@
             <label for="passwordtxt">Password</label>
             <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password"></asp:TextBox>
 
-            <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="btn" OnClick="loginValidation"/>
+            <asp:Button ID="loginbtn" runat="server" Text="Login" CssClass="btn" OnClick="LoginValidation"/>
 
             <p>Don't have an account? <a href="CreateAccount.aspx">Create an Account</a></p>
         </div>

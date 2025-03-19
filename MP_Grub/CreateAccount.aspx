@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateAccount.aspx.cs" Inherits="grub.CreateAccount" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="CreateAccount.aspx.cs" Inherits="MP_Grub.CreateAccount" %>
 
 <!DOCTYPE html>
 
@@ -63,7 +63,7 @@
             <label for="addresstxt">Address</label>
             <asp:TextBox ID="addresstxt" runat="server" CssClass="input-field"></asp:TextBox>
 
-            <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="btn" OnClick="signupValidation"/>
+            <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="btn" OnClick="SignupValidation"/>
 
             <p>Already have an account? <a href="Login.aspx">Login</a></p>
         </div>
