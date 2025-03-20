@@ -4,19 +4,32 @@
 
     <%-- JAVASCRIPT FUNCTIONS --%>
     <script type="text/javascript">
-        function showPopup() {
-            const popup = document.getElementById('popup');
-            popup.classList.add('active');
-        }
+        //function showPopup() {
+        //    const popup = document.getElementById('popup');
+        //    popup.classList.add('active');
+        //}
 
 
-        function closePopup() {
-            const popup = document.getElementById('popup');
-            popup.classList.remove('active');
-            if (typeof __doPostBack === "function") {
-                __doPostBack('btnClose', '');
+        //function closePopup() {
+        //    const popup = document.getElementById('popup');
+        //    popup.classList.remove('active');
+        //    if (typeof __doPostBack === "function") {
+        //        __doPostBack('btnClose', '');
+        //    }
+        //}
+
+        function updateLabel(dropdownId, labelId) {
+            var dropdown = document.getElementById(dropdownId);
+            if (dropdown) {
+                var selectedValue = dropdown.options[dropdown.selectedIndex].text;
+                var label = document.getElementById(labelId);
+                if (label) {
+                    label.innerText = selectedValue || "Payment Mode";
+                }
             }
         }
+
+
 
     </script>
 
@@ -103,6 +116,7 @@
             }
 
         /*INPUT FIELDS FOR CUSTOMER AND PAYMENT INFO*/
+        /* Common Form Group */
         .form-group {
             position: relative;
             width: 30vw;
@@ -130,16 +144,29 @@
             resize: vertical;
         }
 
+        /* Adjusted for Dropdowns - Floating Label Effect */
         #ddlTransaction, #ddlBuilding, #ddlFloorNumber {
-            height: 80px;
-            padding-top: 40px;
-            width: 100%;
-            height: 56px;
+            height: 70px;
             padding: 20px 16px 8px 16px;
-
+            width: 100%;
+            border: 2px solid #b5b3b3;
+            border-radius: 5px;
+            font-weight: 600;
+            letter-spacing: 0px;
+            background-color: white;
+            appearance: none; /* Removes default arrow in some browsers */
+            cursor: pointer;
         }
 
+        /* Optional: Custom dropdown arrow */
+        #ddlTransaction, #ddlBuilding, #ddlFloorNumber {
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23b5b3b3" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
 
+        /* Floating Label Styling */
         .leftSide .form-label {
             position: absolute;
             top: 50%;
@@ -153,69 +180,34 @@
             font-weight: 400;
         }
 
+        /* Ensure proper label positioning for specific labels */
         #lblNote, #lblTransaction, #lblBuilding, #lblFloorNumber {
             font-size: 12px;
             top: 50%;
         }
-        #lblNote{
+        #lblNote {
             top: 20px;
             font-size: 12px;
         }
 
+        /* Floating Label for Input Fields */
         .form-input:focus + .form-label,
         .form-input:not(:placeholder-shown) + .form-label {
             top: 30%;
             font-size: 8px;
         }
 
-
-
-
-
-
-        /*ORDER SUMMARY*/
-        .menu-group {
-            width: 30vw;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            margin: 10px 0;
-            justify-content: space-between;
-            gap: 5%;
-            font-size: 18px;
-            letter-spacing: -1px;
-            font-weight: bold;
-            border: 2px solid white;
-            border-radius: 10px;
-            padding: 2%;
+        /* Floating Label for Dropdowns */
+        #ddlTransaction:focus + .form-label,
+        #ddlTransaction:not([value=""]) + .form-label,
+        #ddlBuilding:focus + .form-label,
+        #ddlBuilding:not([value=""]) + .form-label,
+        #ddlFloorNumber:focus + .form-label,
+        #ddlFloorNumber:not([value=""]) + .form-label {
+            top: 30%;
+            font-size: 8px;
         }
 
-        .menu-picture {
-            width: 15%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        .menu-name {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-            width: 100%;
-        }
-
-            .menu-name .menu-text {
-                font-size: 16px;
-                letter-spacing: -1px;
-                white-space: normal;
-                word-wrap: break-word;
-                display: block;
-                line-height: 1.5
-            }
-
-        .menu-label {
-            letter-spacing: -1px;
-        }
 
 
         /*SUBMIT AND CANCEL BUTTONS*/
@@ -308,12 +300,12 @@
         }
 
         .receipt {
-            width: 75%;
+            width: 65%;
             min-height: 30vh;
             height: auto; /* Adjust height based on viewport */
             background: white;
             position: absolute;
-            top: calc(10% + 14.5vh);
+            top: calc(15% + 14.5vh);
             right: 3vw; /* Use vw for right positioning */
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
@@ -503,11 +495,12 @@
                 <h5>Payment Info</h5>
                 <%--TRANSACTION--%>
                 <div class="form-group">
-                    <asp:DropDownList ID="ddlTransaction" runat="server" CssClass="form-input" placeholder=" " style="font-size: 16px;" onchange="updateLabel()">
+                    <asp:DropDownList ID="ddlTransaction" runat="server" CssClass="form-input" style="font-size: 16px;"
+                        onchange="updateLabel('<%= ddlTransaction.ClientID %>', 'lblTransaction')">
                         <asp:ListItem Text="COD" Value="1"></asp:ListItem>
                         <asp:ListItem Text="Gcash" Value="2"></asp:ListItem>
                     </asp:DropDownList>
-                    <label for="order" class="form-label" id="lblTransaction">Payment Mode</label>
+                    <label for="ddlTransaction" class="form-label" id="lblTransaction">Payment Mode</label>
                 </div>
 
                 
@@ -520,7 +513,7 @@
                 
                 <%--SUBMIT AND CANCEL BUTTONS--%>
                 <div class="paymentButtons">
-                    <asp:Button ID="btnSubmit" runat="server" Text="Place Order" CssClass="submit-btn" onClientclick="showPopup(); return false;" />
+                    <asp:Button ID="btnSubmit" runat="server" Text="Place Order" CssClass="submit-btn" OnClick="btnSubmit_Click" />
                     <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="cancel-btn" OnClick="btnCancel_Click" />
                 </div>
 
@@ -528,28 +521,6 @@
 
 
             <section class="rightSide">
-                <h5>Order Summary</h5>
-
-                <%--MENU ITEM--%>
-                <div class="menu-group">
-                    <asp:Image class="menu-picture" ID="foodImage1" runat="server" ImageUrl="~/images/Shawarma.jpg" />
-                    <div class="menu-name">
-                        <asp:Label ID="foodName1" runat="server" Text="Shawarma Rice" CssClass="menu-text"></asp:Label>
-                        <asp:Label ID="foodStore1" runat="server" Text="Za-Wrap" CssClass="menu-text"></asp:Label>
-                    </div>
-                    <asp:Label ID="quantityFood1" runat="server" Text="x1" CssClass="menu-label"></asp:Label>
-                </div>
-
-                
-                <div class="menu-group">
-                    <asp:Image class="menu-picture" ID="foodImage2" runat="server" ImageUrl="~/images/Shawarma.jpg" />
-                    <div class="menu-name">
-                        <asp:Label ID="foodName2" runat="server" Text="Shawarma Rice" CssClass="menu-text"></asp:Label>
-                        <asp:Label ID="foodStore2" runat="server" Text="Za-Wrap" CssClass="menu-text"></asp:Label>
-                    </div>
-                    <asp:Label ID="quantityFood2" runat="server" Text="x1" CssClass="menu-label"></asp:Label>
-                </div>
-
 
                 <%--RECEIPT--%>
                 <section class="receiptSection">
@@ -585,14 +556,14 @@
         </section>
 
         <%--POPUP STYLE NOTIFICATION--%>
-        <div class="popup-container" id="popup">
+        <%--<div class="popup-container" id="popup">
             <div class="popup-box">
                 <asp:Image class="receiptLogo" id="grubLogo" alt="Grub Logo" runat="server" ImageUrl="~/images/Grub Name.svg" />
                 <p>Your order is now being processed.<br />Thank you for grubbing with us :)</p>
                 <br /><br />
                 <asp:Button ID="cancelPop" runat="server" Text="Close" class="cancel-btn" OnClick="btnClose_Click" />
             </div>
-        </div>
+        </div>--%>
 
     </div>
 
