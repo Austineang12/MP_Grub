@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta content="" charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GRUB Delivery</title>
+    <title>Order Confirmation</title>
     <style type="text/css">
         body {
             font-family: Arial, sans-serif;
