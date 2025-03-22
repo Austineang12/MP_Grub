@@ -58,6 +58,11 @@
             background-color: #d14a28;
         }
 
+        .button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -86,35 +91,38 @@
             padding: 10px;
             border: 1px solid #ccc;
             font-size: 16px;
+            resize: vertical;
         }
 
         .modal .button {
             margin-top: 10px;
         }
     </style>
+
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
         <div class="container">
             <div class="logo-container">
-                <img src="Images/GrubName.png" alt="GRUB Logo">
+                <img src="images/Grub Name.png" alt="GRUB Logo">
             </div>
             <div class="image-container">
-                <img src="Images/Duck.png" alt="Delivery Duck">
+                <img src="images/Duck.png" alt="Delivery Duck">
             </div>
 
             <p>Thank you for rating!</p>
             <p>Would you like to leave a message?</p>
 
             <asp:Button ID="btnMessageReview" runat="server" Text="Send a Message Review" CssClass="button" OnClientClick="openModal(); return false;" />
-            <asp:Button ID="btnSubmit" runat="server" Text="SUBMIT" CssClass="button" OnClick="btnSubmit_Click" />
+            <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="button" OnClick="btnSubmit_Click" />
         </div>
 
         <!-- Review Modal -->
         <div id="reviewModal" class="modal">
             <div class="modal-content">
                 <p>Type your review here...</p>
-                <textarea cols="" rows="" placeholder="Type your review here..."></textarea>
-                <asp:Button ID="btnSubmitReview" runat="server" Text="SUBMIT" CssClass="button" />
+                <textarea rows="" cols="" id="reviewText" oninput="checkReview()" placeholder="Type your review here..."></textarea>
+                <asp:Button ID="btnSubmitReview" runat="server" Text="Submit" CssClass="button" OnClientClick="return submitReview();"/>
                 <button class="button" onclick="closeModal(); return false;">Cancel</button>
             </div>
         </div>
@@ -126,6 +134,35 @@
         function closeModal() {
             document.getElementById("reviewModal").style.display = "none";
         }
+
+        window.onload = function() {
+            document.getElementById("<%= btnSubmitReview.ClientID %>").disabled = true; // Disable initially
+        };
+        function checkReview() {
+            var reviewText = document.getElementById("reviewText").value.trim();
+            var submitButton = document.getElementById("<%= btnSubmitReview.ClientID %>");
+            
+            if (reviewText === "") {
+                submitButton.disabled = true;
+            } else {
+                submitButton.disabled = false;
+            }
+        }
+
+        function submitReview() {
+            var reviewText = document.getElementById("reviewText").value.trim();
+            
+            if (reviewText === " ") {
+                alert("Please enter your review before submitting.");
+                return false;
+            } else {
+                alert("Thanks for the feedback!");
+                window.location.href = "Home.aspx";
+                return false;
+            }
+        }
+
     </script>
+
 
 </asp:Content>
