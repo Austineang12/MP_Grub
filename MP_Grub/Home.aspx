@@ -60,6 +60,22 @@
             object-fit: cover; /* Ensures the image covers the entire area */
             z-index: 1; /* Puts it behind other content */
         }
+        .welcome-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
 
 
     </style>
@@ -68,6 +84,10 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
+    <div class="welcome-container">
+        <asp:Label ID="welcomeLabel" runat="server" CssClass="welcome-text"></asp:Label>
+    </div>
+
     <div class="Navigation_Section">
         <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
         <div class="duck-container">

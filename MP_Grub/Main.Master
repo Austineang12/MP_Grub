@@ -260,6 +260,9 @@
                 <li><asp:HyperLink ID="HyperLinkOrder" runat="server" NavigateUrl="~/Order.aspx" CssClass="menu-link">Order</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkVoucher" runat="server" NavigateUrl="~/Voucher.aspx" CssClass="menu-link">Voucher</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkSupport" runat="server" NavigateUrl="~/CustomerSupport.aspx" CssClass="menu-link">Customer Support</asp:HyperLink></li>
+                <li style="margin-top: 20px; border-top: 1px solid white; padding-top: 10px;">
+                <asp:HyperLink ID="HyperLinkLogout" runat="server" NavigateUrl="~/Logout.aspx" CssClass="menu-link" ForeColor="404040">Logout</asp:HyperLink>
+                </li>
             </ul>
         </div>
 

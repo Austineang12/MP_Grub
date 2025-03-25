@@ -16,9 +16,15 @@ namespace MP_Grub
             string usernameInput = usernametxt.Text.Trim();
             string passwordInput = passwordtxt.Text.Trim();
 
-            if (AccountValidation(usernameInput, passwordInput))
+            // Fetch user details (User_ID and Username)
+            var userDetails = GetUserDetails(usernameInput, passwordInput);
+
+            if (userDetails != null)
             {
-                Response.Redirect("Home.aspx");
+                Session["UserID"] = userDetails.Item1;
+                Session["Username"] = userDetails.Item2;
+
+                Response.Redirect("Home.aspx"); 
             }
             else
             {
@@ -26,27 +32,33 @@ namespace MP_Grub
             }
         }
 
-        private bool AccountValidation(string usernameInput, string passwordInput)
+        private Tuple<int, string> GetUserDetails(string usernameInput, string passwordInput)
         {
-            bool isValid = false;
-
-            // Define the database connection string
             string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.mdb;";
+            Tuple<int, string> userDetails = null;
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string query = "SELECT COUNT(*) FROM [User] WHERE Username = ? AND Password = ?";
+                    string query = "SELECT User_ID, Username FROM [User] WHERE Username = ? AND Password = ?"; // Get User_ID & Username
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", usernameInput);
                         cmd.Parameters.AddWithValue("?", passwordInput);
 
-                        int count = (int)cmd.ExecuteScalar();
-                        isValid = (count > 0); 
+                        using (OleDbDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read()) 
+                            {
+                                int userId = reader.GetInt32(0);
+                                string username = reader.GetString(1);
+
+                                userDetails = new Tuple<int, string>(userId, username);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -55,7 +67,8 @@ namespace MP_Grub
                 }
             }
 
-            return isValid;
+            return userDetails;
         }
     }
 }
+

@@ -114,6 +114,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.HyperLink HyperLinkSupport;
 
         /// <summary>
+        /// HyperLinkLogout control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLinkLogout;
+
+        /// <summary>
         /// content control.
         /// </summary>
         /// <remarks>
