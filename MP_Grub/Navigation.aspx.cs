@@ -45,7 +45,7 @@ namespace MP_Grub
         protected void btnRight_Click(object sender, EventArgs e)
         {
             string currentImageUrl = carouselImage.ImageUrl.Replace("~/", "");
-            Response.Redirect($"AddToCart.aspx?item={Uri.EscapeDataString(currentImageUrl)}");
+            Response.Redirect($"CartItems.aspx?item={Uri.EscapeDataString(currentImageUrl)}");
         }
     }
 }

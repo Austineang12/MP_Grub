@@ -20,7 +20,7 @@ namespace MP_Grub
         }
         protected void AddToCart_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("~/Payment.aspx");
+            Response.Redirect("~/CartItems.aspx");
         }
     }
 }

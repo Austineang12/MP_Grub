@@ -11,7 +11,10 @@ namespace MP_Grub
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
-
-		}
+            if (!IsPostBack)
+            {
+                lblQuantity.Text = "1"; // Set initial quantity
+            }
+        }
 	}
 }

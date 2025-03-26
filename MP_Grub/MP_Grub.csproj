@@ -67,6 +67,7 @@
   <ItemGroup>
     <Content Include="App_Data\GrubDB.mdb" />
     <Content Include="BookmarkedItems.aspx" />
+    <Content Include="CartItems.aspx" />
     <Content Include="ConfirmIssue.aspx" />
     <Content Include="CreateAccount.aspx" />
     <Content Include="CustomerSupport.aspx" />
@@ -127,6 +128,13 @@
     </Compile>
     <Compile Include="BookmarkedItems.aspx.designer.cs">
       <DependentUpon>BookmarkedItems.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CartItems.aspx.cs">
+      <DependentUpon>CartItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CartItems.aspx.designer.cs">
+      <DependentUpon>CartItems.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConfirmIssue.aspx.cs">
       <DependentUpon>ConfirmIssue.aspx</DependentUpon>
