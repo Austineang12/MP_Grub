@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Order.aspx.cs" Inherits="MP_Grub.Order" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
+    <style type="text/css">
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -138,8 +138,8 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="restaurant-container">
-        <asp:LinkButton ID="Saucy" runat="server" CssClass="restaurant-card" OnClientClick="showPopup('1'); return false;">
+    <div class="restaurant-container" id="restaurantContainer" runat="server">
+        <%--<asp:LinkButton ID="Saucy" runat="server" CssClass="restaurant-card" OnClientClick="showPopup('1'); return false;">
             <div class="restaurant-logo"><img src="images/Saucy_Order.png" alt="Saucy Logo" /></div>
             <div class="restaurant-name">Saucy</div>
         </asp:LinkButton>
@@ -162,7 +162,7 @@
         <asp:LinkButton ID="Jamaican" runat="server" CssClass="restaurant-card" OnClientClick="showPopup('4'); return false;">
             <div class="restaurant-logo"><img src="images/Jamaican_Order.png" alt="Jamaican Logo" /></div>
             <div class="restaurant-name">Jamaican</div>
-        </asp:LinkButton>
+        </asp:LinkButton>--%>
     </div>
 
     <div id="foodPopup" class="popup">
@@ -173,7 +173,7 @@
         <button class="food-button" style="background-color: #f44336; margin-top: 20px;" onclick="closePopup()">Close</button>
     </div>
 
-    <script>
+    <script type="text/javascript">
         const menus = {
             1: [
                 { name: "Chicken Fries", price: "₱110.00" },
