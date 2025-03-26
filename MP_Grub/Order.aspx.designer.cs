@@ -15,48 +15,12 @@ namespace MP_Grub
     {
 
         /// <summary>
-        /// Saucy control.
+        /// restaurantContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Saucy;
-
-        /// <summary>
-        /// SameOldCoffee control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SameOldCoffee;
-
-        /// <summary>
-        /// WingspotUnlimited control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton WingspotUnlimited;
-
-        /// <summary>
-        /// BonAppetea control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton BonAppetea;
-
-        /// <summary>
-        /// Jamaican control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton Jamaican;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl restaurantContainer;
     }
 }
