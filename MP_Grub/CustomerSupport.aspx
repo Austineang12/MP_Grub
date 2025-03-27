@@ -10,6 +10,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            padding-top: 150px;
         }
         .container {
             background: #FB8F52;
@@ -40,8 +41,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="container">
-        <h2>Customer Support</h2>
-        <p>Your Ticket Number: <asp:Label ID="ticketNumber" runat="server" /></p>
+        <h2>Customer Support</h2>      
 
         <label for="issueDropdown">Select an Issue</label>
         <asp:DropDownList ID="issueDropdown" runat="server" CssClass="dropdown">

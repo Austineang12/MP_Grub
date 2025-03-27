@@ -9,6 +9,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding-top: 150px;
         }
         .container {
             background-color: #FB8F52;
@@ -23,6 +24,7 @@
             font-size: 16px;
             margin-bottom: 15px;
             color: #404040;
+            font-weight: bold;
         }
         .btn {
             background-color: #404040;
@@ -41,8 +43,12 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="container">
-        <h2>Thank You!</h2>
         <p class="message">Thank you for reaching out! We have received your report and will get back to you as soon as possible.</p>
-        <asp:Button ID="homebtn" runat="server" Text="Go Back to Home" CssClass="btn" OnClick="GoToHomePage" />
+
+        <h3>Latest Report:</h3>
+        <p><strong>Issue:</strong> <asp:Label ID="lblIssue" runat="server"></asp:Label></p>
+        <p><strong>Details:</strong> <asp:Label ID="lblDetails" runat="server"></asp:Label></p>
+
+        <asp:Button ID="homebtn" runat="server" Text="Home" CssClass="btn" OnClick="GoToHomePage" />
     </div>
 </asp:Content>

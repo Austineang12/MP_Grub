@@ -10,13 +10,18 @@ namespace MP_Grub
         {
             if (!IsPostBack)
             {
-                ticketNumber.Text = "Report-" + GenerateTicketNumber();
+                
+                if (Session["UserID"] == null)
+                {
+                    Response.Redirect("Login.aspx"); 
+                }
             }
         }
 
         protected void ContinueToDetails(object sender, EventArgs e)
         {
             Session["SelectedIssue"] = issueDropdown.SelectedValue;
+            Session["UserID"] = Session["UserID"];
             Response.Redirect("SpecificIssues.aspx");
         }
 
@@ -25,9 +30,5 @@ namespace MP_Grub
             Response.Redirect("Home.aspx");
         }
 
-        private string GenerateTicketNumber()
-        {
-            return new Random().Next(1000, 9999).ToString();
-        }
     }
 }

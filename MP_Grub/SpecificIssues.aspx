@@ -9,6 +9,7 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            padding-top: 150px;
         }
 
         .container {
@@ -75,6 +76,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="container">
         <h2>Describe Your Issue</h2>
+
+        <asp:Label ID="errorLabel" runat="server" ForeColor="Red" Visible="false"></asp:Label>
+
+
         <label for="issueDetails">Details</label>
         <asp:TextBox ID="issueDetails" runat="server" CssClass="textarea" TextMode="MultiLine"></asp:TextBox>
         
