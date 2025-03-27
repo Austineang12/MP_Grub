@@ -9,7 +9,7 @@
             height: 100vh;
             background-color: #f9f9f9;
             font-family: Arial, sans-serif;
-            padding-top: 80px;
+            padding-top: 200px;
         }
 
         .edit-container {
