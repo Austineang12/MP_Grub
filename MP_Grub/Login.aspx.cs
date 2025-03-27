@@ -34,7 +34,7 @@ namespace MP_Grub
 
         private Tuple<int, string> GetUserDetails(string usernameInput, string passwordInput)
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.mdb;";
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
             Tuple<int, string> userDetails = null;
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))

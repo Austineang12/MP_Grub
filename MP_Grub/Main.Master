@@ -4,18 +4,42 @@
 <html>
 <head runat="server">
     <title>GRUB Master</title>
+    <%--FONT OF WHOLE WEBFORMS--%>
+    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
 
     <%--MASTER PAGE STYLE--%>
     <style type="text/css">
-        html{
-            scroll-behavior: smooth;
+        /*Defining Customized Fonts*/
+        @font-face{
+            font-family: 'HeadingNow-MainFont';
+            src: url('/font/HeadingNow-66Bold.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face{
+            font-family: 'HeadingNow-SupportFont';
+            src: url('/font/HeadingNow-64Regular.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face{
+            font-family: 'DoodleFont';
+            src: url('/font/Ocomadoodle-Regular.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
         }
 
         body{
-            box-sizing: border-box;
+            /*Main font of pages*/
+            font-family: HeadingNow-SupportFont, sans-serif;
+            color: black;
+            background-color: #FFFFFF;
             overflow-y: auto;
-            scroll-snap-type: y mandatory;
-            overflow-x:hidden;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            margin: 0; padding: 0;
         }
         
         section{
@@ -81,10 +105,10 @@
             background: #fff;
             padding: 20px;
             max-width: 100%;
-            min-height: 80vh;
+            min-height: 85vh;
             height: auto;
             overflow-x: hidden;
-            margin-top: 12vh; /*adjust for the height of navigation bar*/
+            margin-top: 10vh; /*adjust for the height of navigation bar*/
         }
 
         .footer {
@@ -209,9 +233,6 @@
     <asp:ContentPlaceHolder ID="head" runat="server">
         <title></title>
     </asp:ContentPlaceHolder>
-    
-    <%--FONT OF WHOLE WEBFORMS--%>
-    <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
 
     <%--FUNCTIONS FOR MASTER PAGE--%>
     <script type="text/javascript">
@@ -277,14 +298,14 @@
 
         <%--FOOTER--%>
         <section class="footer">
-            <div class="footerContainer">
+            <%--<div class="footerContainer">
             <asp:Label ID="footerGrubName" runat="server" Text="Grub Food Delivery"></asp:Label>
                 <%--or pwedeng logo name--%>
-            </div>
+            <%--</div>
             <div class="footerContainer">
             <asp:Label class="footerParagraph" runat="server" Text="Meet Grub, your go-to school delivery team! We deliver your favorite meals straight to busy MCL students, right to their room—fast, fresh, and hassle-free! "></asp:Label>
             <asp:HyperLink ID="aboutUsLink" CssClass="footerLink" runat="server" NavigateUrl="~/Payment.aspx">About Us</asp:HyperLink>
-            </div>
+            </div>--%>
         </section>
     </form>
 </body>
