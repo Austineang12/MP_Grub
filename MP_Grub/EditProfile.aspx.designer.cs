@@ -24,24 +24,6 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox username;
 
         /// <summary>
-        /// password control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox password;
-
-        /// <summary>
-        /// confirmPassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox confirmPassword;
-
-        /// <summary>
         /// fullName control.
         /// </summary>
         /// <remarks>
