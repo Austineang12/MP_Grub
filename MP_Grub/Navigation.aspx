@@ -82,4 +82,7 @@
             </div>
         </div>
     </div>
+
+    <%-- error message --%>
+    <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
 </asp:Content>
