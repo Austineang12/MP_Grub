@@ -24,13 +24,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox usernametxt;
 
         /// <summary>
-        /// passwordtxt control.
+        /// lblUsernameError control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox passwordtxt;
+        protected global::System.Web.UI.WebControls.Label lblUsernameError;
 
         /// <summary>
         /// fullnametxt control.
@@ -42,31 +42,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox fullnametxt;
 
         /// <summary>
-        /// birthdatetxt control.
+        /// passwordtxt control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox birthdatetxt;
-
-        /// <summary>
-        /// contacttxt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox contacttxt;
-
-        /// <summary>
-        /// addresstxt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox addresstxt;
+        protected global::System.Web.UI.WebControls.TextBox passwordtxt;
 
         /// <summary>
         /// signupbtn control.

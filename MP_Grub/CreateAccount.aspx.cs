@@ -14,44 +14,48 @@ namespace MP_Grub
 
         protected void SignupValidation(object sender, EventArgs e)
         {
-            string nameInput = fullnametxt.Text.Trim();
             string usernameInput = usernametxt.Text.Trim();
+            string fullNameInput = fullnametxt.Text.Trim();
             string passwordInput = passwordtxt.Text.Trim();
-            string birthdateInput = birthdatetxt.Text.Trim();
-            string contactInput = contacttxt.Text.Trim();
-            string addressInput = addresstxt.Text.Trim();
 
-            if (AccountValidation(nameInput, usernameInput, passwordInput, birthdateInput, contactInput, addressInput))
+            if (usernameInput.Contains(" "))
             {
-                if (RegisterUser(nameInput, usernameInput, passwordInput, birthdateInput, contactInput, addressInput))
-                {
-                    Response.Write("<script>alert('Account created successfully!'); window.location='Home.aspx';</script>");
-                }
-                else
-                {
-                    Response.Write("<script>alert('Username already exists or database error occurred!');</script>");
-                }
+                lblUsernameError.Text = "Username cannot contain spaces!";
+                lblUsernameError.Visible = true;
+                return;
             }
             else
             {
+                lblUsernameError.Visible = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(usernameInput) ||
+                string.IsNullOrWhiteSpace(fullNameInput) ||
+                string.IsNullOrWhiteSpace(passwordInput))
+            {
                 Response.Write("<script>alert('All fields are required!');</script>");
+                return;
+            }
+
+            int userID = RegisterUser(usernameInput, fullNameInput, passwordInput);
+
+            if (userID > 0)
+            {
+                Session["UserID"] = userID;
+                Session["Username"] = usernameInput;
+
+                Response.Redirect("Home.aspx");
+            }
+            else
+            {
+                Response.Write("<script>alert('Username already exists or database error occurred!');</script>");
             }
         }
 
-        private bool AccountValidation(string name, string username, string password, string birthdate, string contact, string address)
+        private int RegisterUser(string username, string fullName, string password)
         {
-            return !(string.IsNullOrWhiteSpace(name) ||
-                     string.IsNullOrWhiteSpace(username) ||
-                     string.IsNullOrWhiteSpace(password) ||
-                     string.IsNullOrWhiteSpace(birthdate) ||
-                     string.IsNullOrWhiteSpace(contact) ||
-                     string.IsNullOrWhiteSpace(address));
-        }
-
-        private bool RegisterUser(string name, string username, string password, string birthdate, string contact, string address)
-        {
-            bool success = false;
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.mdb;";
+            int userID = -1;
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
@@ -68,26 +72,34 @@ namespace MP_Grub
 
                         if (count > 0)
                         {
-                            return false; // Username already exists
+                            return -1;
                         }
                     }
 
                     // Insert new user
-                    string insertQuery = "INSERT INTO [User] ([Full_Name], [Username], [Password], [Birthdate], [Contact_Info], [Address]) " +
-                                         "VALUES (?, ?, ?, ?, ?, ?)";
-
+                    string insertQuery = "INSERT INTO [User] ([Username], [Full_Name], [Password]) VALUES (?, ?, ?)";
 
                     using (OleDbCommand cmd = new OleDbCommand(insertQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("?", name);
                         cmd.Parameters.AddWithValue("?", username);
+                        cmd.Parameters.AddWithValue("?", fullName);
                         cmd.Parameters.AddWithValue("?", password);
-                        cmd.Parameters.AddWithValue("?", DateTime.Parse(birthdate));
-                        cmd.Parameters.AddWithValue("?", contact);
-                        cmd.Parameters.AddWithValue("?", address);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
-                        success = (rowsAffected > 0); // If row was inserted, registration was successful
+
+                        if (rowsAffected > 0)
+                        {
+                            string getUserIdQuery = "SELECT User_ID FROM [User] WHERE Username = ?";
+                            using (OleDbCommand getIdCmd = new OleDbCommand(getUserIdQuery, conn))
+                            {
+                                getIdCmd.Parameters.AddWithValue("?", username);
+                                object result = getIdCmd.ExecuteScalar();
+                                if (result != null)
+                                {
+                                    userID = Convert.ToInt32(result);
+                                }
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -95,7 +107,7 @@ namespace MP_Grub
                     Response.Write("<script>alert('Database Error: " + ex.Message + "');</script>");
                 }
             }
-            return success;
+            return userID;
         }
     }
 }

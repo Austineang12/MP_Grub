@@ -30,10 +30,10 @@ namespace MP_Grub
                     if (reader.Read())
                     {
                         username.Text = reader["Username"].ToString();
-                        fullName.Text = reader["Full_Name"].ToString();
-                        birthdate.Text = Convert.ToDateTime(reader["Birthdate"]).ToString("yyyy-MM-dd");
-                        contact.Text = reader["Contact_Info"].ToString();
-                        address.Text = reader["Address"].ToString();
+                        fullName.Text = reader["Full_Name"] != DBNull.Value ? reader["Full_Name"].ToString() : "";
+                        birthdate.Text = reader["Birthdate"] != DBNull.Value ? Convert.ToDateTime(reader["Birthdate"]).ToString("yyyy-MM-dd") : "";
+                        contact.Text = reader["Contact_Info"] != DBNull.Value ? reader["Contact_Info"].ToString() : "";
+                        address.Text = reader["Address"] != DBNull.Value ? reader["Address"].ToString() : "";
                     }
                 }
             }

@@ -38,6 +38,10 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -47,21 +51,13 @@
 
             <label for="usernametxt">Username</label>
             <asp:TextBox ID="usernametxt" runat="server" CssClass="input-field"></asp:TextBox>
-
-            <label for="passwordtxt">Password</label>
-            <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password"></asp:TextBox>
+            <asp:Label ID="lblUsernameError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
 
             <label for="fullnametxt">Full Name</label>
             <asp:TextBox ID="fullnametxt" runat="server" CssClass="input-field"></asp:TextBox>
 
-            <label for="birthdatetxt">Birthdate</label>
-            <asp:TextBox ID="birthdatetxt" runat="server" CssClass="input-field" TextMode="Date"></asp:TextBox>
-
-            <label for="contacttxt">Contact Information</label>
-            <asp:TextBox ID="contacttxt" runat="server" CssClass="input-field"></asp:TextBox>
-
-            <label for="addresstxt">Address</label>
-            <asp:TextBox ID="addresstxt" runat="server" CssClass="input-field"></asp:TextBox>
+            <label for="passwordtxt">Password</label>
+            <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password"></asp:TextBox>
 
             <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="btn" OnClick="SignupValidation"/>
 
@@ -70,3 +66,4 @@
     </form>
 </body>
 </html>
+
