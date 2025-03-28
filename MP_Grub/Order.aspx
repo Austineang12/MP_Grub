@@ -3,15 +3,19 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         body {
+            font-family: Arial, sans-serif;
             background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
         .restaurant-container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
-            gap: 5%;
-            border: 50px;
+            justify-content: space-evenly; 
+            gap: 20px;
+            row-gap: 60px; /* Space between rows */
+            padding: 20px;
         }
 
         .restaurant-card {
@@ -23,9 +27,8 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             text-decoration: none !important;
-            margin: 20px 0;
         }
 
         .restaurant-card:hover {
@@ -52,9 +55,8 @@
             background-color: #ff7f50;
             color: white;
             padding: 20px;
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
-            letter-spacing: 0px;
             text-align: center;
         }
 
@@ -99,13 +101,13 @@
         }
 
         .food-name {
-            /*font-size: 18px;*/
+            font-size: 18px;
             font-weight: bold;
             flex: 1;
         }
 
         .food-price {
-            /*font-size: 18px;*/
+            font-size: 18px;
             font-weight: bold;
             text-align: right;
             min-width: 100px;
@@ -115,6 +117,8 @@
             display: flex;
             gap: 10px;
         }
+
+
 
         .food-button {
             background-color: #ff7f50;
@@ -137,17 +141,82 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="restaurant-container" id="restaurantContainer" runat="server">
-        <%-- Restaurants retrieved from the database --%>
+        <%-- Retrieved from Database --%>
     </div>
 
-    
     <div id="foodPopup" class="popup">
         <h2 id="restaurantTitle" class="resto-title"></h2>
-        <div id="foodList" runat="server"><%-- Food Items retrieved from the database --%></div>
+        <div class="food-item">
+            <div id="foodList" class="food-name"></div>
+        </div>
         <button class="food-button" style="background-color: #f44336; margin-top: 20px;" onclick="closePopup()">Close</button>
     </div>
 
     <script type="text/javascript">
+        const menus = {
+            1: [
+                { name: "Chicken Fries", price: "₱110.00" },
+                { name: "Pork Bacon Ribs", price: "₱110.00" },
+                { name: "Beef Pot Roast", price: "₱95.00" }
+            ],
+            2: [
+                { name: "Vietnamese Coffee", price: "₱130.00" },
+                { name: "Cafe Latte", price: "₱120.00" },
+                { name: "SeaSalt Latte", price: "₱140.00" }
+            ],
+            3: [
+                { name: "2pcs Chicken Wings", price: "₱150.00" },
+                { name: "4pcs Chicken Wings", price: "₱200.00" },
+                { name: "8pcs Chicken Wings", price: "₱350.00" }
+            ],
+            4: [
+                { name: "De Original Beef", price: "₱59.00" },
+                { name: "Beef Pinatubo", price: "₱59.00" },
+                { name: "Cheezy Beef", price: "₱59.00" }
+            ],
+            5: [
+                { name: "Nirvana Milktea", price: "₱90.00" },
+                { name: "Dutch Dreams Milktea", price: "₱90.00" },
+                { name: "Creme Brulee Milktea", price: "₱90.00" }
+            ]
+        };
+
+        function showPopup(restaurantId) {
+            const foodListDiv = document.getElementById('foodList');
+            foodListDiv.innerHTML = "";
+
+            menus[restaurantId].forEach(food => {
+                const foodItemDiv = document.createElement('div');
+                foodItemDiv.classList.add('food-item');
+
+                foodItemDiv.innerHTML = `
+            <div class="food-details">
+                <span class="food-name">${food.name}</span>
+                <span class="food-price">${food.price}</span>
+            </div>
+            <div class="food-actions">
+                <button class="food-button" onclick="bookmarkFood('${food.name}')">Bookmark</button>
+                <button class="food-button" onclick="addToCart('${food.name}', '${food.price}')">Add to Cart</button>
+            </div>
+        `;
+
+                foodListDiv.appendChild(foodItemDiv);
+            });
+
+            const restaurantNames = ["", "Saucy", "Same Old Coffee", "Wingspot Unlimited", "Jamaican", "Bon Appetea"];
+            document.getElementById('restaurantTitle').textContent = restaurantNames[restaurantId] + " Menu";
+            document.getElementById('foodPopup').classList.add('active');
+        }
+
+
+        function bookmarkFood(foodName) {
+            alert(`${foodName} has been bookmarked!`);
+        }
+
+        function addToCart(foodName, price) {
+            alert(`${foodName} (${price}) has been added to the cart!`);
+        }
+
         function closePopup() {
             document.getElementById('foodPopup').classList.remove('active');
         }
