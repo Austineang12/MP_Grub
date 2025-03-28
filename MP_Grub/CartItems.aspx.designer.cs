@@ -51,22 +51,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Image CryingDuck;
 
         /// <summary>
-        /// txtVoucher control.
+        /// Voucher_Dropdown control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVoucher;
-
-        /// <summary>
-        /// btnApplyVoucher control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnApplyVoucher;
+        protected global::System.Web.UI.WebControls.DropDownList Voucher_Dropdown;
 
         /// <summary>
         /// lblOrderFee control.
@@ -76,6 +67,15 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblOrderFee;
+
+        /// <summary>
+        /// lblDeliveryFee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblDeliveryFee;
 
         /// <summary>
         /// lblDiscountValue control.
@@ -96,13 +96,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblTotalAmount;
 
         /// <summary>
-        /// btnCancel control.
+        /// btnOrder control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancel;
+        protected global::System.Web.UI.WebControls.Button btnOrder;
 
         /// <summary>
         /// btnPayment control.

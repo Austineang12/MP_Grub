@@ -72,7 +72,7 @@
             color: #404040;
         }
 
-        .cancel-button {
+        .order-button {
             font-size: 18px;
             font-weight: bold;
             padding: 12px 20px;
@@ -90,35 +90,46 @@
             border-radius: 8px;
             cursor: pointer;
             transition: background 0.3s;
+            background-color: #FB8F52;
         }
 
-        .cancel-button:hover {
+        .order-button:hover {
             background-color: #c0c0c0;
         }
 
         .payment-button:hover {
-            background-color: #c0c0c0;
+            background-color: #ff7f50;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px
+            gap: 30px
         }
 
-        .voucher-container {
+        /*.voucher-container {
             display: flex;
             justify-content: space-between;
             margin-top: 30px;
-        }
+        }*/
 
         .voucher-input {
-            width: 22vw;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 16px;
+            color: dimgray;
+            appearance: none;
         }
+
+        /*.voucher-input:focus {
+            border-color: #ff7f50;
+            outline: none;
+            box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
+        }*/
 
     </style>
 </asp:Content>
@@ -140,7 +151,7 @@
                                 <asp:Button ID="btnSubtract" runat="server" Text="-" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnSubtract_Click" />
                                 <asp:Label ID="lblQuantity" runat="server" Text='<%# Eval("Order_Quantity") %>'></asp:Label>
                                 <asp:Button ID="btnAdd" runat="server" Text="+" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnAdd_Click" />
-                                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnCancel_Click" />
+                                <%--<asp:Button ID="btnCancel" runat="server" Text="Cancel" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnCancel_Click" />--%>
                             </div>
                         </div>
                     </ItemTemplate>
@@ -154,10 +165,9 @@
                 <p><strong>Order ka muna!</strong></p>
             </asp:Panel>
 
-            <%-- Voucher --%>
+            <%-- Voucher Section --%>
             <div class="voucher-container">
-                <asp:TextBox ID="txtVoucher" runat="server" CssClass="voucher-input" Placeholder="Enter Voucher Code"></asp:TextBox>
-                <asp:Button ID="btnApplyVoucher" runat="server" Text="Apply Voucher" OnClick="btnApplyVoucher_Click" />
+                <asp:DropDownList ID="Voucher_Dropdown" runat="server" CssClass="voucher-input"></asp:DropDownList>
             </div>
 
             <%-- Order Summary --%>
@@ -170,7 +180,7 @@
                 </div>
                 <div class="summary-row">
                     <span>Delivery Fee:</span>
-                    <span>₱30.00</span>
+                    <span>₱<asp:Label ID="lblDeliveryFee" runat="server" /></span>
                 </div>
                 <div class="summary-row">
                     <span>Discounts:</span>
@@ -184,7 +194,7 @@
 
             <%-- Buttons --%>
             <div class="buttons">
-                <asp:Button ID="btnCancel" runat="server" Text="Cancel" class="cancel-button" OnClick="btnCancel_Click" />
+                <asp:Button ID="btnOrder" runat="server" Text="Order More" class="order-button" OnClick="btnOrder_Click" />
                 <asp:Button ID="btnPayment" runat="server" Text="Proceed to Payment" class="payment-button" OnClick="btnPayment_Click" />
             </div>
         </div>

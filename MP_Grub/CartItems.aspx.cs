@@ -16,6 +16,7 @@ namespace MP_Grub
             if (!IsPostBack)
             {
                 LoadCartItems();
+                LoadVouchers();
             }
         }
 
@@ -29,7 +30,7 @@ namespace MP_Grub
 
             int userId = Convert.ToInt32(Session["UserID"]);
 
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))          
+            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
             {
                 string query = @"
                     SELECT Food.Food_ID, Food.Food_Name, Food.Food_Price, Restaurant.Restaurant_Name, Order_Detail.Order_Quantity 
@@ -67,6 +68,49 @@ namespace MP_Grub
             }
         }
 
+        private void LoadVouchers()
+        {
+            if (Session["UserID"] == null)
+                return;
+
+            int userId = Convert.ToInt32(Session["UserID"]);
+
+            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            {
+                string query = "SELECT TOP 1 Voucher_ID, Voucher_Name, Voucher_Value FROM Voucher WHERE User_ID = ? ORDER BY Voucher_ID DESC";
+
+                try
+                {
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@User_ID", userId);
+                        conn.Open();
+
+                        using (OleDbDataReader reader = cmd.ExecuteReader())
+                        {
+                            Voucher_Dropdown.Items.Clear();
+                            Voucher_Dropdown.Items.Add(new ListItem("Select a Voucher", ""));
+
+                            if (reader.Read())
+                            {
+                                Session["Voucher_ID"] = reader["Voucher_ID"];
+                                Session["Voucher_Value"] = Convert.ToDecimal(reader["Voucher_Value"]);
+                                Voucher_Dropdown.Items.Add(new ListItem(reader["Voucher_Name"].ToString(), reader["Voucher_ID"].ToString()));
+                            }
+                            else
+                            {
+                                Voucher_Dropdown.Items.Add(new ListItem("No Vouchers Available", ""));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("An error occurred while loading vouchers: " + ex.Message);
+                }
+            }
+        }
+
         private void CalculateSummary(DataTable dt)
         {
             decimal orderFee = 0;
@@ -74,13 +118,28 @@ namespace MP_Grub
             {
                 orderFee += Convert.ToDecimal(row["Food_Price"]) * Convert.ToInt32(row["Order_Quantity"]);
             }
+
             decimal deliveryFee = 30.00m;
             decimal discountValue = 0;
+
+            if (Session["Voucher_Value"] != null)
+            {
+                decimal voucherValue = Convert.ToDecimal(Session["Voucher_Value"]);
+                discountValue = orderFee * voucherValue;
+            }
+
             decimal totalAmount = orderFee + deliveryFee - discountValue;
 
             lblOrderFee.Text = orderFee.ToString("0.00");
+            lblDeliveryFee.Text = deliveryFee.ToString("0.00");
             lblDiscountValue.Text = discountValue.ToString("0.00");
             lblTotalAmount.Text = totalAmount.ToString("0.00");
+        }
+
+        protected void ddlVoucher_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadVouchers();
+            LoadCartItems();
         }
 
         private void UpdateQuantity(int foodId, int change)
@@ -121,34 +180,9 @@ namespace MP_Grub
             UpdateQuantity(foodId, -1);
         }
 
-        protected void btnCancel_Click(object sender, EventArgs e)
+        protected void btnOrder_Click(object sender, EventArgs e)
         {
-            int foodId = Convert.ToInt32(((Button)sender).CommandArgument);
-
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
-            {
-                string query = "DELETE FROM Order_Detail WHERE Food_ID = ?";
-
-                try
-                {
-                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Food_ID", foodId);
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("Error: " + ex.Message);
-                }
-            }
-            LoadCartItems();
-        }
-
-        protected void btnApplyVoucher_Click(object sender, EventArgs e)
-        {
-            Response.Write("Voucher applied (functionality not implemented yet).");
+            Response.Redirect("Order.aspx");
         }
 
         protected void btnPayment_Click(object sender, EventArgs e)
