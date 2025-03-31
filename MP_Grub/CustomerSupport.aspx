@@ -45,10 +45,10 @@
 
         <label for="issueDropdown">Select an Issue</label>
         <asp:DropDownList ID="issueDropdown" runat="server" CssClass="dropdown">
-            <asp:ListItem Text="Order Issue" Value="1" />
-            <asp:ListItem Text="Payment Issue" Value="2" />
-            <asp:ListItem Text="Delivery Issue" Value="3" />
-            <asp:ListItem Text="Other" Value="4" />
+            <asp:ListItem Text="Order Issue" Value="Order" />
+            <asp:ListItem Text="Payment Issue" Value="Payment" />
+            <asp:ListItem Text="Delivery Issue" Value="Delivery" />
+            <asp:ListItem Text="Other" Value="Other" />
         </asp:DropDownList>
 
         <asp:Button ID="continuebtn" runat="server" Text="Continue" CssClass="btn" OnClick="ContinueToDetails" />

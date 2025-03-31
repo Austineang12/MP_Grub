@@ -20,7 +20,7 @@ namespace MP_Grub
 
         protected void ContinueToDetails(object sender, EventArgs e)
         {
-            Session["SelectedIssue"] = issueDropdown.SelectedValue;
+            Session["SelectedSpecifiedIssue"] = issueDropdown.SelectedValue;
             Session["UserID"] = Session["UserID"];
             Response.Redirect("SpecificIssues.aspx");
         }

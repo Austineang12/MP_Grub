@@ -23,7 +23,7 @@ namespace MP_Grub
                 string connStr = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|GrubDB.accdb;";
                 using (OleDbConnection conn = new OleDbConnection(connStr))
                 {
-                    string query = "SELECT TOP 1 Issue, Detailed_Issue FROM Support WHERE User_ID = ? ORDER BY Support_ID DESC";
+                    string query = "SELECT TOP 1 Specified_Issue, Detailed_Issue FROM Support WHERE User_ID = ? ORDER BY Support_ID DESC";
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("?", userID);
@@ -32,7 +32,7 @@ namespace MP_Grub
                         {
                             if (reader.Read())
                             {
-                                lblIssue.Text = reader["Issue"].ToString();
+                                lblIssue.Text = reader["Specified_Issue"].ToString();
                                 lblDetails.Text = string.IsNullOrEmpty(reader["Detailed_Issue"].ToString()) ? "No details provided." : reader["Detailed_Issue"].ToString();
                             }
                             else
