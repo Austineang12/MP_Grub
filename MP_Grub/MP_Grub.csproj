@@ -96,6 +96,7 @@
     <Content Include="images\Menu.png" />
     <Content Include="images\CryingDuck.png" />
     <Content Include="images\Shawarma.jpg" />
+    <Content Include="Loading.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="Logout.aspx" />
     <Content Include="Navigation.aspx" />
@@ -172,6 +173,13 @@
     </Compile>
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Loading.aspx.cs">
+      <DependentUpon>Loading.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Loading.aspx.designer.cs">
+      <DependentUpon>Loading.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
