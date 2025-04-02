@@ -41,10 +41,8 @@ namespace MP_Grub
 
             if (userID > 0)
             {
-                Session["UserID"] = userID;
-                Session["Username"] = usernameInput;
 
-                Response.Redirect("Home.aspx");
+                Response.Redirect("Login.aspx");
             }
             else
             {

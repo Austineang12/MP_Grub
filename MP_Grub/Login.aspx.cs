@@ -21,10 +21,21 @@ namespace MP_Grub
 
             if (userDetails != null)
             {
-                Session["UserID"] = userDetails.Item1;
-                Session["Username"] = userDetails.Item2;
+                int userId = userDetails.Item1;
+                string username = userDetails.Item2;
 
-                Response.Redirect("Home.aspx"); 
+                Session["UserID"] = userId;
+                Session["Username"] = username;
+
+                // Ensure user has a valid Transaction_ID
+                int transactionId = EnsureTransactionExists(userId);
+
+                if (transactionId > 0)
+                {
+                    Session["TransactionID"] = transactionId;
+                }
+
+                Response.Redirect("Home.aspx");
             }
             else
             {
@@ -51,7 +62,7 @@ namespace MP_Grub
 
                         using (OleDbDataReader reader = cmd.ExecuteReader())
                         {
-                            if (reader.Read()) 
+                            if (reader.Read())
                             {
                                 int userId = reader.GetInt32(0);
                                 string username = reader.GetString(1);
@@ -69,8 +80,73 @@ namespace MP_Grub
 
             return userDetails;
         }
-        
 
+        private int EnsureTransactionExists(int userId)
+        {
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
+            int transactionId = 0;
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+
+                // Check if the user has an active transaction
+                string checkActiveTransaction = "SELECT Transaction_ID FROM [Transaction] WHERE User_ID = ? AND Transaction_Status IS NULL";
+                using (OleDbCommand cmd = new OleDbCommand(checkActiveTransaction, conn))
+                {
+                    cmd.Parameters.AddWithValue("?", userId);
+                    object result = cmd.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        return Convert.ToInt32(result);
+                    }
+                }
+
+                // If no active transaction, check the last transaction status
+                string checkLastTransaction = "SELECT TOP 1 Transaction_ID, Transaction_Status FROM [Transaction] WHERE User_ID = ? ORDER BY Transaction_ID DESC";
+                using (OleDbCommand cmd = new OleDbCommand(checkLastTransaction, conn))
+                {
+                    cmd.Parameters.AddWithValue("?", userId);
+                    using (OleDbDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string status = reader["Transaction_Status"] != DBNull.Value ? reader["Transaction_Status"].ToString() : null;
+
+                            if (status == "Delivered" || status == "Canceled")
+                            {
+                                transactionId = CreateNewTransaction(conn, userId);
+                            }
+                        }
+                        else
+                        {
+                            // If no transaction exists at all, create a new one
+                            transactionId = CreateNewTransaction(conn, userId);
+                        }
+                    }
+                }
+            }
+
+            return transactionId;
+        }
+
+
+        private int CreateNewTransaction(OleDbConnection conn, int userId)
+        {
+            string createTransactionQuery = "INSERT INTO [Transaction] (User_ID, Total_Price, Transaction_Status) VALUES (?, 0, 'Pending')";
+            using (OleDbCommand cmd = new OleDbCommand(createTransactionQuery, conn))
+            {
+                cmd.Parameters.AddWithValue("?", userId);
+                cmd.ExecuteNonQuery();
+            }
+
+            // Retrieve the newly created Transaction_ID
+            using (OleDbCommand cmd = new OleDbCommand("SELECT @@IDENTITY", conn))
+            {
+                return (int)cmd.ExecuteScalar();
+            }
+            ;
+        }
     }
 }
-
