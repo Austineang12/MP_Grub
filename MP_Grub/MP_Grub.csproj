@@ -73,9 +73,10 @@
     <Content Include="CustomerSupport.aspx" />
     <Content Include="EditProfile.aspx" />
     <Content Include="Home.aspx" />
-    <Content Include="images\bg_Duck.png" />
     <Content Include="images\Add to Cart.png" />
     <Content Include="images\Back.png" />
+    <Content Include="images\Home_Duckbg.png" />
+    <Content Include="images\Home_Duck.png" />
     <Content Include="images\Bookmark.png" />
     <Content Include="images\Cash on Delivery.png" />
     <Content Include="images\Jamaican_Order.png" />

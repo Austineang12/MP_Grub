@@ -30,5 +30,9 @@ namespace MP_Grub
         {
             Response.Redirect("~/Navigation.aspx");
         }
+        protected void Button_OrderNow(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Order.aspx");
+        }
     }
 }

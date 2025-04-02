@@ -41,10 +41,12 @@
             border-radius: 20px;
             border: 1px solid #ddd;
         }
-        .btn {
+        .create-button {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: #FB8F52;
             align-items: center;
-            color: black;
+            color: #404040;
             border: none;
             padding: 12px 30px;
             border-radius: 20px;
@@ -52,7 +54,13 @@
             margin-top: 20px;
             font-size: 1rem;
             width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+
+        .create-button:hover {
+            background-color: #E07E48;
+        }
+
         .error-message {
             color: red;
             font-size: 14px;
@@ -77,9 +85,11 @@
             margin-bottom: 10px;
         }
         .alternate-button {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: white;
             align-items: center;
-            color: black;
+            color: #404040;
             border: none;
             padding: 12px 30px;
             border-radius: 20px;
@@ -87,6 +97,11 @@
             margin-top: 20px;
             font-size: 1rem;
             width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .alternate-button:hover {
+            background-color: #F2F2F2;
         }
     </style>
     <script>
@@ -113,7 +128,7 @@
     </script>
 </head>
 <body>
-    <%-- Sign Up section --%>
+    <%-- Create Account section --%>
     <div class="signup-box">
         <form id="form1" runat="server">
             <h2>Create Account</h2>
@@ -128,7 +143,7 @@
                 <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password" placeholder="Password"></asp:TextBox>
             </div>
             <div>
-                <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="btn" OnClick="SignupValidation"/>
+                <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="create-button" OnClick="SignupValidation"/>
             </div>
         </form>
     </div>

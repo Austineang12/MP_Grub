@@ -22,5 +22,9 @@ namespace MP_Grub
         {
             Response.Redirect("~/CartItems.aspx");
         }
+        protected void Button_Logout(object sender, EventArgs e)
+        {
+            Response.Redirect("~/Logout.aspx");
+        }
     }
 }

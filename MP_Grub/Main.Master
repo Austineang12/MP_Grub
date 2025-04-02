@@ -65,7 +65,7 @@
         .navigationArea {
             position: fixed;
             top: 0;
-            width: calc(100% - 55px); /* Adjusted for scrollbar width */
+            width: calc(100% - 55px);
             height: 10vh;
             display: flex;
             justify-content: space-between;
@@ -84,7 +84,7 @@
         }
         
         .btnMenu, .btnBookmark, .btnCart {
-            height: 40px;
+            height: 30px;
             width: auto;
         }
 
@@ -108,51 +108,71 @@
             min-height: 85vh;
             height: auto;
             overflow-x: hidden;
-            margin-top: 10vh; /*adjust for the height of navigation bar*/
+            margin-top: 10vh;
+            flex: 1;
         }
 
         .footer {
             display: flex;
-            flex-direction: row;
-            text-align: center;
-            justify-content: space-between;
-            background: black;
-            padding: 10px;
+            justify-content: center;
+            align-items: center;
+            background: #FB8F52;
             width: 100vw;
             height: 45vh;
             color: #fff;
+            z-index: 80;
         }
 
-        .footerContainer{
-            width: 10%;
-            height: 50%;
+        .footer-container {
             display: flex;
-            flex-direction: column;
             justify-content: space-around;
-            align-items: center;
-            border: 1px solid white; /*for debuggin only*/
-            /*wait di pa tapos*/
+            width: 80%;
         }
 
-        .footerParagraph{
-            font-size: 7px;
+        .footer-brand {
+            flex: 1;
+            /*margin-left: 50px;*/
+            font-size: 30px;
+            font-family: 'Akshar', sans-serif;
+            text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            color: #404040;
         }
 
-        .footerLink{
-            font-size: 6px;
+        .footer-links, .footer-restaurants {
+            flex: 1;
+            text-align: left;
         }
 
+        .footer-links h3, .footer-restaurants h3 {
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-        .footer a {
-            color: #fff;
+        .footer-links ul, .footer-restaurants ul {
+            list-style: none;
+            padding: 0;
+            gap: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .footer-links li, .footer-restaurants li {
+            margin-bottom: 5px;
+        }
+
+        .footer-links a, .footer-restaurants a {
+            color: white;
             text-decoration: none;
-            font-family: 'Arial Black', sans-serif;
-
+            font-size: 16px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .footer-links a:hover, .footer-restaurants a:hover {
+            color: #404040;
         }
+
+
 
         .menuOverlay {
             display: none;
@@ -169,24 +189,24 @@
         }
 
         .menu-popup {
-            display: none;
             position: fixed;
             top: 65px;
-            left: -250px;
-            bottom: 0;
+            left: 10px;
             width: 250px;
-            background: #FB8F52;
+            background: #404040;
             padding: 15px;
             box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             z-index: 95;
-            transition: left 0.3s ease;
-            overflow-y: auto;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
         }
 
         .menu-popup.active {
-            display: block;
-            left: 0;
+            max-height: 500px;
+            opacity: 1;
         }
 
 
@@ -206,7 +226,7 @@
             list-style-type: none; 
             padding: 0;
             margin-top: 30px;
-            text-align: center;
+            text-align: start;
         }
 
         .menu-links li {
@@ -215,7 +235,7 @@
 
         .menu-link {
             text-decoration: none;
-            color: #404040;
+            color: white;
             font-size: 18px;
             font-weight: bold;
             display: block;
@@ -224,9 +244,29 @@
         }
 
         .menu-link:hover {
-            color: white;
+            color: #FB8F52;
         }
 
+        .logout-button {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: white;
+            align-items: center;
+            color: #404040;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 80px;
+            font-size: 1rem;
+            width: 10vw;
+            display: block;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .logout-button:hover {
+            background-color: #F2F2F2;
+        }
     </style>
 
     <%--CONTENT HEAD TAGS--%>
@@ -236,6 +276,7 @@
 
     <%--FUNCTIONS FOR MASTER PAGE--%>
     <script type="text/javascript">
+
         function toggleMenuPopup() {
             var popup = document.getElementById("menuPopup");
             var menuOverlay = document.getElementById("menuOverlay");
@@ -244,13 +285,12 @@
             if (isActive) {
                 popup.classList.remove("active");
                 menuOverlay.classList.remove("active");
-                menuOverlay.style.display = "none"; // Hide overlay when menu is closed
             } else {
                 popup.classList.add("active");
                 menuOverlay.classList.add("active");
-                menuOverlay.style.display = "block"; // Show overlay when menu is open
             }
         }
+
     </script>
 </head>
 <body>
@@ -282,9 +322,9 @@
                 <li><asp:HyperLink ID="HyperLinkOrderHistory" runat="server" NavigateUrl="~/OrderHistory.aspx" CssClass="menu-link">Order History</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkVoucher" runat="server" NavigateUrl="~/Voucher.aspx" CssClass="menu-link">Voucher</asp:HyperLink></li>
                 <li><asp:HyperLink ID="HyperLinkSupport" runat="server" NavigateUrl="~/CustomerSupport.aspx" CssClass="menu-link">Customer Support</asp:HyperLink></li>
-                <li style="margin-top: 20px; border-top: 1px solid white; padding-top: 10px;">
-                <asp:HyperLink ID="HyperLinkLogout" runat="server" NavigateUrl="~/Logout.aspx" CssClass="menu-link" ForeColor="404040">Logout</asp:HyperLink>
-                </li>
+                <li style="margin-top: 20px; border-top: 1px solid white; padding-top: 10px;"></li>
+
+                <asp:Button ID="btnLogout" runat="server" Text="Logout" class="logout-button" OnClick="Button_Logout" />
             </ul>
         </div>
 
@@ -299,14 +339,36 @@
 
         <%--FOOTER--%>
         <section class="footer">
-            <%--<div class="footerContainer">
-            <asp:Label ID="footerGrubName" runat="server" Text="Grub Food Delivery"></asp:Label>
-                <%--or pwedeng logo name--%>
-            <%--</div>
-            <div class="footerContainer">
-            <asp:Label class="footerParagraph" runat="server" Text="Meet Grub, your go-to school delivery team! We deliver your favorite meals straight to busy MCL students, right to their room—fast, fresh, and hassle-free! "></asp:Label>
-            <asp:HyperLink ID="aboutUsLink" CssClass="footerLink" runat="server" NavigateUrl="~/Payment.aspx">About Us</asp:HyperLink>
-            </div>--%>
+            <div class="footer-container">
+                <!-- Column 1: Brand Name -->
+                <div class="footer-brand">
+                    <h1 class="brand-name">GRUB</h1>
+                </div>
+
+                <!-- Column 2: Useful Links -->
+                <div class="footer-links">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><asp:HyperLink ID="HyperLinkProfileFooter" runat="server" NavigateUrl="~/Profile.aspx">Profile</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkOrderFooter" runat="server" NavigateUrl="~/Order.aspx">Order</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkOrderHistoryFooter" runat="server" NavigateUrl="~/OrderHistory.aspx">Order History</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkVoucherFooter" runat="server" NavigateUrl="~/Voucher.aspx">Voucher</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkSupportFooter" runat="server" NavigateUrl="~/CustomerSupport.aspx">Customer Support</asp:HyperLink></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Restaurants -->
+                <div class="footer-restaurants">
+                    <h3>Restaurants</h3>
+                    <ul>
+                        <li><asp:HyperLink ID="HyperLinkSaucy" runat="server" NavigateUrl="~/Order.aspx">Saucy</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkSameOldCoffee" runat="server" NavigateUrl="~/Order.aspx">Same Old Coffee</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkWingspot" runat="server" NavigateUrl="~/Order.aspx">Wingspot Unlimited</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkJamaican" runat="server" NavigateUrl="~/Order.aspx">Jamaican</asp:HyperLink></li>
+                        <li><asp:HyperLink ID="HyperLinkBonAppetea" runat="server" NavigateUrl="~/Order.aspx">Bon Appetea</asp:HyperLink></li>
+                    </ul>
+                </div>
+            </div>
         </section>
     </form>
 </body>

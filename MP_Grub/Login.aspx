@@ -64,9 +64,11 @@
             margin-bottom: 15px;
         }
         .welcome-button {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: white;
             align-items: center;
-            color: black;
+            color: #404040;
             border: none;
             padding: 12px 30px;
             border-radius: 20px;
@@ -74,12 +76,19 @@
             margin-top: 20px;
             font-size: 1rem;
             width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .welcome-button:hover {
+            background-color: #F2F2F2;
         }
 
         .login-button {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: #FB8F52;
             align-items: center;
-            color: black;
+            color: #404040;
             border: none;
             padding: 12px 30px;
             border-radius: 20px;
@@ -87,6 +96,11 @@
             margin-top: 20px;
             font-size: 1rem;
             width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .login-button:hover {
+            background-color: #E07E48;
         }
 
         .input {
