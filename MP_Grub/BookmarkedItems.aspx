@@ -3,48 +3,60 @@
     <title>Bookmark</title>
     <link rel="stylesheet" href="styles.css" />
     <style type="text/css">
+        #bookmarkTitle {
+            font-size: 24px;
+            font-weight: bold;
+            color: black;
+            margin: 20px 0 10px 50px;
+        }
         .bookmarkPopup {
-            /* Sample only */
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-            height: 80vh;
-            width: 50vw;
+            width: 70vw;
             display: flex;
             flex-direction: column;
-            position: relative; 
-            border-radius: 10px;
+            position: relative;
+            border-radius: 20px;
+            height: auto; 
+            margin: 50px 0 100px 0;
         }
 
         .bookmarkContent {
-            height: 95%;
             z-index: 2;
             margin-bottom: -20px; /* Negative margin to overlap with the red part */
             position: relative;
             padding: 20px;
+            padding-bottom: 40px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: center;
             gap: 10px;
             row-gap: 20px;
-            
+            height: auto; 
+    
+            overflow-y: auto; /* Enables vertical scrolling */
+            overflow-x: hidden; /* Prevents horizontal scrolling */
         }
+
 
         .optionButtons {
             background: #f0eeed;
-            height: 30%;
-            border-radius: 20px 20px 0 0;
+            height: 200px;
+            border-radius: 20px;
             position: relative;
             z-index: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10%;
+            margin-top: 20px;
         }
         .optionBtn{
             background: #fff;
             height: 80px;
-            width: 200px;
+            width: 250px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 18px;
             border-radius: 20px;
             border: none;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
@@ -151,51 +163,56 @@
 
     </style>
     <script type="text/javascript">
+        function updateQuantity(foodName, restaurantName, change) {
+            var quantityLabel = document.getElementById(`quantity_${foodName}_${restaurantName}`);
+            var currentQuantity = parseInt(quantityLabel.innerText);
+
+            var newQuantity = currentQuantity + change;
+
+            quantityLabel.innerText = newQuantity;
+
+            var bookmarkID = `${foodName}_${restaurantName}`;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "UpdateBookmarkQuantity.aspx", true); 
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(`bookmarkID=${bookmarkID}&newQuantity=${newQuantity}`);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    console.log('Quantity updated successfully.');
+                } else {
+                    console.log('Error updating quantity.');
+                }
+            };
+        }
+
+
+        function removeBookmark(bookmarkID) {
+            if (confirm("Are you sure you want to remove this item?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "RemoveBookmark.aspx", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("bookmarkID=" + bookmarkID);
         
+                // Reload page after removing item
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        location.reload();
+                    }
+                };
+            }
+        }
+
 
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="bookmarkPopup">
+        <label ID="bookmarkTitle">Your Bookmark</label>
         <%-- BOOKMARK ITEMS --%>
-        <div class="bookmarkContent">
-            <div class="item">
-                <asp:Label class="foodName" runat="server" Text="Shawarma Rice"></asp:Label>
-                <asp:Label class="foodStore" runat="server" Text="Za-wrap"></asp:Label>
-
-                <%-- HOVER HIDDEN BUTTONS --%>
-                <div class="hiddenHover">
-                    <asp:Button CssClass="removeBtn" ID="removeBtn" runat="server" Text="Remove" />
-                    <div class="quantityContainer">
-                        <input class="quantityButtonMinus" type="button" value="-" />
-                        <asp:Label ID="quantityLbl" runat="server" Text="0"></asp:Label>
-                        <input class="quantityButtonPlus" type="button" value="+" />
-                    </div>
-                </div>
-
-            </div>
-
-            
-
-            <div class="item">
-                <asp:Label class="foodName" runat="server" Text="Shawarma Rice"></asp:Label>
-                <asp:Label class="foodStore" runat="server" Text="Za-wrap"></asp:Label>
-
-                <%-- HOVER HIDDEN BUTTONS --%>
-                <div class="hiddenHover">
-                    <asp:Button CssClass="removeBtn" ID="Button1" runat="server" Text="Remove" />
-                    <div class="quantityContainer">
-                        <input class="quantityButtonMinus" type="button" value="-" />
-                        <asp:Label ID="Label1" runat="server" Text="0"></asp:Label>
-                        <input class="quantityButtonPlus" type="button" value="+" />
-                    </div>
-                </div>
-            </div>
-
-            
+        <div class="bookmarkContent" id="bookmarkContent" runat="server">
+        <%-- RETRIEVED FROM DATABASE --%>
         </div>
-
-        
 
         <%-- CANCEL/CHECKOUT BUTTONS --%>
         <div class="optionButtons">
@@ -203,4 +220,41 @@
             <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout All" />
         </div>
     </div>
+
+    <script type="text/javascript">
+        function updateQuantity(bookmarkID, change) {
+            var quantityLbl = document.getElementById('quantity_' + bookmarkID);
+            var currentQuantity = parseInt(quantityLbl.innerText);
+            var newQuantity = currentQuantity + change;
+
+            if (newQuantity < 1) {
+                newQuantity = 1; // Prevent quantity from going below 1
+            }
+
+            quantityLbl.innerText = newQuantity;
+
+            // Send AJAX request to update in database
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "UpdateQuantity.aspx", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send("bookmarkID=" + bookmarkID + "&newQuantity=" + newQuantity);
+        }
+
+        function removeBookmark(bookmarkID) {
+            if (confirm("Are you sure you want to remove this item?")) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "RemoveBookmark.aspx", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.send("bookmarkID=" + bookmarkID);
+        
+                // Reload page after removing item
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        location.reload();
+                    }
+                };
+            }
+        }
+
+    </script>
 </asp:Content>
