@@ -15,7 +15,26 @@ namespace MP_Grub
         private static string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
         protected void Page_Load(object sender, EventArgs e)
         {
-            LoadRestaurants();
+            if (!IsPostBack)
+            {
+                if (Session["UserID"] == null || Session["TransactionID"] == null)
+                {
+                    // Inject JavaScript alert for debugging
+                    string script = "<script>alert('Session expired or missing. Please log in again.'); window.location='Login.aspx';</script>";
+                    Response.Write(script);
+                    Response.End(); // Stop further execution
+                    return;
+                }
+                else
+                {
+                    // Refresh session variables (not necessary, but keeping for clarity)
+                    Session["UserID"] = Session["UserID"];
+                    Session["TransactionID"] = Session["TransactionID"];
+                }
+            
+            }
+
+            LoadRestaurants();           
         }
 
         private void LoadRestaurants()
@@ -109,5 +128,75 @@ namespace MP_Grub
 
             return foodList;
         }
+
+        [WebMethod(EnableSession = true)]
+        public static object GetSessionData()
+        {
+            if (System.Web.HttpContext.Current.Session["UserID"] == null ||
+                System.Web.HttpContext.Current.Session["TransactionID"] == null)
+            {
+                return new { IsValid = false, Message = "Session expired. Please log in again." };
+            }
+
+            return new
+            {
+                IsValid = true,
+                TransactionID = System.Web.HttpContext.Current.Session["TransactionID"].ToString(),
+                UserID = System.Web.HttpContext.Current.Session["UserID"].ToString()
+            };
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public static string AddToCart(string foodName, string foodPrice, string transactionId, string userId)
+        {
+            if (System.Web.HttpContext.Current.Session["TransactionID"] == null ||
+                System.Web.HttpContext.Current.Session["UserID"] == null)
+            {
+                return "Session expired. Please log in again.";
+            }
+
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+
+                    decimal price = decimal.Parse(Regex.Replace(foodPrice, "[^0-9.]", ""));
+
+                    // Check if transaction exists
+                    string checkQuery = "SELECT COUNT(*) FROM Transaction WHERE Transaction_ID = ?";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                    {
+                        checkCmd.Parameters.AddWithValue("?", transactionId);
+                        int count = (int)checkCmd.ExecuteScalar();
+
+                        if (count == 0)
+                        {
+                            return "Transaction not found. Please try again.";
+                        }
+                    }
+
+                    // Insert into Order_Detail
+                    string query = "INSERT INTO Order_Detail (Transaction_ID, Food_ID, Quantity, Order_Amount, Is_Cart, User_ID) " +
+                                   "VALUES (?, (SELECT Food_ID FROM Food WHERE Food_Name = ?), 1, ?, 'YES', ?)";
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("?", transactionId);
+                        cmd.Parameters.AddWithValue("?", foodName);
+                        cmd.Parameters.AddWithValue("?", price);
+                        cmd.Parameters.AddWithValue("?", userId);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0 ? $"{foodName} added to cart!" : "Failed to add item.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error: " + ex.Message;
+            }
+        }
+
     }
 }

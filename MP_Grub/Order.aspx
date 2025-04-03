@@ -207,8 +207,53 @@
         }
 
         function addToCart(foodName, price) {
-            alert(`${foodName} (${price}) has been added to the cart!`);
+            $.ajax({
+                type: "POST",
+                url: "Order.aspx/GetSessionData",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (sessionResponse) {
+                    if (!sessionResponse.d.IsValid) {
+                        console.error("Session error:", sessionResponse.d.Message);
+                        alert(sessionResponse.d.Message);
+                        window.location.href = "Login.aspx";
+                        return;
+                    }
+
+                    var transactionId = sessionResponse.d.TransactionID;
+                    var userId = sessionResponse.d.UserID;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "Order.aspx/AddToCart",
+                        data: JSON.stringify({
+                            foodName: foodName,
+                            foodPrice: price,
+                            transactionId: transactionId,
+                            userId: userId
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            alert(response.d);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error:", error);
+                            console.error("Response:", xhr.responseText);
+                            alert("Session error. Please try again. " + error);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Session AJAX Error:", error);
+                    console.error("Response:", xhr.responseText);
+                    alert("Session error. Please try again. " + error);
+                }
+            });
         }
+
+
+
 
         function closePopup() {
             document.getElementById('foodPopup').classList.remove('active');

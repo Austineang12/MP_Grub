@@ -13,7 +13,7 @@ namespace MP_Grub
 		{
             if (!IsPostBack)
             {
-                if (Session["UserID"] != null && Session["Username"] != null)
+                if (Session["UserID"] != null && Session["Username"] != null && Session["TransactionID"] != null)
                 {
                     string username = Session["Username"].ToString();
 

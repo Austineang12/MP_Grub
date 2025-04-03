@@ -24,15 +24,20 @@ namespace MP_Grub
                 int userId = userDetails.Item1;
                 string username = userDetails.Item2;
 
+                // ✅ Store UserID and Username in Session
                 Session["UserID"] = userId;
                 Session["Username"] = username;
 
-                // Ensure user has a valid Transaction_ID
+                // ✅ Ensure user has a valid Transaction_ID
                 int transactionId = EnsureTransactionExists(userId);
-
                 if (transactionId > 0)
                 {
-                    Session["TransactionID"] = transactionId;
+                    Session["TransactionID"] = transactionId; //Store TransactionID in Session
+                }
+                else
+                {
+                    Response.Write("<script>alert('Failed to retrieve or create a transaction. Please try again.');</script>");
+                    return;
                 }
 
                 Response.Redirect("Home.aspx");
@@ -90,8 +95,8 @@ namespace MP_Grub
             {
                 conn.Open();
 
-                // Check if the user has an active transaction
-                string checkActiveTransaction = "SELECT Transaction_ID FROM [Transaction] WHERE User_ID = ? AND Transaction_Status IS NULL";
+                //Check for an active transaction
+                string checkActiveTransaction = "SELECT Transaction_ID FROM [Transaction] WHERE User_ID = ? AND Transaction_Status = 'Pending'";
                 using (OleDbCommand cmd = new OleDbCommand(checkActiveTransaction, conn))
                 {
                     cmd.Parameters.AddWithValue("?", userId);
@@ -103,7 +108,7 @@ namespace MP_Grub
                     }
                 }
 
-                // If no active transaction, check the last transaction status
+                //Check the last completed transaction
                 string checkLastTransaction = "SELECT TOP 1 Transaction_ID, Transaction_Status FROM [Transaction] WHERE User_ID = ? ORDER BY Transaction_ID DESC";
                 using (OleDbCommand cmd = new OleDbCommand(checkLastTransaction, conn))
                 {
@@ -121,7 +126,7 @@ namespace MP_Grub
                         }
                         else
                         {
-                            // If no transaction exists at all, create a new one
+                            //If no transaction exists at all, create a new one
                             transactionId = CreateNewTransaction(conn, userId);
                         }
                     }
@@ -131,9 +136,10 @@ namespace MP_Grub
             return transactionId;
         }
 
-
         private int CreateNewTransaction(OleDbConnection conn, int userId)
         {
+            int newTransactionId = 0;
+
             string createTransactionQuery = "INSERT INTO [Transaction] (User_ID, Total_Price, Transaction_Status) VALUES (?, 0, 'Pending')";
             using (OleDbCommand cmd = new OleDbCommand(createTransactionQuery, conn))
             {
@@ -141,12 +147,19 @@ namespace MP_Grub
                 cmd.ExecuteNonQuery();
             }
 
-            // Retrieve the newly created Transaction_ID
-            using (OleDbCommand cmd = new OleDbCommand("SELECT @@IDENTITY", conn))
+            // ✅ Fix: Retrieve the last inserted Transaction_ID
+            string getLastTransactionQuery = "SELECT MAX(Transaction_ID) FROM [Transaction] WHERE User_ID = ?";
+            using (OleDbCommand cmd = new OleDbCommand(getLastTransactionQuery, conn))
             {
-                return (int)cmd.ExecuteScalar();
+                cmd.Parameters.AddWithValue("?", userId);
+                object result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    newTransactionId = Convert.ToInt32(result);
+                }
             }
-            ;
+
+            return newTransactionId;
         }
     }
 }
