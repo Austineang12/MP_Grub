@@ -9,7 +9,7 @@ namespace MP_Grub
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         protected void SignupValidation(object sender, EventArgs e)
@@ -41,8 +41,9 @@ namespace MP_Grub
 
             if (userID > 0)
             {
-
-                Response.Redirect("Login.aspx");
+                /*-- Transition to Login.aspx --*/
+                string script = "animateRedirect('Login.aspx');";
+                ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
             }
             else
             {

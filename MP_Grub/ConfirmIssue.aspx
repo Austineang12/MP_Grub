@@ -3,22 +3,27 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         body {
-            background-color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: absolute;
+            top: 10vh;
             height: 100vh;
-            margin: 0;
-            padding-top: 150px;
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            padding-top: 90px;
         }
         .container {
-            background-color: #FB8F52;
-            padding: 30px;
+            background-color: white;
+            padding: 25px 70px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 400px;
             color: #404040;
+            z-index: 5;
+            gap: 15px;
         }
         .message {
             font-size: 16px;
@@ -27,16 +32,32 @@
             font-weight: bold;
         }
         .btn {
-            background-color: #404040;
-            color: white;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: #FB8F52;
+            align-items: center;
+            color: #404040;
             border: none;
-            padding: 10px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            border-radius: 5px;
-            width: 100%;
+            margin-top: 20px;
+            font-size: 1rem;
+            width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+
         .btn:hover {
-            background-color: black;
+            background-color: #E07E48;
+        }
+
+        .profile-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
         }
     </style>
 </asp:Content>
@@ -50,5 +71,8 @@
         <p><strong>Details:</strong> <asp:Label ID="lblDetails" runat="server"></asp:Label></p>
 
         <asp:Button ID="homebtn" runat="server" Text="Home" CssClass="btn" OnClick="GoToHomePage" />
+    </div>
+    <div>
+        <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Profile-bg5.png" />
     </div>
 </asp:Content>

@@ -2,44 +2,50 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         body {
-            background-color: white;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: absolute;
+            top: 10vh;
             height: 100vh;
-            margin: 0;
+            background-color: #f9f9f9;
             font-family: Arial, sans-serif;
-            padding-top: 150px;
+            padding-top: 90px;
         }
 
         .container {
-            background-color: #FB8F52;
-            padding: 30px;
+            background-color: white;
+            padding: 25px 0;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             width: 400px;
+            z-index: 5;
         }
 
         h2 {
-            color: white;
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 20px;
         }
 
         label {
             display: block;
             margin-top: 10px;
-            color: white;
+            color: #333;
             font-size: 16px;
         }
 
         .textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
+            width: 396px;
+            height: 10vh;
             margin-top: 5px;
             border: none;
-            border-radius: 5px;
-            font-size: 14px;
+            font-size: 16px;
+            background-color: lightgrey;
+            color: #404040;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .button-group {
@@ -47,28 +53,40 @@
         }
 
         .btn {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: #FB8F52;
+            align-items: center;
+            color: #404040;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
+            margin-top: 20px;
+            font-size: 1rem;
+            width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-        .skip {
-            background-color: #404040;
-            color: white;
-        }
-
-        .continue {
-            background-color: #404040;
-            color: white;
+        .btn:hover {
+            background-color: #E07E48;
         }
 
         .cancel {
             background-color: #BC3B3B;
             color: white;
+        }
+
+        .cancel:hover {
+            background-color: darkred;
+        }
+        .profile-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
         }
     </style>
 </asp:Content>
@@ -84,9 +102,12 @@
         <asp:TextBox ID="issueDetails" runat="server" CssClass="textarea" TextMode="MultiLine"></asp:TextBox>
         
         <div class="button-group">
-            <asp:Button ID="skipbtn" runat="server" Text="Skip" CssClass="btn skip" OnClick="SkipToConfirmation" />
-            <asp:Button ID="continuebtn" runat="server" Text="Continue" CssClass="btn continue" OnClick="ContinueToConfirmation" />
+            <asp:Button ID="skipbtn" runat="server" Text="Skip" CssClass="btn" OnClick="SkipToConfirmation" />
+            <asp:Button ID="continuebtn" runat="server" Text="Continue" CssClass="btn" OnClick="ContinueToConfirmation" />
             <asp:Button ID="cancelbtn" runat="server" Text="Cancel" CssClass="btn cancel" OnClick="CancelProcess" />
         </div>
+    </div>
+    <div>
+        <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Profile-bg5.png" />
     </div>
 </asp:Content>

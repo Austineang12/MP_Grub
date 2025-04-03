@@ -81,6 +81,11 @@
     <Content Include="images\Cash on Delivery.png" />
     <Content Include="images\Jamaican_Order.png" />
     <Content Include="images\BonAppetea_Order.png" />
+    <Content Include="images\Profile-bg3.png" />
+    <Content Include="images\Profile-bg4.png" />
+    <Content Include="images\Profile-bg5.png" />
+    <Content Include="images\Profile_bg1.png" />
+    <Content Include="images\Profile_bg2.png" />
     <Content Include="images\ResImg_Default.png" />
     <Content Include="images\SampleOnly.gif" />
     <Content Include="images\Saucy_Order.png" />

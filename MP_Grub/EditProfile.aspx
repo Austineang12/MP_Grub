@@ -4,27 +4,32 @@
     <style>
         body {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            position: absolute;
+            top: 10vh;
             height: 100vh;
             background-color: #f9f9f9;
             font-family: Arial, sans-serif;
-            padding-top: 200px;
+            padding-top: 90px;
         }
 
         .edit-container {
-            background: white;
-            padding: 25px;
+            background-color: white;
+            padding: 22px 70px;
             border-radius: 10px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            width: 400px;
+            width: 480px;
             text-align: center;
+            color: white;
+            z-index: 5;
         }
 
         .edit-container h2 {
             margin-bottom: 15px;
             color: #333;
-            font-size: 22px;
+            font-size: 20px;
         }
 
         .input-group {
@@ -35,16 +40,18 @@
         .input-group label {
             display: block;
             font-weight: bold;
-            margin-bottom: 5px;
+            font-size: 18px;
+            margin-bottom: 3px;
             color: #222;
         }
 
         .input-group input {
-            width: 100%;
+            font-size: 16px;
+            width: 30vw;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
+            margin: 10px 0;
+            border-radius: 20px;
+            border: 1px solid #ddd;
         }
 
         .btn-container {
@@ -52,21 +59,31 @@
         }
 
         .btn {
-            width: 100%;
-            padding: 12px;
-            margin: 5px 0;
-            font-size: 16px;
-            font-weight: bold;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: #FB8F52;
-            color: white;
+            align-items: center;
+            color: #404040;
             border: none;
-            border-radius: 6px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: 0.3s;
+            font-size: 1rem;
+            width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
         .btn:hover {
-            background-color: #e07a42;
+            background-color: #E07E48;
+        }
+
+        .profile-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
         }
     </style>
 </asp:Content>
@@ -103,5 +120,8 @@
         <div class="btn-container">
             <asp:Button ID="saveBtn" runat="server" Text="Save Changes" CssClass="btn" OnClick="SaveProfile" />
         </div>
+    </div>
+    <div>
+        <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Profile-bg5.png" />
     </div>
 </asp:Content>

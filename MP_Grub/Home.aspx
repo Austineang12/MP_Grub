@@ -65,21 +65,6 @@
             height: 100vh;
             object-fit: cover;
         }
-        .welcome-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .welcome-text {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-        }
 
         .order-button {
             font-family: 'Akshar', sans-serif;
@@ -120,12 +105,11 @@
         <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
         <div class="duck-container">
             <asp:ImageButton ID="Navigation" runat="server" CssClass="btnNavigation" ImageUrl="~/images/CryingDuck.png" OnClick="Navigation_Click" />
-            <spa
-                n class="clickMe">CLICK ME!</spa>
+            <span class="clickMe">CLICK ME!</span>
         </div>
     </div>
     <div class="button-container">
-        <asp:Button ID="btnOrder" runat="server" Text="Order Now" class="order-button" OnClick="Button_OrderNow" />
+        <asp:Button ID="btnOrder" runat="server" Text="Order Now" CssClass="order-button" OnClick="Button_OrderNow" />
     </div>
     <div>
         <asp:Image ID="bgimage" runat="server" CssClass="background-duck" ImageUrl="~/images/Home_Duckbg.png" />

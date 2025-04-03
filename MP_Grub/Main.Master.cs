@@ -11,8 +11,20 @@ namespace MP_Grub
 	{
 		protected void Page_Load(object sender, EventArgs e)
 		{
+            if (!IsPostBack)
+            {
+                if (Session["UserID"] != null && Session["Username"] != null)
+                {
+                    string username = Session["Username"].ToString();
 
-		}
+                    welcomeLabel.Text = "Hi there, " + username + "!";
+                }
+                else
+                {
+                    Response.Redirect("Login.aspx");
+                }
+            }
+        }
 
         protected void Bookmark_Click(object sender, ImageClickEventArgs e)
         {

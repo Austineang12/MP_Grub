@@ -39,7 +39,8 @@
             overflow-y: auto;
             overflow-x: hidden;
             scroll-behavior: smooth;
-            margin: 0; padding: 0;
+            margin: 0; 
+            padding: 0;
         }
         
         section{
@@ -88,6 +89,13 @@
             width: auto;
         }
 
+        .welcome-text {
+            font-family: 'Akshar', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
         .logoDuck {
             height: 50px;
             width: auto;
@@ -131,7 +139,6 @@
 
         .footer-brand {
             flex: 1;
-            /*margin-left: 50px;*/
             font-size: 30px;
             font-family: 'Akshar', sans-serif;
             text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
@@ -146,7 +153,7 @@
 
         .footer-links h3, .footer-restaurants h3 {
             font-size: 20px;
-            margin-top: 10px;
+            margin-top: 30px;
             margin-bottom: 10px;
         }
 
@@ -309,6 +316,7 @@
                 <asp:Image ID="logoDuck" runat="server" CssClass="logoDuck" ImageUrl="~/images/Duck.png" />
             </div>
             <div class="navExtra">
+                <asp:Label ID="welcomeLabel" runat="server" CssClass="welcome-text"></asp:Label>
                 <asp:ImageButton ID="bookmark" runat="server" CssClass="btnBookmark" ImageUrl="~/images/Bookmark.png" OnClick="Bookmark_Click" />
                 <asp:ImageButton ID="cart" runat="server" CssClass="btnCart" ImageUrl="~/images/Add to Cart.png" OnClick="AddToCart_Click" />
             </div>
