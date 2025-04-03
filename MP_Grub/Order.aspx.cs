@@ -67,7 +67,7 @@ namespace MP_Grub
                     }
 
                     Literal card = new Literal();
-                    card.Text = $@"<div class='restaurant-card' onclick='showPopup({restaurantId});'>
+                    card.Text = $@"<div class='restaurant-card' onclick='showPopup({restaurantId}); return false;'>
                         <div class='restaurant-logo'><img src='{imageBase64}' alt='{restaurantName} Logo' /></div>
                         <div class='restaurant-name'>{restaurantName}</div>
                     </div>";
@@ -76,6 +76,34 @@ namespace MP_Grub
                 reader.Close();
             }
         }
+
+        [WebMethod]
+        public static List<object> GetRestaurantNames()
+        {
+            string query = "SELECT Restaurant_ID, Restaurant_Name FROM Restaurant";
+            List<object> restaurantList = new List<object>();
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                OleDbCommand cmd = new OleDbCommand(query, conn);
+                conn.Open();
+                OleDbDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    restaurantList.Add(new
+                    {
+                        RestaurantID = reader["Restaurant_ID"],
+                        RestaurantName = reader["Restaurant_Name"].ToString()
+                    });
+                }
+                reader.Close();
+            }
+
+            return restaurantList;
+        }
+
+
 
 
         private void EnsureOrderDetailExists(string transactionId, string userId)

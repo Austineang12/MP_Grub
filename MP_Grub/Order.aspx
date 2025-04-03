@@ -154,52 +154,75 @@
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" >
-        function showPopup(restaurantId) {
-    const restaurantNames = ["", "Saucy", "Same Old Coffee", "Wingspot Unlimited", "Jamaican", "Bon Appetea"];
-    document.getElementById('restaurantTitle').textContent = restaurantNames[restaurantId] + " Menu";
+        let restaurantNames = {};
 
-    // Call WebMethod using AJAX
-    $.ajax({
-        type: "POST",
-        url: "Order.aspx/GetRestaurantMenu",
-        data: JSON.stringify({ restaurantId: restaurantId }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-            const foodListDiv = document.getElementById('foodList');
-            foodListDiv.innerHTML = "";
-
-            const foodItems = response.d || response;  // Accessing WebMethod response
-            if (foodItems.length === 0) {
-                foodListDiv.innerHTML = "<p>No menu available.</p>";
-                return;
-            }
-
-            foodItems.forEach(food => {
-                const foodItemDiv = document.createElement('div');
-                foodItemDiv.classList.add('food-item');
-
-                foodItemDiv.innerHTML = `
-                    <div class="food-details">
-                        <span class="food-name">${food.FoodName}</span>
-                        <span class="food-price">${food.FoodPrice}</span>
-                    </div>
-                    <div class="food-actions">
-                        <button class="food-button" onclick="bookmarkFood('${food.FoodName}')">Bookmark</button>
-                        <button class="food-button" onclick="addToCart('${food.FoodID}', '${food.FoodName}', '${food.FoodPrice}')">Add to Cart</button>
-                    </div>
-                `;
-
-                foodListDiv.appendChild(foodItemDiv);
+        // Fetch restaurant names from the server
+        function fetchRestaurantNames() {
+            $.ajax({
+                type: "POST",
+                url: "Order.aspx/GetRestaurantNames",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    response.d.forEach(res => {
+                        restaurantNames[res.RestaurantID] = res.RestaurantName;
+                    });
+                },
+                error: function (error) {
+                    console.error("Error fetching restaurant names:", error);
+                }
             });
-
-            document.getElementById('foodPopup').classList.add('active');
-        },
-        error: function (error) {
-            console.error("Error fetching menu:", error);
         }
-    });
-}
+
+        // Call the function to fetch names on page load
+        fetchRestaurantNames();
+
+        function showPopup(restaurantId) {
+            const restaurantTitle = restaurantNames[restaurantId] || "Unknown Restaurant";
+            document.getElementById('restaurantTitle').textContent = restaurantTitle + " Menu";
+
+            $.ajax({
+                type: "POST",
+                url: "Order.aspx/GetRestaurantMenu",
+                data: JSON.stringify({ restaurantId: restaurantId }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    const foodListDiv = document.getElementById('foodList');
+                    foodListDiv.innerHTML = "";
+
+                    const foodItems = response.d || response; 
+                    if (foodItems.length === 0) {
+                        foodListDiv.innerHTML = "<p>No menu available.</p>";
+                        return;
+                    }
+
+                    foodItems.forEach(food => {
+                        const foodItemDiv = document.createElement('div');
+                        foodItemDiv.classList.add('food-item');
+
+                        foodItemDiv.innerHTML = `
+                            <div class="food-details">
+                                <span class="food-name">${food.FoodName}</span>
+                                <span class="food-price">${food.FoodPrice}</span>
+                            </div>
+                            <div class="food-actions">
+                                <button class="food-button" onclick="bookmarkFood('${food.FoodName}');return false;">Bookmark</button>
+                                <button class="food-button" onclick="addToCart('${food.FoodID}','${food.FoodName}', '${food.FoodPrice}');return false;">Add to Cart</button>
+                            </div>
+                        `;
+
+                        foodListDiv.appendChild(foodItemDiv);
+                    });
+
+                    document.getElementById('foodPopup').classList.add('active');
+                },
+                error: function (error) {
+                    console.error("Error fetching menu:", error);
+                }
+            });
+        }
+
 
 
         function bookmarkFood(foodName) {
