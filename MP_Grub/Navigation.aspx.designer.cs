@@ -15,13 +15,13 @@ namespace MP_Grub
     {
 
         /// <summary>
-        /// btnLeft control.
+        /// NoDuck control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLeft;
+        protected global::System.Web.UI.WebControls.ImageButton NoDuck;
 
         /// <summary>
         /// carouselImage control.
@@ -33,13 +33,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Image carouselImage;
 
         /// <summary>
-        /// btnRight control.
+        /// YesDuck control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRight;
+        protected global::System.Web.UI.WebControls.ImageButton YesDuck;
 
         /// <summary>
         /// lblError control.
@@ -49,5 +49,14 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblError;
+
+        /// <summary>
+        /// bgimage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image bgimage;
     }
 }

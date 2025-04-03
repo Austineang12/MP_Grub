@@ -13,15 +13,9 @@ namespace MP_Grub
 		{
             if (!IsPostBack)
             {
-                if (Session["UserID"] != null && Session["Username"] != null && Session["TransactionID"] != null)
+                if (Session["UserID"] == null)
                 {
-                    string username = Session["Username"].ToString();
-
-                    welcomeLabel.Text = "Welcome, " + username + "!";
-                }
-                else
-                {
-                    Response.Redirect("Login.aspx"); 
+                    Response.Redirect("Login.aspx");
                 }
             }
 
