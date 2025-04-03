@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Services;
 using System.Web.UI.WebControls;
 
@@ -228,6 +231,56 @@ namespace MP_Grub
                 return "Error: " + ex.Message;
             }
         }
+
+
+        //ADDING TO BOOKMARK TABLE
+        [WebMethod]
+        public static object BookmarkFood(string foodID1)
+        {
+            try
+            {
+                // Retrieve userID from session
+                int userID = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString());
+                int foodID = Convert.ToInt32(foodID1);
+
+                // Ensure userID is valid
+                if (userID == 0)
+                {
+                    return new { success = false, message = "User is not logged in." };
+                }
+
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+
+                    
+
+                    string query = "INSERT INTO Bookmark (User_ID, Food_ID) VALUES (?, ?)";
+                    OleDbCommand cmd = new OleDbCommand(query, conn);
+
+                    cmd.Parameters.AddWithValue("?", userID);
+                    cmd.Parameters.AddWithValue("?", foodID);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return new { success = true };
+                    }
+                    else
+                    {
+                        return new { success = false, message = "Failed to bookmark the food item." };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, message = ex.Message };
+            }
+        }
+
+
+
 
 
     }

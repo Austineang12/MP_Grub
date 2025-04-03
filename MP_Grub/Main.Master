@@ -346,7 +346,7 @@
 
 
         <%--FOOTER--%>
-        <section class="footer">
+        <section class="footer" id="footerArea" runat="server">
             <div class="footer-container">
                 <!-- Column 1: Brand Name -->
                 <div class="footer-brand">

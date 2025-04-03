@@ -191,7 +191,7 @@
                     const foodListDiv = document.getElementById('foodList');
                     foodListDiv.innerHTML = "";
 
-                    const foodItems = response.d || response; 
+                    const foodItems = response.d || response;
                     if (foodItems.length === 0) {
                         foodListDiv.innerHTML = "<p>No menu available.</p>";
                         return;
@@ -207,7 +207,7 @@
                                 <span class="food-price">${food.FoodPrice}</span>
                             </div>
                             <div class="food-actions">
-                                <button class="food-button" onclick="bookmarkFood('${food.FoodName}');return false;">Bookmark</button>
+                                <button class="food-button" onclick="bookmarkFood('${food.FoodID}');return false;">Bookmark</button>
                                 <button class="food-button" onclick="addToCart('${food.FoodID}','${food.FoodName}', '${food.FoodPrice}');return false;">Add to Cart</button>
                             </div>
                         `;
@@ -224,14 +224,35 @@
         }
 
 
-
-        function bookmarkFood(foodName) {
-            alert(`${foodName} has been bookmarked!`);
+        //INSERTING TO BOOKMARK TABLE
+        function bookmarkFood(foodID) {
+            $.ajax({
+                type: "POST",
+                url: "Order.aspx/BookmarkFood",
+                data: JSON.stringify({
+                    foodID1: foodID,
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.d.success) {
+                        alert("Food has been bookmarked!");
+                    } else {
+                        alert("Error: " + response.d.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", error);
+                    alert("An error occurred while bookmarking the food.");
+                }
+            });
         }
 
-        function addToCart(foodID, foodName, price) {
-            console.log("Adding to cart - Food ID:", foodID, "Name:", foodName, "Price:", price);
 
+
+
+
+        function addToCart(foodID, foodName, price) {
             $.ajax({
                 type: "POST",
                 url: "Order.aspx/GetSessionData",
@@ -277,9 +298,6 @@
                 }
             });
         }
-
-
-
 
         function closePopup() {
             document.getElementById('foodPopup').classList.remove('active');

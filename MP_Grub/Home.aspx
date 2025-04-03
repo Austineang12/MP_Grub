@@ -1,18 +1,22 @@
-﻿ <%@ Page Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="MP_Grub.Home" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="MP_Grub.Home" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
     <style type="text/css">
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Akshar', sans-serif;
-            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 10vh;
             height: 100vh;
+            padding-top: 90px;
         }
 
         .Navigation_Section {
+            font-family: 'Akshar', sans-serif;
             position: absolute;
             top: 100px;
             right: 50px;
@@ -63,7 +67,11 @@
             left: 0;
             width: 100%;
             height: 100vh;
-            object-fit: cover;
+            background-image: url('/images/Home_Duckbg.png'); /* Default desktop background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
         }
 
         .order-button {
@@ -78,8 +86,7 @@
             cursor: pointer;
             margin-top: 20px;
             font-size: 1rem;
-            width: 15vw;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 20vw;
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -93,14 +100,56 @@
             top: 60%;
             z-index: 5;
         }
+
+        /*-- Responsive Design --*/
+        @media (max-width: 768px) {
+            .Navigation_Section {
+                top: 5vh;
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 80%;
+            }
+
+            .button-container {
+                bottom: 5vh;
+            }
+
+            .order-button {
+                width: 50vw;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .background-duck {
+                position: absolute;
+                width: 100%;
+                height: 100vh;
+                background-image: url('/images/Home_Mobilebg2.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }   
+            .order-button {
+                width: 50vw;
+            }
+
+            .btnNavigation {
+                width: 60px;
+            }
+
+            .Navigation_text {
+                font-size: 16px;
+            }
+
+            .clickMe {
+                font-size: 14px;
+            }
+        }
     </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="welcome-container">
-        <asp:Label ID="welcomeLabel" runat="server" CssClass="welcome-text"></asp:Label>
-    </div>
-
     <div class="Navigation_Section">
         <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
         <div class="duck-container">
@@ -111,7 +160,6 @@
     <div class="button-container">
         <asp:Button ID="btnOrder" runat="server" Text="Order Now" CssClass="order-button" OnClick="Button_OrderNow" />
     </div>
-    <div>
-        <asp:Image ID="bgimage" runat="server" CssClass="background-duck" ImageUrl="~/images/Home_Duckbg.png" />
-    </div>
+
+    <div class="background-duck"></div>
 </asp:Content>

@@ -8,14 +8,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: white;
+            /*background: #314558;*/
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+            /*border-radius: 12px;*/
+            /*box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);*/
             max-width: 700px;
             max-height: 500px;
             width: 100%;
             text-align: center;
+            z-index: 5;
         }
 
         .page-container {
@@ -34,12 +35,14 @@
         }
 
         .options {
+            display: flex;
             width: 300px;
             height: auto;
             border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .left-button, .right-button {
+        /*.left-button, .right-button {
             font-size: 18px;
             font-family: 'Akshar', sans-serif;
             font-weight: bold;
@@ -66,6 +69,19 @@
 
         .right-button:hover {
             background-color: #1E8449;
+        }*/
+        .profile-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+        }
+        .swipe-ducks {
+            display: flex;
+            width: 15vw;
+            height: auto;
         }
     </style>
 </asp:Content>
@@ -74,15 +90,20 @@
     <div class="page-container">
         <div class="navigation-outline">
             <div class="button-container">
-                <asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClick="btnLeft_Click" />
+                <%--<asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClick="btnLeft_Click" />--%>
+                <asp:ImageButton ID="NoDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/No_Duck.png" OnClick="btnLeft_Click" />
                 <div class="image-container">
                     <asp:Image ID="carouselImage" runat="server" ImageUrl="~/Navigation_Images/1.png" CssClass="options" />
                 </div>
-                <asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClick="btnRight_Click" />
+                <%--<asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClick="btnRight_Click" />--%>
+                <asp:ImageButton ID="YesDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/Yes_Duck.png" OnClick="btnRight_Click" />
             </div>
         </div>
     </div>
-
     <%-- error message --%>
     <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
+
+    <div>
+        <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Navigation_bg4.png" />
+    </div>
 </asp:Content>
