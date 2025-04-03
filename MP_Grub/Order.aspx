@@ -186,7 +186,7 @@
                     </div>
                     <div class="food-actions">
                         <button class="food-button" onclick="bookmarkFood('${food.FoodName}')">Bookmark</button>
-                        <button class="food-button" onclick="addToCart('${food.FoodName}', '${food.FoodPrice}')">Add to Cart</button>
+                        <button class="food-button" onclick="addToCart('${food.FoodID}', '${food.FoodName}', '${food.FoodPrice}')">Add to Cart</button>
                     </div>
                 `;
 
@@ -206,7 +206,9 @@
             alert(`${foodName} has been bookmarked!`);
         }
 
-        function addToCart(foodName, price) {
+        function addToCart(foodID, foodName, price) {
+            console.log("Adding to cart - Food ID:", foodID, "Name:", foodName, "Price:", price);
+
             $.ajax({
                 type: "POST",
                 url: "Order.aspx/GetSessionData",
@@ -227,6 +229,7 @@
                         type: "POST",
                         url: "Order.aspx/AddToCart",
                         data: JSON.stringify({
+                            foodId: foodID,
                             foodName: foodName,
                             foodPrice: price,
                             transactionId: transactionId,
