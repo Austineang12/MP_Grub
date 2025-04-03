@@ -27,6 +27,25 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
+        .cart-item-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            background: #f9f9f9;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item-container h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-container p {
+            font-size: 16px;
+            margin: 2px 0;
+        }
+
         .item-details {
             flex: 1;
         }
@@ -106,32 +125,51 @@
             justify-content: center;
             align-items: center;
             gap: 30px
+        }       
+
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
         }
 
-        /*.voucher-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }*/
+        .delete-button:hover {
+            background-color: #cc0000;
+        }
 
-        .voucher-input {
-            width: 100%;
-            padding: 8px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            background-color: #fff;
+        .quantity-button {
+            background-color: #FB8F52;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
             font-size: 16px;
-            color: dimgray;
-            appearance: none;
         }
 
-        /*.voucher-input:focus {
-            border-color: #ff7f50;
-            outline: none;
-            box-shadow: 0 0 5px rgba(255, 127, 80, 0.5);
-        }*/
+        .quantity-button:hover {
+            background-color: #ff7f50;
+        }
+
+        .quantity-text {
+            padding: 0 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
 
     </style>
+
+    <script>
+        function updateQuantity(orderDetailId, newQuantity, newOrderAmount) {
+            document.getElementById("qty_" + orderDetailId).innerText = newQuantity;
+            document.getElementById("orderAmount_" + orderDetailId).innerText = newOrderAmount.toFixed(2);
+        }
+    </script>
+
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
@@ -140,19 +178,25 @@
             <h1 class="text-title">Order Details</h1>
 
             <%-- Food Items --%>
-            <asp:Panel ID="pnlCart" runat="server">
+            <asp:Panel ID="pnlCart" runat="server" Visible="false">
                 <asp:Repeater ID="rptCartItems" runat="server">
                     <ItemTemplate>
-                        <div class="item-container">
-                            <div class="item-details">
-                                <strong><%# Eval("Restaurant_Name") %></strong> - <%# Eval("Food_Name") %> - ₱<%# Eval("Food_Price") %>
-                            </div>
+                        <div class="cart-item-container">
+                            <h3><%# Eval("Food_Name") %></h3>
+                            <p>Quantity: <%# Eval("Quantity") %></p>
+                            <p>Order Amount: ₱<%# Eval("Order_Amount", "{0:N2}") %></p>                           
                             <div class="controls">
-                                <asp:Button ID="btnSubtract" runat="server" Text="-" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnSubtract_Click" />
-                                <asp:Label ID="lblQuantity" runat="server" Text='<%# Eval("Order_Quantity") %>'></asp:Label>
-                                <asp:Button ID="btnAdd" runat="server" Text="+" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnAdd_Click" />
-                                <%--<asp:Button ID="btnCancel" runat="server" Text="Cancel" CommandArgument='<%# Eval("Food_ID") %>' OnClick="btnCancel_Click" />--%>
+                                <asp:Button ID="btnSubtract" runat="server" Text="-" CssClass="quantity-button"
+                                    CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnSubtract_Click" />
+            
+                                <span class="quantity-text" id="qty_<%# Eval("OrderDetail_ID") %>"><%# Eval("Quantity") %></span>
+
+                                <asp:Button ID="btnAdd" runat="server" Text="+" CssClass="quantity-button"
+                                    CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnAdd_Click" />
                             </div>
+        
+                            <asp:Button ID="btnDelete" runat="server" Text="Remove" CssClass="delete-button"
+                                CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnDelete_Click" />
                         </div>
                     </ItemTemplate>
                 </asp:Repeater>
@@ -165,27 +209,10 @@
                 <p><strong>Order ka muna!</strong></p>
             </asp:Panel>
 
-            <%-- Voucher Section --%>
-            <div class="voucher-container">
-                <asp:DropDownList ID="Voucher_Dropdown" runat="server" CssClass="voucher-input"></asp:DropDownList>
-            </div>
-
             <%-- Order Summary --%>
             <h1 class="text-ordersummary">Order Summary</h1>
 
-            <div class="text-summary">
-                <div class="summary-row">
-                    <span>Order Fee:</span>
-                    <span>₱<asp:Label ID="lblOrderFee" runat="server" /></span>
-                </div>
-                <div class="summary-row">
-                    <span>Delivery Fee:</span>
-                    <span>₱<asp:Label ID="lblDeliveryFee" runat="server" /></span>
-                </div>
-                <div class="summary-row">
-                    <span>Discounts:</span>
-                    <span>-₱<asp:Label ID="lblDiscountValue" runat="server" /></span>
-                </div>
+            <div class="text-summary">                
                 <div class="summary-row">
                     <span>Total Amount:</span>
                     <span>₱<asp:Label ID="lblTotalAmount" runat="server"/></span>

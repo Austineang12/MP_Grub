@@ -16,35 +16,42 @@ namespace MP_Grub
             if (!IsPostBack)
             {
                 LoadCartItems();
-                LoadVouchers();
             }
         }
 
         private void LoadCartItems()
         {
-            if (Session["UserID"] == null)
+            if (Session["UserID"] == null || Session["TransactionID"] == null)
             {
                 Response.Redirect("Login.aspx");
                 return;
             }
 
             int userId = Convert.ToInt32(Session["UserID"]);
+            int transactionId = Convert.ToInt32(Session["TransactionID"]);
 
             using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
             {
                 string query = @"
-                    SELECT Food.Food_ID, Food.Food_Name, Food.Food_Price, Restaurant.Restaurant_Name, Order_Detail.Order_Quantity 
-                    FROM ((Order_Detail
-                    INNER JOIN Food ON Order_Detail.Food_ID = Food.Food_ID)
-                    INNER JOIN Restaurant ON Food.Restaurant_ID = Restaurant.Restaurant_ID)
-                    INNER JOIN [Transaction] ON Order_Detail.Transaction_ID = [Transaction].Transaction_ID
-                    WHERE [Transaction].User_ID = ? AND [Transaction].Transaction_Status = 'Pending'";
+                    SELECT 
+                        Order_Detail.OrderDetail_ID, 
+                        Order_Detail.Food_ID, 
+                        Food.Food_Name, 
+                        Order_Detail.Quantity, 
+                        Order_Detail.Order_Amount 
+                        FROM Order_Detail
+                        INNER JOIN Food ON Order_Detail.Food_ID = Food.Food_ID
+                        WHERE Order_Detail.Transaction_ID = ? 
+                        AND Order_Detail.User_ID = ?
+                        AND Order_Detail.Is_Cart = 'YES'";
 
                 try
                 {
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {
+                        cmd.Parameters.AddWithValue("@Transaction_ID", transactionId);
                         cmd.Parameters.AddWithValue("@User_ID", userId);
+
                         conn.Open();
 
                         using (OleDbDataAdapter adapter = new OleDbDataAdapter(cmd))
@@ -57,127 +64,119 @@ namespace MP_Grub
                             pnlCart.Visible = dt.Rows.Count > 0;
                             pnlEmptyCart.Visible = dt.Rows.Count == 0;
 
-                            CalculateSummary(dt);
+                            CalculateTotalPrice(dt);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Response.Write("An error occurred: " + ex.Message);
+                    Response.Write("<script>alert('An error occurred: " + ex.Message + "');</script>");
                 }
             }
         }
 
-        private void LoadVouchers()
+        private void CalculateTotalPrice(DataTable dt)
         {
-            if (Session["UserID"] == null)
-                return;
+            decimal totalAmount = 0;
 
-            int userId = Convert.ToInt32(Session["UserID"]);
-
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
-            {
-                string query = "SELECT TOP 1 Voucher_ID, Voucher_Name, Voucher_Value FROM Voucher WHERE User_ID = ? ORDER BY Voucher_ID DESC";
-
-                try
-                {
-                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@User_ID", userId);
-                        conn.Open();
-
-                        using (OleDbDataReader reader = cmd.ExecuteReader())
-                        {
-                            Voucher_Dropdown.Items.Clear();
-                            Voucher_Dropdown.Items.Add(new ListItem("Select a Voucher", ""));
-
-                            if (reader.Read())
-                            {
-                                Session["Voucher_ID"] = reader["Voucher_ID"];
-                                Session["Voucher_Value"] = Convert.ToDecimal(reader["Voucher_Value"]);
-                                Voucher_Dropdown.Items.Add(new ListItem(reader["Voucher_Name"].ToString(), reader["Voucher_ID"].ToString()));
-                            }
-                            else
-                            {
-                                Voucher_Dropdown.Items.Add(new ListItem("No Vouchers Available", ""));
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Response.Write("An error occurred while loading vouchers: " + ex.Message);
-                }
-            }
-        }
-
-        private void CalculateSummary(DataTable dt)
-        {
-            decimal orderFee = 0;
             foreach (DataRow row in dt.Rows)
             {
-                orderFee += Convert.ToDecimal(row["Food_Price"]) * Convert.ToInt32(row["Order_Quantity"]);
+                totalAmount += Convert.ToDecimal(row["Order_Amount"]);
             }
 
-            decimal deliveryFee = 30.00m;
-            decimal discountValue = 0;
-
-            if (Session["Voucher_Value"] != null)
-            {
-                decimal voucherValue = Convert.ToDecimal(Session["Voucher_Value"]);
-                discountValue = orderFee * voucherValue;
-            }
-
-            decimal totalAmount = orderFee + deliveryFee - discountValue;
-
-            lblOrderFee.Text = orderFee.ToString("0.00");
-            lblDeliveryFee.Text = deliveryFee.ToString("0.00");
-            lblDiscountValue.Text = discountValue.ToString("0.00");
             lblTotalAmount.Text = totalAmount.ToString("0.00");
         }
 
-        protected void ddlVoucher_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            LoadVouchers();
-            LoadCartItems();
-        }
-
-        private void UpdateQuantity(int foodId, int change)
+        private void UpdateQuantity(int orderDetailId, int change)
         {
             using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
             {
-                string query = @"UPDATE Order_Detail SET Order_Quantity = Order_Quantity + ? 
-                                  WHERE Food_ID = ? AND Order_Quantity + ? BETWEEN 1 AND 50";
+                string getQuantityQuery = "SELECT Quantity, Food_ID FROM Order_Detail WHERE OrderDetail_ID = ?";
+                int currentQuantity = 0;
+                int foodId = 0;
+                decimal foodPrice = 0;
+
                 try
                 {
-                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    // Retrieve current Quantity and Food_ID
+                    using (OleDbCommand getCmd = new OleDbCommand(getQuantityQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@Change", change);
-                        cmd.Parameters.AddWithValue("@Food_ID", foodId);
-                        cmd.Parameters.AddWithValue("@Change2", change);
+                        getCmd.Parameters.AddWithValue("@OrderDetail_ID", orderDetailId);
+                        conn.Open();
+                        using (OleDbDataReader reader = getCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                currentQuantity = Convert.ToInt32(reader["Quantity"]);
+                                foodId = Convert.ToInt32(reader["Food_ID"]);
+                            }
+                        }
+                        conn.Close();
+                    }
+
+                    // New quantity calculation
+                    int newQuantity = currentQuantity + change;
+                    if (newQuantity < 1)
+                    {
+                        Response.Write("<script>alert('Quantity cannot be less than 1.');</script>");
+                        return;
+                    }
+                    if (newQuantity > 100)
+                    {
+                        Response.Write("<script>alert('Quantity cannot exceed 100.');</script>");
+                        return;
+                    }
+
+                    // Fetch food price
+                    string getFoodPriceQuery = "SELECT Food_Price FROM Food WHERE Food_ID = ?";
+                    using (OleDbCommand getPriceCmd = new OleDbCommand(getFoodPriceQuery, conn))
+                    {
+                        getPriceCmd.Parameters.AddWithValue("@Food_ID", foodId);
+                        conn.Open();
+                        foodPrice = Convert.ToDecimal(getPriceCmd.ExecuteScalar());
+                        conn.Close();
+                    }
+
+                    // Calculate the new order amount
+                    decimal newOrderAmount = foodPrice * newQuantity;
+
+                    // Update Quantity and Order_Amount
+                    string updateQuery = "UPDATE Order_Detail SET Quantity = ?, Order_Amount = ? WHERE OrderDetail_ID = ?";
+                    using (OleDbCommand updateCmd = new OleDbCommand(updateQuery, conn))
+                    {
+                        updateCmd.Parameters.AddWithValue("@Quantity", newQuantity);
+                        updateCmd.Parameters.AddWithValue("@Order_Amount", newOrderAmount);
+                        updateCmd.Parameters.AddWithValue("@OrderDetail_ID", orderDetailId);
 
                         conn.Open();
-                        cmd.ExecuteNonQuery();
+                        updateCmd.ExecuteNonQuery();
+                        conn.Close();
+                       
                     }
+                    LoadCartItems();
                 }
                 catch (Exception ex)
                 {
-                    Response.Write("Error: " + ex.Message);
+                    Response.Write("<script>alert('An error occurred: " + ex.Message + "');</script>");
                 }
             }
-            LoadCartItems();
         }
+
+
+
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            int foodId = Convert.ToInt32(((Button)sender).CommandArgument);
-            UpdateQuantity(foodId, 1);
+            Button btn = (Button)sender;
+            int orderDetailId = Convert.ToInt32(btn.CommandArgument);
+            UpdateQuantity(orderDetailId, 1);
         }
 
         protected void btnSubtract_Click(object sender, EventArgs e)
         {
-            int foodId = Convert.ToInt32(((Button)sender).CommandArgument);
-            UpdateQuantity(foodId, -1);
+            Button btn = (Button)sender;
+            int orderDetailId = Convert.ToInt32(btn.CommandArgument);
+            UpdateQuantity(orderDetailId, -1);
         }
 
         protected void btnOrder_Click(object sender, EventArgs e)
@@ -189,5 +188,34 @@ namespace MP_Grub
         {
             Response.Redirect("Payment.aspx");
         }
+
+        protected void btnDelete_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int orderDetailId = Convert.ToInt32(btn.CommandArgument);
+
+            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            {
+                string query = "DELETE FROM Order_Detail WHERE OrderDetail_ID = ?";
+
+                try
+                {
+                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@OrderDetail_ID", orderDetailId);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("Error: " + ex.Message);
+                }
+            }
+
+            LoadCartItems();
+        }
+
     }
 }

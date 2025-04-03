@@ -51,42 +51,6 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Image CryingDuck;
 
         /// <summary>
-        /// Voucher_Dropdown control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Voucher_Dropdown;
-
-        /// <summary>
-        /// lblOrderFee control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblOrderFee;
-
-        /// <summary>
-        /// lblDeliveryFee control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDeliveryFee;
-
-        /// <summary>
-        /// lblDiscountValue control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDiscountValue;
-
-        /// <summary>
         /// lblTotalAmount control.
         /// </summary>
         /// <remarks>
