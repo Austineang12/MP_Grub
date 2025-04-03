@@ -13,7 +13,7 @@ namespace MP_Grub
 		{
             if (!IsPostBack)
             {
-                lblQuantity.Text = "1"; // Set initial quantity
+                
             }
         }
 	}

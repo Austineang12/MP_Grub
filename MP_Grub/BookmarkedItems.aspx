@@ -1,191 +1,206 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="BookmarkedItems.aspx.cs" Inherits="MP_Grub.BookmarkedItems" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <title>Bookmarked</title>
+    <title>Bookmark</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        /* Background color gradient */
-        /*body {
-            background: linear-gradient(to bottom, #fff, #fbe4d7);*/ /* Matches the design */
-            /*height: 100vh;
+    <style type="text/css">
+        .bookmarkPopup {
+            /* Sample only */
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+            height: 80vh;
+            width: 50vw;
             display: flex;
             flex-direction: column;
-            Fign-items: center;
-            padding-top: 20px;
-        }*/
+            position: relative; 
+            border-radius: 10px;
+        }
 
-        /* Bigger container */
-        .container {
-            width: 500px; /* Increased size */
-            background: white;
+        .bookmarkContent {
+            height: 95%;
+            z-index: 2;
+            margin-bottom: -20px; /* Negative margin to overlap with the red part */
+            position: relative;
             padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: left;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 10px;
+            row-gap: 20px;
+            
         }
 
-        /* Title inside the box */
-        .title {
-            text-align: center;
-            font-weight: bold;
-            font-size: 28px; /* Bigger text */
-            margin-bottom: 15px;
-        }
-
-        .item {
+        .optionButtons {
+            background: #f0eeed;
+            height: 30%;
+            border-radius: 20px 20px 0 0;
+            position: relative;
+            z-index: 1;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #ddd;
+            justify-content: center;
+            gap: 10%;
         }
-
-        /* Bigger image */
-        .food-image {
-            width: 100px; /* Increased size */
-            height: 100px;
-            border-radius: 8px;
-        }
-
-        /* Increased space between text and quantity buttons */
-        .details {
-            flex-grow: 1;
-            margin-left: 15px;
-            margin-right: 50px; /* Added more space to push buttons further */
-            font-size: 18px;
-        }
-
-        .subtext {
-            font-size: 14px;
-            color: gray;
+        .optionBtn{
+            background: #fff;
+            height: 80px;
+            width: 200px;
             font-weight: bold;
-        }
-
-        .quantity {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Bigger quantity buttons */
-        .btn {
-            padding: 5px 12px;
-            font-size: 16px; /* Larger font */
-            border: 2px solid black;
-            background: white;
-            color: black;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .btn:hover {
-            background: #f0f0f0;
-        }
-
-        .price {
-            font-weight: bold;
-            font-size: 22px; /* Bigger price */
-            margin-left: 20px;
-        }
-
-        .buttons {
-            margin-top: 25px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* Bigger Cancel button */
-        .cancel-btn {
-            padding: 12px 25px;
-            border: 2px solid #ff7f4d;
-            background: white;
-            color: #ff7f4d;
-            font-weight: bold;
-            border-radius: 10px;
             font-size: 16px;
-            cursor: pointer;
-        }
-
-        .cancel-btn:hover {
-            background: #ffe6d5;
-        }
-
-        /* Bigger Add to Cart button */
-        .cart-btn {
-            padding: 12px 25px;
+            border-radius: 20px;
             border: none;
-            background: linear-gradient(to right, #ff7f4d, #ff4500);
-            color: white;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        #CheckoutBtn{
+            background: #FB8F52;
+            width: 300px;
+        }
+        .optionBtn:hover {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+
+
+        .item{
+            background: #f0eeed;
+            height: 200px;
+            width: 200px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0px;
+
+            position: relative;
+            overflow: hidden;
+        }
+        .item:hover .hiddenHover {
+            display: flex; /* Show it on hover */
+        }
+        .foodName{
+            font-size: 18px;
+            text-align: center;
+            color: black;
             font-weight: bold;
+        }
+        .foodStore{
+            font-size: 14px;
+            color: black;
+        }
+
+        /*Hidden*/
+        .hiddenHover{
+            background: #d1d0cf;
+            height: 100%; /* Make it match the item div's height */
+            width: 100%;  /* Make it match the item div's width */
+            border-radius: 20px; /* Match the item div's border radius */
+            display: none; /* Initially hidden */
+            position: absolute; /* Position it absolutely inside .item */
+            top: 0; /* Align it with the top */
+            left: 0; /* Align it with the left */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; /* Ensure it's on top when visible */
+            gap: 10px;
+        }
+        .quantityContainer{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: black;
+            /*background: #f0eeed;*/
             border-radius: 10px;
+
+            width: 80%;
+            margin-top: 10px;
+        }
+        .quantityButtonMinus, .quantityButtonPlus{
+            width: 50px;
+            height:30px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
             font-size: 16px;
+            background: #fff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .quantityButtonMinus:hover, .quantityButtonPlus:hover {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease-in-out;
+        }
+        .quantityButtonPlus{
+            background: #FB8F52;
+        }
+        .removeBtn{
+            width: 80%; /* Adjust this value as needed */
+            height: 45px;
+            background-color: #cf3a23;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            color: white;
+            border: none;
+            border-radius: 10px;
             cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .removeBtn:hover {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.1s ease-in-out;
         }
 
-        .cart-btn:hover {
-            opacity: 0.9;
-        }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let quantityElement = document.getElementById("<%= lblQuantity.ClientID %>");
-         let btnMinus = document.getElementById("btnMinus");
-         let btnPlus = document.getElementById("btnPlus");
-         let priceElement = document.querySelector(".price");
+    <script type="text/javascript">
+        
 
-         let basePrice = 350; 
-
-         function updatePrice() {
-             let quantity = parseInt(quantityElement.innerText);
-             let totalPrice = basePrice * quantity;
-             priceElement.innerText = `₱${totalPrice}`; 
-         }
-
-         btnPlus.addEventListener("click", function () {
-             let quantity = parseInt(quantityElement.innerText);
-             quantityElement.innerText = quantity + 1;
-             updatePrice(); 
-         });
-
-         btnMinus.addEventListener("click", function () {
-             let quantity = parseInt(quantityElement.innerText);
-             if (quantity > 1) {
-                 quantityElement.innerText = quantity - 1;
-                 updatePrice();
-             } else {
-                 document.getElementById("<%= pnlBookmark.ClientID %>").remove();
-             }
-         });
-
-         updatePrice(); 
-    });
-    </script>
-    <script>
-        function addToCart() {
-            window.location.href = "CartItems.aspx";
-        }
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="container">
-    <h2 class="title">Book Marked</h2>
+    <div class="bookmarkPopup">
+        <%-- BOOKMARK ITEMS --%>
+        <div class="bookmarkContent">
+            <div class="item">
+                <asp:Label class="foodName" runat="server" Text="Shawarma Rice"></asp:Label>
+                <asp:Label class="foodStore" runat="server" Text="Za-wrap"></asp:Label>
 
-    <div class="item" id="pnlBookmark" runat="server">
-        <img src="Images/Shawarma.jpg" class="food-image" alt="Shawarma">
-        <div class="details">
-            <strong>Shawarma</strong><br>
-            <span class="subtext">Al's Kitchen</span>
-        </div>
-        <div class="quantity">
-            <button type="button" class="btn" id="btnMinus">−</button>
-            <asp:Label ID="lblQuantity" runat="server" Text="1"></asp:Label>
-            <button type="button" class="btn" id="btnPlus">+</button>
-        </div>
-        <span class="price">₱350</span>
-    </div>
+                <%-- HOVER HIDDEN BUTTONS --%>
+                <div class="hiddenHover">
+                    <asp:Button CssClass="removeBtn" ID="removeBtn" runat="server" Text="Remove" />
+                    <div class="quantityContainer">
+                        <input class="quantityButtonMinus" type="button" value="-" />
+                        <asp:Label ID="quantityLbl" runat="server" Text="0"></asp:Label>
+                        <input class="quantityButtonPlus" type="button" value="+" />
+                    </div>
+                </div>
 
-    <div class="buttons">
-        <button type="button" class="cancel-btn">Cancel</button>
-        <button type="button" class="cart-btn" onclick="addToCart()">Add to Cart</button>
+            </div>
+
+            
+
+            <div class="item">
+                <asp:Label class="foodName" runat="server" Text="Shawarma Rice"></asp:Label>
+                <asp:Label class="foodStore" runat="server" Text="Za-wrap"></asp:Label>
+
+                <%-- HOVER HIDDEN BUTTONS --%>
+                <div class="hiddenHover">
+                    <asp:Button CssClass="removeBtn" ID="Button1" runat="server" Text="Remove" />
+                    <div class="quantityContainer">
+                        <input class="quantityButtonMinus" type="button" value="-" />
+                        <asp:Label ID="Label1" runat="server" Text="0"></asp:Label>
+                        <input class="quantityButtonPlus" type="button" value="+" />
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+
+        
+
+        <%-- CANCEL/CHECKOUT BUTTONS --%>
+        <div class="optionButtons">
+            <input class="optionBtn" id="SelectBtn" type="button" value="Select"/>
+            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout All" />
+        </div>
     </div>
-</div>
 </asp:Content>
