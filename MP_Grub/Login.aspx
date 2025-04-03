@@ -154,9 +154,6 @@
                 <asp:TextBox ID="passwordtxt" runat="server" CssClass="input" TextMode="Password" placeholder="password"></asp:TextBox>
             </div>
             <div>
-                <a href="ForgotPassword.aspx">Forgot Password?</a>
-            </div>
-            <div>
                 <asp:Button ID="loginbtn" runat="server" Text="Login" class="login-button" OnClick="LoginValidation" />
             </div>
         </form>

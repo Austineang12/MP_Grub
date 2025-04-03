@@ -14,8 +14,8 @@
             flex-wrap: wrap;
             justify-content: space-evenly; 
             gap: 20px;
-            row-gap: 60px; /* Space between rows */
-            padding: 20px;
+            row-gap: 60px;
+            padding: 20px 0;
         }
 
         .restaurant-card {
@@ -29,6 +29,7 @@
             flex-direction: column;
             justify-content: space-between;
             text-decoration: none !important;
+            z-index: 5;
         }
 
         .restaurant-card:hover {
@@ -118,8 +119,6 @@
             gap: 10px;
         }
 
-
-
         .food-button {
             background-color: #ff7f50;
             color: white;
@@ -136,6 +135,32 @@
         .food-button:hover {
             transform: translateY(-5px);
         }
+
+        .background-duck {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('/images/Order_Duckbg1.png'); /* Default desktop background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        /*-- Responsive Design --*/
+        @media (max-width: 1000px) {
+            .background-duck {
+                position: fixed;
+                /*width: 200vw;*/
+                height: 100%;
+                background-image: url('/images/Order_Moblebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        }
     </style>
 </asp:Content>
 
@@ -151,6 +176,9 @@
         </div>
         <button class="food-button" style="background-color: #f44336; margin-top: 20px;" onclick="closePopup(); return false;">Close</button>
     </div>
+
+    <%-- Background Image --%>
+    <div class="background-duck"></div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" >
@@ -247,8 +275,6 @@
                 }
             });
         }
-
-
 
 
 
