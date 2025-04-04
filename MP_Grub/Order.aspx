@@ -147,7 +147,7 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        .food-button:hover {
+        .food-button:hover{
             transform: translateY(-5px);
         }
 
@@ -253,7 +253,7 @@
                                 <span class="food-price">${food.FoodPrice}</span>
                             </div>
                             <div class="food-actions">
-                                <button class="food-button" onclick="bookmarkFood('${food.FoodID}');return false;">Bookmark</button>
+                                <button class="food-button" data-foodid='${food.FoodID}' onclick="bookmarkFood('${food.FoodID}', this);return false;">Bookmark</button>
                                 <button class="food-button" onclick="addToCart('${food.FoodID}','${food.FoodName}', '${food.FoodPrice}');return false;">Add to Cart</button>
                             </div>
                         `;
@@ -262,6 +262,7 @@
                     });
 
                     document.getElementById('foodPopup').classList.add('active');
+                    checkBookmarkStates();
                 },
                 error: function (error) {
                     console.error("Error fetching menu:", error);
@@ -271,18 +272,37 @@
 
 
         //INSERTING TO BOOKMARK TABLE
-        function bookmarkFood(foodID) {
+        function bookmarkFood(foodID, buttonElement) {
             $.ajax({
                 type: "POST",
                 url: "Order.aspx/BookmarkFood",
-                data: JSON.stringify({
-                    foodID1: foodID,
-                }),
+                data: JSON.stringify({ foodID1: foodID }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
                     if (response.d.success) {
-                        alert("Food has been bookmarked!");
+                        var message = document.createElement("div");
+                        message.textContent = "Food has been bookmarked!";
+                        message.classList.add("bookmark-message");
+                        document.body.appendChild(message);
+
+                        // Automatically remove the message after 3 seconds
+                        setTimeout(function () {
+                            message.remove();
+                        }, 3000);
+
+                        // Disable the button and change styles immediately after bookmarking
+                        $(buttonElement).prop("disabled", true);
+                        $(buttonElement).css("background-color", "#d3d3d3");
+                        $(buttonElement).css("cursor", "not-allowed");
+                        $(buttonElement).css("transform", "none");
+
+                        // Save the disabled state in localStorage with the foodID as key
+                        localStorage.setItem("food_" + foodID, 'disabled');
+
+                        console.log("Bookmark saved:", foodID, "disabled");
+                        // Optionally, you could also call checkBookmarkStates here to immediately reflect changes
+                        checkBookmarkStates();  // To ensure UI is updated if needed
                     } else {
                         alert("Error: " + response.d.message);
                     }
@@ -294,8 +314,34 @@
             });
         }
 
+        // Function to check bookmark states and disable buttons on page load
+        function checkBookmarkStates() {
+            let foodButtons = document.querySelectorAll('.food-button');
+
+            foodButtons.forEach(button => {
+                let foodID = button.getAttribute('data-foodid'); // Assuming each button has a data-foodid attribute
+
+                console.log("Checking foodID:", foodID, "State:", localStorage.getItem(foodID));
+
+                // Check if the foodID is disabled in localStorage
+                if (localStorage.getItem("food_" + foodID) === 'disabled') {
+                    // If found, disable the button and apply styles
+                    $(button).prop("disabled", true);  // Ensure the button is disabled
+                    $(button).css("background-color", "#d3d3d3");  // Grey out the button
+                    $(button).css("cursor", "not-allowed");  // Change cursor to 'not-allowed'
+                    $(button).css("transform", "none");  // Ensure there's no transformation
+                }
+            });
+        }
+
+        // Run the checkBookmarkStates function when the page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            checkBookmarkStates();
+        });
 
 
+
+        //INSERTING TO ORDER DETAILS TABLE
         function addToCart(foodID, foodName, price) {
             $.ajax({
                 type: "POST",

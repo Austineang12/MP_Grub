@@ -332,7 +332,7 @@
                 <li><asp:HyperLink ID="HyperLinkSupport" runat="server" NavigateUrl="~/CustomerSupport.aspx" CssClass="menu-link">Customer Support</asp:HyperLink></li>
                 <li style="margin-top: 20px; border-top: 1px solid white; padding-top: 10px;"></li>
 
-                <asp:Button ID="btnLogout" runat="server" Text="Logout" class="logout-button" OnClick="Button_Logout" />
+                <asp:Button ID="btnLogout" runat="server" Text="Logout" class="logout-button" OnClick="Button_Logout" OnClientClick="localStorage.clear();" />
             </ul>
         </div>
 

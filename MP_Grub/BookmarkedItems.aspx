@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="BookmarkedItems.aspx.cs" Inherits="MP_Grub.BookmarkedItems" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Bookmark</title>
-    <link rel="stylesheet" href="styles.css" />
     <style type="text/css">
         #bookmarkTitle {
             font-size: 24px;
@@ -216,44 +215,79 @@
 
         <%-- CANCEL/CHECKOUT BUTTONS --%>
         <div class="optionButtons">
-            <input class="optionBtn" id="SelectBtn" type="button" value="Select"/>
-            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout All" />
+            <input class="optionBtn" id="BackBtn" type="button" value="Back" onclick="goBackOrHome();"/>
+            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout" />
         </div>
     </div>
 
     <script type="text/javascript">
-        function updateQuantity(bookmarkID, change) {
-            var quantityLbl = document.getElementById('quantity_' + bookmarkID);
-            var currentQuantity = parseInt(quantityLbl.innerText);
-            var newQuantity = currentQuantity + change;
 
-            if (newQuantity < 1) {
-                newQuantity = 1; // Prevent quantity from going below 1
+        window.history.replaceState(null, null, window.location.href);
+
+        function goBackOrHome() {
+            // Go back to the previous page if possible, else go to home page
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = '/Home.aspx';
             }
+        }
 
-            quantityLbl.innerText = newQuantity;
+        function updateQuantity(bookmarkID, change) {
+            const labelID = `quantity_${bookmarkID}`;
+            const label = document.getElementById(labelID);
 
-            // Send AJAX request to update in database
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "UpdateQuantity.aspx", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send("bookmarkID=" + bookmarkID + "&newQuantity=" + newQuantity);
+            if (!label) return;
+
+            let currentQuantity = parseInt(label.innerText);
+            let newQuantity = currentQuantity + change;
+
+            if (newQuantity < 1) newQuantity = 1; // Prevent quantity less than 1
+
+            // Update label immediately
+            label.innerText = newQuantity;
+
+            // Send POST to update the database
+            const formData = new FormData();
+            formData.append("bookmarkID", bookmarkID);
+            formData.append("newQuantity", newQuantity);
+            formData.append("action", "update");
+
+            fetch(window.location.href, {
+                method: "POST",
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Failed to update quantity.");
+                }
+            }).catch(error => {
+                console.error("Error:", error);
+            });
         }
 
         function removeBookmark(bookmarkID) {
-            if (confirm("Are you sure you want to remove this item?")) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "RemoveBookmark.aspx", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send("bookmarkID=" + bookmarkID);
-        
-                // Reload page after removing item
-                xhr.onload = function () {
-                    if (xhr.status == 200) {
-                        location.reload();
+            console.log("Removing bookmark with ID:", bookmarkID);
+
+            const formData = new FormData();
+            formData.append("bookmarkID", bookmarkID);
+            formData.append("action", "delete");
+
+            fetch(window.location.href, {
+                method: "POST",
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    alert("Failed to remove bookmark.");
+                } else {
+                    // Remove item visually if request was successful
+                    const itemToRemove = document.getElementById(`bookmark_${bookmarkID}`);
+                    if (itemToRemove) {
+                        itemToRemove.remove();
                     }
-                };
-            }
+                }
+            }).catch(error => {
+                console.error("Error while removing bookmark:", error);
+            });
         }
 
     </script>
