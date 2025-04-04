@@ -51,6 +51,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox fullnametxt;
 
         /// <summary>
+        /// lblFullNameError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFullNameError;
+
+        /// <summary>
         /// passwordtxt control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox passwordtxt;
+
+        /// <summary>
+        /// lblPasswordError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPasswordError;
 
         /// <summary>
         /// signupbtn control.

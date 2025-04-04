@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.OleDb;
 using System.Web.UI;
+using System.Text.RegularExpressions;
 
 namespace MP_Grub
 {
@@ -41,6 +42,87 @@ namespace MP_Grub
 
         protected void SaveProfile(object sender, EventArgs e)
         {
+            string usernameInput = username.Text.Trim();
+            string fullNameInput = fullName.Text.Trim();
+            string birthdateInput = birthdate.Text.Trim();
+            string contactInput = contact.Text.Trim();
+            string addressInput = address.Text.Trim();
+
+            // Username validation: No spaces
+            if (usernameInput.Contains(" "))
+            {
+                lblUsernameError.Text = "Username cannot contain Spaces!";
+                lblUsernameError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblUsernameError.Visible = false;
+            }
+
+            // Full Name Validation: No numbers
+            if (Regex.IsMatch(fullNameInput, @"\d")) // Checks if the full name contains any numbers
+            {
+                lblFullNameError.Text = "Full Name cannot contain Numbers!";
+                lblFullNameError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblFullNameError.Visible = false;
+            }
+
+            // Birthdate Validation: User must be at least 13 years old and not older than 100
+            if (DateTime.TryParse(birthdateInput, out DateTime birthDate))
+            {
+                DateTime today = DateTime.Today;
+                int age = today.Year - birthDate.Year;
+
+                // Adjust age if birthdate hasn't occurred this year yet
+                if (birthDate.Date > today.AddYears(-age)) age--;
+
+                if (age < 13 || age > 100)
+                {
+                    lblBirthdateError.Text = "Age must be between 13 and 100 years old!";
+                    lblBirthdateError.Visible = true;
+                    return;
+                }
+                else
+                {
+                    lblBirthdateError.Visible = false;
+                }
+            }
+            else
+            {
+                lblBirthdateError.Text = "Invalid birthdate format!";
+                lblBirthdateError.Visible = true;
+                return;
+            }
+
+            // Contact Validation: Must be exactly 11 characters
+            if (contactInput.Length != 11 || !Regex.IsMatch(contactInput, @"^\d{11}$"))
+            {
+                lblContactError.Text = "Contact should have 11 Characters only!";
+                lblContactError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblContactError.Visible = false;
+            }
+
+            // Address Validation: Cannot contain special characters like @, !, #
+            if (Regex.IsMatch(addressInput, @"[@!#\$%\^&\*\(\)_\+\=]"))
+            {
+                lblAddressError.Text = "Address cannot contain special characters like @, !, #, etc.";
+                lblAddressError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblAddressError.Visible = false;
+            }
+
             int userId = Convert.ToInt32(Session["UserID"]);
             using (OleDbConnection con = new OleDbConnection(connectionString))
             {

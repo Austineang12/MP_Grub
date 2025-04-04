@@ -2,6 +2,7 @@
 using System.Web;
 using System.Web.UI;
 using System.Data.OleDb;
+using System.Text.RegularExpressions;
 
 namespace MP_Grub
 {
@@ -27,6 +28,30 @@ namespace MP_Grub
             else
             {
                 lblUsernameError.Visible = false;
+            }
+
+            // Full Name validation: No numbers or commas
+            if (Regex.IsMatch(fullNameInput, @"[\d,]")) // Checks if full name contains any digit (0-9) or comma (,)
+            {
+                lblFullNameError.Text = "Full Name cannot contain numbers or commas!";
+                lblFullNameError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblFullNameError.Visible = false;
+            }
+
+            // Password validation: No spaces
+            if (passwordInput.Contains(" "))
+            {
+                lblPasswordError.Text = "Password cannot contain Spaces!";
+                lblPasswordError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblPasswordError.Visible = false;
             }
 
             if (string.IsNullOrWhiteSpace(usernameInput) ||

@@ -133,14 +133,16 @@
         <form id="form1" runat="server">
             <h2>Create Account</h2>
             <div>
-                <asp:TextBox ID="usernametxt" runat="server" CssClass="input-field" placeholder="Username"></asp:TextBox>
+                <asp:TextBox ID="usernametxt" runat="server" CssClass="input-field" placeholder="Username"></asp:TextBox><br />
                 <asp:Label ID="lblUsernameError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
             </div>
             <div>
-                <asp:TextBox ID="fullnametxt" runat="server" CssClass="input-field" placeholder="Full Name"></asp:TextBox>
+                <asp:TextBox ID="fullnametxt" runat="server" CssClass="input-field" placeholder="Full Name"></asp:TextBox><br />
+                <asp:Label ID="lblFullNameError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
             </div>
             <div>
-                <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password" placeholder="Password"></asp:TextBox>
+                <asp:TextBox ID="passwordtxt" runat="server" CssClass="input-field" TextMode="Password" placeholder="Password"></asp:TextBox><br />
+                <asp:Label ID="lblPasswordError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
             </div>
             <div>
                 <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="create-button" OnClick="SignupValidation"/>

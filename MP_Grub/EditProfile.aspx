@@ -103,27 +103,32 @@
         
         <div class="input-group">
             <label for="username">Username</label>
-            <asp:TextBox ID="username" runat="server" CssClass="input-field"></asp:TextBox>
+            <asp:TextBox ID="username" runat="server" CssClass="input-field"></asp:TextBox><br />
+            <asp:Label ID="lblUsernameError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
         </div>
         
         <div class="input-group">
             <label for="fullName">Full Name</label>
-            <asp:TextBox ID="fullName" runat="server" CssClass="input-field"></asp:TextBox>
+            <asp:TextBox ID="fullName" runat="server" CssClass="input-field"></asp:TextBox><br />
+            <asp:Label ID="lblFullNameError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
         </div>
         
         <div class="input-group">
             <label for="birthdate">Birthdate</label>
-            <asp:TextBox ID="birthdate" runat="server" CssClass="input-field" TextMode="Date"></asp:TextBox>
+            <asp:TextBox ID="birthdate" runat="server" CssClass="input-field" TextMode="Date"></asp:TextBox><br />
+            <asp:Label ID="lblBirthdateError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
         </div>
         
         <div class="input-group">
             <label for="contact">Contact Info</label>
-            <asp:TextBox ID="contact" runat="server" CssClass="input-field"></asp:TextBox>
+            <asp:TextBox ID="contact" runat="server" CssClass="input-field"></asp:TextBox><br />
+            <asp:Label ID="lblContactError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
         </div>
         
         <div class="input-group">
             <label for="address">Address</label>
-            <asp:TextBox ID="address" runat="server" CssClass="input-field"></asp:TextBox>
+            <asp:TextBox ID="address" runat="server" CssClass="input-field"></asp:TextBox><br />
+            <asp:Label ID="lblAddressError" runat="server" CssClass="error-message" Visible="false"></asp:Label>
         </div>
         
         <div class="btn-container">

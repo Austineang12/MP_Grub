@@ -24,6 +24,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox username;
 
         /// <summary>
+        /// lblUsernameError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUsernameError;
+
+        /// <summary>
         /// fullName control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,15 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox fullName;
+
+        /// <summary>
+        /// lblFullNameError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFullNameError;
 
         /// <summary>
         /// birthdate control.
@@ -42,6 +60,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox birthdate;
 
         /// <summary>
+        /// lblBirthdateError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblBirthdateError;
+
+        /// <summary>
         /// contact control.
         /// </summary>
         /// <remarks>
@@ -51,6 +78,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox contact;
 
         /// <summary>
+        /// lblContactError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblContactError;
+
+        /// <summary>
         /// address control.
         /// </summary>
         /// <remarks>
@@ -58,6 +94,15 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox address;
+
+        /// <summary>
+        /// lblAddressError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAddressError;
 
         /// <summary>
         /// saveBtn control.
