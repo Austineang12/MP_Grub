@@ -23,6 +23,7 @@
             text-align: center;
             color: white;
             z-index: 5;
+            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
         }
 
         .profile-container h2 {
@@ -76,7 +77,7 @@
             cursor: pointer;
             margin-top: 20px;
             font-size: 1rem;
-            width: 20vw;
+            /*width: 20vw;*/
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -98,6 +99,12 @@
             width: 100%;
             height: 100vh;
             object-fit: cover;
+        }
+        @media (max-width: 800px) {
+            .profile-container {
+                padding: 30px 40px;
+                width: 250px;
+            }
         }
     </style>
 </asp:Content>

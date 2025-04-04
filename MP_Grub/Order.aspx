@@ -9,13 +9,28 @@
             padding: 0;
         }
 
+        .restaurant-section {
+             display: flex;
+             flex-direction: column;
+             justify-content: center;
+             align-items: center;
+        }
+
+        .lblRestaurant {
+            font-family: 'Akshar', sans-serif;
+            color: white;
+            font-weight: 700;
+            font-size: 35px;
+            z-index: 3;
+        }
+
         .restaurant-container {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-evenly; 
             gap: 20px;
             row-gap: 60px;
-            padding: 20px 0;
+            padding: 10px 0;
         }
 
         .restaurant-card {
@@ -153,7 +168,6 @@
         @media (max-width: 1000px) {
             .background-duck {
                 position: fixed;
-                /*width: 200vw;*/
                 height: 100%;
                 background-image: url('/images/Order_Moblebg1.png') !important;
                 background-size: cover;
@@ -165,8 +179,12 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="restaurant-container" id="restaurantContainer" runat="server">
-        <%-- Retrieved from Database --%>
+    <div class="restaurant-section">
+        <h1 class="lblRestaurant">Restaurants</h1>
+
+        <div class="restaurant-container" id="restaurantContainer" runat="server">
+            <%-- Retrieved from Database --%>
+        </div>
     </div>
 
     <div id="foodPopup" class="popup">

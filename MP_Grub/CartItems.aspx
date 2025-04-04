@@ -2,52 +2,68 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
         .container {
             display: flex;
-            justify-content: flex-end;
-            padding: 50px;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            z-index: 5;
         }
 
         .cart-container {
-            width: 30vw;
+            width: 50vw;
+            max-width: 500px;
+            min-width: 300px;
             background-color: white;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .item-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease-in-out;
         }
 
         .cart-item-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             border: 1px solid #ddd;
             padding: 15px;
             margin: 10px 0;
             border-radius: 8px;
             background: #f9f9f9;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
         }
 
         .cart-item-container h3 {
             font-size: 18px;
             margin-bottom: 5px;
+            color: #404040;
         }
 
         .cart-item-container p {
             font-size: 16px;
             margin: 2px 0;
+            color: #404040;
         }
 
         .item-details {
             flex: 1;
+            min-width: 50%;
+        }
+
+        .controls-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .controls {
@@ -92,42 +108,54 @@
         }
 
         .order-button {
-            font-size: 18px;
-            font-weight: bold;
-            padding: 12px 20px;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: white;
+            align-items: center;
+            color: #404040;
             border: none;
-            border-radius: 8px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: background 0.3s;
+            margin-top: 20px;
+            font-size: 1rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
         .payment-button {
-            font-size: 18px;
-            font-weight: bold;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
             background-color: #FB8F52;
+            align-items: center;
+            color: #404040;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
         .order-button:hover {
-            background-color: #c0c0c0;
+            background-color: #F2F2F2;
         }
 
         .payment-button:hover {
-            background-color: #ff7f50;
+            background-color: #E07E48;
         }
 
         .buttons {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 30px
-        }       
+            gap: 20px;
+            flex-wrap: wrap;
+        }
 
         .delete-button {
+            font-family: 'Akshar', sans-serif;
             background-color: #ff4d4d;
             color: white;
             padding: 8px 12px;
@@ -140,14 +168,24 @@
             background-color: #cc0000;
         }
 
-        .quantity-button {
+        .add-quantity-button {
             background-color: #FB8F52;
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 5px 5px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
+        }
+
+        .sub-quantity-button {
+            background-color: #FB8F52;
+            color: white;
+            border: none;
+            padding: 5px 7px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .quantity-button:hover {
@@ -156,11 +194,47 @@
 
         .quantity-text {
             padding: 0 10px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
+            color: #404040;
         }
 
+        .background-duck {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('/images/Cart_Duckbg2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
 
+        @media (max-width: 1000px) {
+            .background-duck {
+                position: fixed;
+                height: 100%;
+                background-image: url('/images/Order_Moblebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .container {
+                padding: 10px;
+            }
+
+            .cart-container {
+                width: 90vw;
+                max-width: 350px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
     </style>
 
     <script>
@@ -182,21 +256,31 @@
                 <asp:Repeater ID="rptCartItems" runat="server">
                     <ItemTemplate>
                         <div class="cart-item-container">
-                            <h3><%# Eval("Food_Name") %></h3>
-                            <p>Quantity: <%# Eval("Quantity") %></p>
-                            <p>Order Amount: ₱<%# Eval("Order_Amount", "{0:N2}") %></p>                           
-                            <div class="controls">
-                                <asp:Button ID="btnSubtract" runat="server" Text="-" CssClass="quantity-button"
-                                    CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnSubtract_Click" />
-            
-                                <span class="quantity-text" id="qty_<%# Eval("OrderDetail_ID") %>"><%# Eval("Quantity") %></span>
-
-                                <asp:Button ID="btnAdd" runat="server" Text="+" CssClass="quantity-button"
-                                    CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnAdd_Click" />
+                            <%-- Food Details --%>
+                            <div class="item-details">
+                                <h3><%# Eval("Food_Name") %></h3>
+                                <p>Quantity: <%# Eval("Quantity") %></p>
+                                <p>Order Amount: ₱<%# Eval("Order_Amount", "{0:N2}") %></p>    
                             </div>
-        
-                            <asp:Button ID="btnDelete" runat="server" Text="Remove" CssClass="delete-button"
-                                CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnDelete_Click" />
+
+                            <%-- Quantity --%>
+                            <div class=" ">
+                                <div class="controls">
+                                    <asp:Button ID="btnSubtract" runat="server" Text="-" CssClass="sub-quantity-button"
+                                        CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnSubtract_Click" />
+
+                                    <span class="quantity-text" id="qty_<%# Eval("OrderDetail_ID") %>">
+                                        <%# Eval("Quantity") %>
+                                    </span>
+
+                                    <asp:Button ID="btnAdd" runat="server" Text="+" CssClass="add-quantity-button"
+                                        CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnAdd_Click" />
+                                </div>
+
+                                <%-- Remove Cart Items --%>
+                                <asp:Button ID="btnDelete" runat="server" Text="Remove" CssClass="delete-button"
+                                    CommandArgument='<%# Eval("OrderDetail_ID") %>' OnClick="btnDelete_Click" />
+                            </div>
                         </div>
                     </ItemTemplate>
                 </asp:Repeater>
@@ -226,4 +310,6 @@
             </div>
         </div>
     </div>
+    <%-- Background Image --%>
+    <div class="background-duck"></div>
 </asp:Content>

@@ -24,6 +24,7 @@
             text-align: center;
             color: white;
             z-index: 5;
+            transition: 0.3s ease-in-out;
         }
 
         .edit-container h2 {
@@ -47,7 +48,7 @@
 
         .input-group input {
             font-size: 16px;
-            width: 30vw;
+            width: 100%;
             padding: 10px;
             margin: 10px 0;
             border-radius: 20px;
@@ -69,7 +70,6 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 1rem;
-            width: 20vw;
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -84,6 +84,15 @@
             width: 100%;
             height: 100vh;
             object-fit: cover;
+        }
+        @media (max-width: 1000px) {
+            .edit-container {
+                padding: 30px 40px;
+                width: 250px;
+            }
+            .input-group input {
+                width: 100%;
+            }
         }
     </style>
 </asp:Content>

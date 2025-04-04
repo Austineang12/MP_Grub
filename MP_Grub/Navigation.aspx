@@ -8,10 +8,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /*background: #314558;*/
             padding: 20px;
-            /*border-radius: 12px;*/
-            /*box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);*/
             max-width: 700px;
             max-height: 500px;
             width: 100%;
@@ -42,47 +39,46 @@
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        /*.left-button, .right-button {
-            font-size: 18px;
-            font-family: 'Akshar', sans-serif;
-            font-weight: bold;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .left-button {
-            background-color: #E74C3C;
-            color: white;
-        }
-
-        .left-button:hover {
-            background-color: #C0392B;
-        }
-
-        .right-button {
-            background-color: #27AE60;
-            color: white;
-        }
-
-        .right-button:hover {
-            background-color: #1E8449;
-        }*/
-        .profile-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            object-fit: cover;
-        }
         .swipe-ducks {
             display: flex;
             width: 15vw;
             height: auto;
         }
+
+        .background-duck {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('/images/Navigation_bg4.png'); /* Default desktop background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        /*-- Responsive Design --*/
+        @media (max-width: 700px) {
+            .background-duck {
+                position: fixed;
+                height: 100%;
+                background-image: url('/images/Order_Moblebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .options {
+                width: 200px;
+            }
+            .swipe-ducks {
+                width: 20vw;
+            }
+            .button-container {
+                gap: 15px;
+            }
+        }
+        
     </style>
 </asp:Content>
 
@@ -103,7 +99,6 @@
     <%-- error message --%>
     <asp:Label ID="lblError" runat="server" ForeColor="Red"></asp:Label>
 
-    <div>
-        <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Navigation_bg4.png" />
-    </div>
+    <%-- Background Image --%>
+    <div class="background-duck"></div>
 </asp:Content>

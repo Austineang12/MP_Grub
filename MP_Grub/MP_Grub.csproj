@@ -75,6 +75,8 @@
     <Content Include="Home.aspx" />
     <Content Include="images\Add to Cart.png" />
     <Content Include="images\Back.png" />
+    <Content Include="images\Cart_Duckbg1.png" />
+    <Content Include="images\Cart_Duckbg2.png" />
     <Content Include="images\Home_Duckbg.png" />
     <Content Include="images\Home_Duck.png" />
     <Content Include="images\Bookmark.png" />

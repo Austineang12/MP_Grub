@@ -24,6 +24,7 @@
             width: 350px;
             z-index: 5;
             gap: 15px;
+            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
         }
 
         .container h2 {
@@ -63,7 +64,6 @@
             cursor: pointer;
             margin-top: 20px;
             font-size: 1rem;
-            width: 20vw;
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -78,6 +78,15 @@
             width: 100%;
             height: 100vh;
             object-fit: cover;
+        }
+        @media (max-width: 800px) {
+            .container {
+                padding: 30px 40px;
+                width: 300px;
+            }
+            .dropdown {
+                width: 100%;
+            }
         }
     </style>
 </asp:Content>

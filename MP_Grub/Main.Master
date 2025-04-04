@@ -266,7 +266,7 @@
             cursor: pointer;
             margin-top: 80px;
             font-size: 1rem;
-            width: 10vw;
+            /*width: 10vw;*/
             display: block;
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }

@@ -17,7 +17,7 @@ namespace MP_Grub
                 {
                     string username = Session["Username"].ToString();
 
-                    welcomeLabel.Text = "Hi there, " + username + "!";
+                    welcomeLabel.Text = "Hi, " + username + "!";
                 }
                 else
                 {

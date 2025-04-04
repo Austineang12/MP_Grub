@@ -103,6 +103,16 @@
 
         /*-- Responsive Design --*/
         @media (max-width: 768px) {
+            .background-duck {
+                position: absolute;
+                width: 100%;
+                height: 100vh;
+                background-image: url('/images/Home_Mobilebg2.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }   
+
             .Navigation_Section {
                 top: 5vh;
                 right: auto;
@@ -121,21 +131,12 @@
         }
 
         @media (max-width: 700px) {
-            .background-duck {
-                position: absolute;
-                width: 100%;
-                height: 100vh;
-                background-image: url('/images/Home_Mobilebg2.png') !important;
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-            }   
             .order-button {
                 width: 50vw;
             }
 
             .btnNavigation {
-                width: 60px;
+                width: 100px;
             }
 
             .Navigation_text {

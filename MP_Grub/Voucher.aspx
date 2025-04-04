@@ -22,6 +22,7 @@
             min-height: calc(100vh - 120px);
             margin-top: 0;
             z-index: 5;
+            transition: 0.3s ease-in-out; 
         }
 
         .voucher-label {
@@ -88,6 +89,14 @@
             width: 100%;
             height: 100vh;
             object-fit: cover;
+        }
+        @media (max-width: 800px) {
+            .voucher-container {
+                padding: 30px 40px;
+                width: 350px;
+                height: 400px;
+                gap: 30px;
+            }
         }
     </style>
 </asp:Content>
