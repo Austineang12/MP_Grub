@@ -24,11 +24,11 @@ namespace MP_Grub
                 int userId = userDetails.Item1;
                 string username = userDetails.Item2;
 
-                // ✅ Store UserID and Username in Session
+                // Store UserID and Username in Session
                 Session["UserID"] = userId;
                 Session["Username"] = username;
 
-                // ✅ Ensure user has a valid Transaction_ID
+                // Ensure user has a valid Transaction_ID
                 int transactionId = EnsureTransactionExists(userId);
                 if (transactionId > 0)
                 {
@@ -58,7 +58,7 @@ namespace MP_Grub
                 try
                 {
                     conn.Open();
-                    string query = "SELECT User_ID, Username FROM [User] WHERE Username = ? AND Password = ?"; // Get User_ID & Username
+                    string query = "SELECT User_ID, Username FROM [User] WHERE Username = ? AND Password = ?"; 
 
                     using (OleDbCommand cmd = new OleDbCommand(query, conn))
                     {

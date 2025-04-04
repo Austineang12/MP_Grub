@@ -28,7 +28,17 @@ namespace MP_Grub
 
         protected void Bookmark_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("~/BookmarkedItems.aspx");
+            if (Session["UserID"] != null)
+            {
+                string userID = Session["UserID"].ToString();
+                Response.Redirect("~/BookmarkedItems.aspx?userID=" + userID);
+            }
+            else
+            {
+                string script = "alert('You are not logged in. Please log in first.'); window.location='Login.aspx';";
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "LoginAlert", script, true);
+                Response.Redirect("~/Login.aspx");
+            }
         }
         protected void AddToCart_Click(object sender, ImageClickEventArgs e)
         {

@@ -186,8 +186,63 @@ namespace MP_Grub
 
         protected void btnPayment_Click(object sender, EventArgs e)
         {
+
+            if (Session["TransactionID"] == null || Session["UserID"] == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
+
+
+            int transactionID = Convert.ToInt32(Session["TransactionID"]);
+            int userID = Convert.ToInt32(Session["UserID"]);
+
+
+            decimal totalPrice;
+            if (!decimal.TryParse(lblTotalAmount.Text.Replace(",", "").Trim(), out totalPrice))
+            {
+                Response.Write("<script>alert('Error: Invalid total price format.');</script>");
+                return;
+            }
+
+
+            UpdateTransactionTotalPrice(transactionID, totalPrice);
+
+
+            Session["TransactionID"] = transactionID;
+            Session["UserID"] = userID;
+
+
             Response.Redirect("Payment.aspx");
         }
+
+        // Method to update Total_Price in the Transaction table
+        private void UpdateTransactionTotalPrice(int transactionID, decimal totalPrice)
+        {
+            string query = "UPDATE [Transaction] SET Total_Price = ? WHERE Transaction_ID = ?";
+
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
+
+            try
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    // Ensure parameters are in the correct order
+                    cmd.Parameters.AddWithValue("?", totalPrice);
+                    cmd.Parameters.AddWithValue("?", transactionID);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error updating total price: " + ex.Message + "');</script>");
+            }
+        }
+
+
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
