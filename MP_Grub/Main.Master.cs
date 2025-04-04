@@ -46,6 +46,7 @@ namespace MP_Grub
         }
         protected void Button_Logout(object sender, EventArgs e)
         {
+
             Response.Redirect("~/Logout.aspx");
         }
     }

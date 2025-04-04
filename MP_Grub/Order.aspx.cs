@@ -253,23 +253,54 @@ namespace MP_Grub
                 {
                     conn.Open();
 
-                    
+                    // Check if the user has already bookmarked this food item
+                    string checkQuery = "SELECT Food_Quantity FROM Bookmark WHERE User_ID = ? AND Food_ID = ?";
+                    OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn);
+                    checkCmd.Parameters.AddWithValue("?", userID);
+                    checkCmd.Parameters.AddWithValue("?", foodID);
 
-                    string query = "INSERT INTO Bookmark (User_ID, Food_ID) VALUES (?, ?)";
-                    OleDbCommand cmd = new OleDbCommand(query, conn);
+                    object result = checkCmd.ExecuteScalar();
 
-                    cmd.Parameters.AddWithValue("?", userID);
-                    cmd.Parameters.AddWithValue("?", foodID);
-
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected > 0)
+                    if (result != null)
                     {
-                        return new { success = true };
+                        // If a bookmark exists, update the quantity (add 1 to the existing quantity)
+                        int existingQuantity = Convert.ToInt32(result);
+                        string updateQuery = "UPDATE Bookmark SET Food_Quantity = ? WHERE User_ID = ? AND Food_ID = ?";
+                        OleDbCommand updateCmd = new OleDbCommand(updateQuery, conn);
+                        updateCmd.Parameters.AddWithValue("?", existingQuantity + 1);
+                        updateCmd.Parameters.AddWithValue("?", userID);
+                        updateCmd.Parameters.AddWithValue("?", foodID);
+
+                        int rowsAffected = updateCmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return new { success = true, message = "Food quantity updated." };
+                        }
+                        else
+                        {
+                            return new { success = false, message = "Failed to update the food quantity." };
+                        }
                     }
                     else
                     {
-                        return new { success = false, message = "Failed to bookmark the food item." };
+                        // If no bookmark exists, insert a new record with quantity = 1
+                        string insertQuery = "INSERT INTO Bookmark (User_ID, Food_ID, Food_Quantity) VALUES (?, ?, ?)";
+                        OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn);
+                        insertCmd.Parameters.AddWithValue("?", userID);
+                        insertCmd.Parameters.AddWithValue("?", foodID);
+                        insertCmd.Parameters.AddWithValue("?", 1); // Set quantity to 1
+
+                        int rowsAffected = insertCmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return new { success = true, message = "Food item bookmarked." };
+                        }
+                        else
+                        {
+                            return new { success = false, message = "Failed to bookmark the food item." };
+                        }
                     }
                 }
             }

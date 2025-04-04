@@ -13,33 +13,42 @@ namespace MP_Grub
         protected void Page_Load(object sender, EventArgs e)
         {
             string userID = Request.QueryString["userID"];
-            if (!IsPostBack)
+
+            if (string.IsNullOrEmpty(userID))
             {
-                if (!string.IsNullOrEmpty(userID))
-                {
-                    BindBookmarkedItems();
-                }
-                else
-                {
-                    Response.Redirect("~/Login.aspx");
-                }
+                Response.Redirect("~/Login.aspx");
+                return;
             }
 
-            // Handle POST Requests
             if (Request.HttpMethod == "POST")
             {
-                string bookmarkID = Request.Form["bookmarkID"];
-                string newQuantity = Request.Form["newQuantity"];
-                string action = Request.Form["action"]; // Identify update or delete action
+                string action = Request.Form["action"];
 
-                if (action == "update" && !string.IsNullOrEmpty(bookmarkID) && !string.IsNullOrEmpty(newQuantity))
+                if (action == "update")
                 {
-                    UpdateFoodQuantity(bookmarkID, newQuantity);
+                    string bookmarkID = Request.Form["bookmarkID"];
+                    string newQuantity = Request.Form["newQuantity"];
+
+                    if (!string.IsNullOrEmpty(bookmarkID) && !string.IsNullOrEmpty(newQuantity))
+                    {
+                        UpdateFoodQuantity(bookmarkID, newQuantity);
+                    }
                 }
-                else if (action == "delete" && !string.IsNullOrEmpty(bookmarkID))
+                else if (action == "delete")
                 {
-                    DeleteBookmark(bookmarkID);
+                    string bookmarkID = Request.Form["bookmarkID"].ToString();
+                    if (!string.IsNullOrEmpty(bookmarkID))
+                    {
+                        DeleteBookmark(bookmarkID);
+                    }
                 }
+
+                // ✅ Always rebind after a POST
+                BindBookmarkedItems();
+            }
+            else if (!IsPostBack)
+            {
+                BindBookmarkedItems();
             }
         }
 
@@ -48,16 +57,16 @@ namespace MP_Grub
             string userID = Request.QueryString["userID"];
 
             string query = @"
-                SELECT 
-                    Bookmark.Bookmark_ID, 
-                    Food.Food_Name, 
-                    Restaurant.Restaurant_Name, 
-                    SUM(Bookmark.Food_Quantity) AS Total_Quantity
-                FROM (Bookmark
-                INNER JOIN Food ON Bookmark.Food_ID = Food.Food_ID)
-                INNER JOIN Restaurant ON Food.Restaurant_ID = Restaurant.Restaurant_ID
-                WHERE Bookmark.User_ID = @UserID
-                GROUP BY Bookmark.Bookmark_ID, Food.Food_Name, Restaurant.Restaurant_Name;";
+                    SELECT 
+                        Bookmark.Bookmark_ID,
+                        Food.Food_ID,
+                        Food.Food_Name,
+                        Restaurant.Restaurant_Name,
+                        Bookmark.Food_Quantity
+                    FROM (Bookmark
+                    INNER JOIN Food ON Bookmark.Food_ID = Food.Food_ID)
+                    INNER JOIN Restaurant ON Food.Restaurant_ID = Restaurant.Restaurant_ID
+                    WHERE Bookmark.User_ID = @UserID";
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
@@ -69,49 +78,26 @@ namespace MP_Grub
 
                 if (reader.HasRows)
                 {
-                    // Dictionary to keep track of unique food and restaurant combinations
-                    Dictionary<string, Tuple<string, string, int>> uniqueItems = new Dictionary<string, Tuple<string, string, int>>();
-
+                    // Iterate over the rows to populate the bookmarks
                     while (reader.Read())
                     {
                         string foodName = reader["Food_Name"].ToString();
                         string restaurantName = reader["Restaurant_Name"].ToString();
                         string bookmarkID = reader["Bookmark_ID"].ToString();
-                        int totalQuantity = reader["Total_Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Total_Quantity"]) : 1;
+                        //int foodID = Convert.ToInt32(reader["Food_ID"]);
+                        int foodQuantity = reader["Food_Quantity"] != DBNull.Value ? Convert.ToInt32(reader["Food_Quantity"]) : 1;
 
-                        // Use a key combination of Food and Restaurant to group similar items
-                        string key = $"{foodName}_{restaurantName}";
-
-                        if (uniqueItems.ContainsKey(key))
-                        {
-                            // Update the quantity for existing entry
-                            uniqueItems[key] = new Tuple<string, string, int>(foodName, restaurantName, uniqueItems[key].Item3 + totalQuantity);
-                        }
-                        else
-                        {
-                            // Add new entry
-                            uniqueItems.Add(key, new Tuple<string, string, int>(foodName, restaurantName, totalQuantity));
-                        }
-                    }
-
-                    // Now render the grouped items
-                    foreach (var item in uniqueItems.Values)
-                    {
-                        string foodName = item.Item1;
-                        string restaurantName = item.Item2;
-                        int totalQuantity = item.Item3;
-
-                        // Generate div dynamically
+                        // Build the HTML for each food item
                         string divItem = $@"
-                    <div class='item' data-bookmarkid='{foodName}_{restaurantName}'>
+                    <div class='item' id='bookmark_{bookmarkID}'>
                         <label class='foodName'>{foodName}</label>
                         <label class='foodStore'>{restaurantName}</label>
                         <div class='hiddenHover'>
-                            <button class='removeBtn' onclick='removeBookmark({foodName}, {restaurantName})'>Remove</button>
+                            <input class='removeBtn' type='button' value='Remove' onclick='removeBookmark(""{bookmarkID}"")' />
                             <div class='quantityContainer'>
-                                <input class='quantityButtonMinus' type='button' value='-' onclick='updateQuantity({foodName}, {restaurantName}, -1)' />
-                                <label class='quantityLbl' id='quantity_{foodName}_{restaurantName}'>{totalQuantity}</label>
-                                <input class='quantityButtonPlus' type='button' value='+' onclick='updateQuantity({foodName}, {restaurantName}, 1)' />
+                                <input class='quantityButtonMinus' type='button' value='-' onclick='updateQuantity(""{bookmarkID}"", -1)' />
+                                <label class='quantityLbl' id='quantity_{bookmarkID}'>{foodQuantity}</label>
+                                <input class='quantityButtonPlus' type='button' value='+' onclick='updateQuantity(""{bookmarkID}"", 1)' />
                             </div>
                         </div>
                     </div>";
@@ -147,16 +133,38 @@ namespace MP_Grub
 
         private void DeleteBookmark(string bookmarkID)
         {
-            string query = "DELETE FROM Bookmark WHERE Bookmark_ID = @BookmarkID";
+            string userID = Request.QueryString["userID"];
+            string deleteQuery = @"
+                DELETE FROM Bookmark
+                WHERE Bookmark_ID = @BookmarkID
+                AND User_ID = @UserID";
 
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
-                OleDbCommand cmd = new OleDbCommand(query, conn);
-                cmd.Parameters.AddWithValue("@BookmarkID", bookmarkID);
+                OleDbCommand cmd = new OleDbCommand(deleteQuery, conn);
+                cmd.Parameters.AddWithValue("@BookmarkID", Convert.ToInt32(bookmarkID));
+                cmd.Parameters.AddWithValue("@UserID", userID);
 
-                conn.Open();
-                cmd.ExecuteNonQuery();
-                conn.Close();
+                try
+                {
+                    conn.Open();
+                    int rowsAffected = cmd.ExecuteNonQuery(); // Execute the delete query
+                    System.Diagnostics.Debug.WriteLine("Rows affected: " + rowsAffected); // Log how many rows were deleted
+
+                    // Check if deletion was successful
+                    if (rowsAffected == 0)
+                    {
+                        System.Diagnostics.Debug.WriteLine("No rows were deleted. Check the query or the data.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Error deleting bookmark: " + ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
             }
         }
     }
