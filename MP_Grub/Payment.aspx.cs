@@ -118,6 +118,7 @@ namespace MP_Grub
             double discountValue = 0;
             double totalPrice = Convert.ToDouble(txtTotalPrice.Text);
 
+            // If a voucher is selected, get the discount value, delete voucher after using
             if (voucherId != "0")
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -129,35 +130,78 @@ namespace MP_Grub
                     if (discountObj != null)
                         discountValue = Convert.ToDouble(discountObj);
                 }
+
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    OleDbCommand deleteVoucherCmd = new OleDbCommand("DELETE FROM Voucher WHERE Voucher_ID = ? AND User_ID = ?", conn);
+                    deleteVoucherCmd.Parameters.AddWithValue("?", voucherId);
+                    deleteVoucherCmd.Parameters.AddWithValue("?", userId);
+                    deleteVoucherCmd.ExecuteNonQuery();
+                }
             }
 
+            // Calculate the final price after discount
             double finalPrice = totalPrice - (totalPrice * (discountValue / 100));
             txtFinalPrice.Text = finalPrice.ToString("F2");
 
-            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            try
             {
-                conn.Open();
-                OleDbCommand updateCmd = new OleDbCommand(@"
-                    UPDATE [Transaction] 
-                    SET Payment_Type = ?, 
-                        Voucher_ID = ?, 
-                        Discount_Value = ?, 
-                        Final_Price = ?, 
-                        Transaction_Status = 'Delivered' 
-                    WHERE Transaction_ID = ? AND User_ID = ? AND Transaction_Status = 'Pending'", conn);
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
 
-                updateCmd.Parameters.AddWithValue("?", paymentType);
-                updateCmd.Parameters.AddWithValue("?", voucherId);
-                updateCmd.Parameters.AddWithValue("?", discountValue);
-                updateCmd.Parameters.AddWithValue("?", finalPrice);
-                updateCmd.Parameters.AddWithValue("?", transactionId);
-                updateCmd.Parameters.AddWithValue("?", userId);
+                    // Update the transaction in the database
+                    OleDbCommand updateCmd = new OleDbCommand(@"
+                UPDATE [Transaction] 
+                SET Payment_Type = ?, 
+                    Voucher_ID = ?, 
+                    Discount_Value = ?, 
+                    Final_Price = ?, 
+                    Transaction_Status = 'Delivered' 
+                WHERE Transaction_ID = ? AND User_ID = ? AND Transaction_Status = 'Pending'", conn);
 
-                updateCmd.ExecuteNonQuery();
+                    // Assign parameters for the update
+                    updateCmd.Parameters.AddWithValue("?", paymentType);
+                    updateCmd.Parameters.AddWithValue("?", voucherId);
+                    updateCmd.Parameters.AddWithValue("?", discountValue);
+                    updateCmd.Parameters.AddWithValue("?", finalPrice);
+                    updateCmd.Parameters.AddWithValue("?", transactionId);
+                    updateCmd.Parameters.AddWithValue("?", userId);
+
+
+                    int rowsAffected = updateCmd.ExecuteNonQuery();
+
+
+                    if (rowsAffected > 0)
+                    {
+                        if (Session["TransactionID"] == null || Session["UserID"] == null)
+                        {
+                            Response.Redirect("Login.aspx");
+                            return;
+                        }
+
+                        int transactionID = Convert.ToInt32(Session["TransactionID"]);
+                        int userID = Convert.ToInt32(Session["UserID"]);
+
+
+                        Session["TransactionID"] = transactionID;
+                        Session["UserID"] = userID;
+                        Response.Redirect("OrderConfirmation.aspx");
+                    }
+                    else
+                    {
+
+                    }
+                }
             }
-
-            Response.Redirect("OrderConfirmation.aspx");
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('An error occurred: " + ex.Message + "');</script>");
+            }
         }
+
+
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
