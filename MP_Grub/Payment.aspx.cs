@@ -1,83 +1,167 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Windows.Forms;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using System.Xml.Linq;
 
 namespace MP_Grub
 {
     public partial class Payment : System.Web.UI.Page
     {
+        string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["UserID"] == null || Session["TransactionID"] == null)
+            {
+                Response.Redirect("Login.aspx");
+                return;
+            }
 
-        }
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            txtFullName.Text = "";
-            txtContactNo.Text = "";
-            ddlBuilding.SelectedIndex = 0;
-            ddlFloorNumber.SelectedIndex = 0;
-            txtRoomNo.Text = string.Empty;
-            txtNote.Text = string.Empty;
-            ddlTransaction.SelectedIndex = 0;
-            txtDiscount.Text = string.Empty;
+            if (!IsPostBack)
+            {
+                LoadUserData();
+                LoadVoucherDropdown();
+                LoadTotalPrice();
+                UpdateFinalPrice();
+            }
         }
 
-        protected void btnClose_Click(object sender, EventArgs e)
+        private void LoadUserData()
         {
-            Response.Redirect("Home.aspx"); // link to feedback
+            string userId = Session["UserID"].ToString();
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                OleDbCommand userCmd = new OleDbCommand("SELECT Full_Name, Contact_Info, Address FROM [User] WHERE User_ID = ?", conn);
+                userCmd.Parameters.AddWithValue("?", userId);
+                OleDbDataReader reader = userCmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    txtFullName.Text = reader["Full_Name"].ToString();
+                    txtContactNo.Text = reader["Contact_Info"].ToString();
+                    txtAddress.Text = reader["Address"].ToString();
+                }
+            }
+        }
+
+        private void LoadVoucherDropdown()
+        {
+            string userId = Session["UserID"].ToString();
+
+            ddlVoucher.Items.Clear();
+            ddlVoucher.Items.Add(new ListItem("No Discount", "0"));
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                OleDbCommand voucherCmd = new OleDbCommand("SELECT Voucher_ID, Voucher_Name, Voucher_Value FROM Voucher WHERE User_ID = ?", conn);
+                voucherCmd.Parameters.AddWithValue("?", userId);
+                OleDbDataReader vReader = voucherCmd.ExecuteReader();
+
+                while (vReader.Read())
+                {
+                    string text = $"{vReader["Voucher_Name"]} - {vReader["Voucher_Value"]}%";
+                    ddlVoucher.Items.Add(new ListItem(text, vReader["Voucher_ID"].ToString()));
+                }
+            }
+        }
+
+        private void LoadTotalPrice()
+        {
+            string transactionId = Session["TransactionID"].ToString();
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                OleDbCommand priceCmd = new OleDbCommand("SELECT Total_Price FROM [Transaction] WHERE Transaction_ID = ? AND Transaction_Status = 'Pending'", conn);
+                priceCmd.Parameters.AddWithValue("?", transactionId);
+                object result = priceCmd.ExecuteScalar();
+                txtTotalPrice.Text = result != null ? result.ToString() : "0.00";
+            }
+        }
+
+        private void UpdateFinalPrice()
+        {
+            double totalPrice = Convert.ToDouble(txtTotalPrice.Text);
+            double discountValue = 0;
+
+            if (ddlVoucher.SelectedValue != "0")
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    OleDbCommand cmd = new OleDbCommand("SELECT Voucher_Value FROM Voucher WHERE Voucher_ID = ?", conn);
+                    cmd.Parameters.AddWithValue("?", ddlVoucher.SelectedValue);
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                        discountValue = Convert.ToDouble(result);
+                }
+            }
+
+            double finalPrice = totalPrice - (totalPrice * (discountValue / 100));
+            txtFinalPrice.Text = finalPrice.ToString("F2");
+        }
+
+        protected void ddlVoucher_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateFinalPrice();
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
-            Response.Redirect("OrderConfirmation.aspx"); //link to kerk's page
+            string userId = Session["UserID"].ToString();
+            string transactionId = Session["TransactionID"].ToString();
+            string paymentType = ddlTransaction.SelectedValue;
+            string voucherId = ddlVoucher.SelectedValue;
 
-            //OleDbConnection conn = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\USER\Documents\Github\MP_Grub\MP_Grub\App_Data\GrubDB.mdb""");
-            ////CHANGE THIS DEPENDING ON THE NEW PLACEMENT OF GRUB.MDB FILE
+            double discountValue = 0;
+            double totalPrice = Convert.ToDouble(txtTotalPrice.Text);
 
-            //// Capture form values
-            //string fullName = txtFullName.Text;
-            //string contactNo = txtContactNo.Text;
-            //string buildingName = ddlBuilding.SelectedItem.Value;
-            //string floorNumber = ddlFloorNumber.SelectedItem.Value;
-            //string roomName = txtRoomNo.Text;
-            //string note = txtNote.Text;
-            //string paymentType = ddlTransaction.SelectedItem.Text;
-            //decimal totalAmount = 0;
+            if (voucherId != "0")
+            {
+                using (OleDbConnection conn = new OleDbConnection(connectionString))
+                {
+                    conn.Open();
+                    OleDbCommand discountCmd = new OleDbCommand("SELECT Voucher_Value FROM Voucher WHERE Voucher_ID = ?", conn);
+                    discountCmd.Parameters.AddWithValue("?", voucherId);
+                    object discountObj = discountCmd.ExecuteScalar();
+                    if (discountObj != null)
+                        discountValue = Convert.ToDouble(discountObj);
+                }
+            }
 
-            //// Validate and convert total price to decimal
-            //if (!decimal.TryParse(totalPrice.Text.Replace("₱", "").Trim(), out totalAmount))
-            //{
-            //    return;
-            //}
+            double finalPrice = totalPrice - (totalPrice * (discountValue / 100));
+            txtFinalPrice.Text = finalPrice.ToString("F2");
 
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                OleDbCommand updateCmd = new OleDbCommand(@"
+                    UPDATE [Transaction] 
+                    SET Payment_Type = ?, 
+                        Voucher_ID = ?, 
+                        Discount_Value = ?, 
+                        Final_Price = ?, 
+                        Transaction_Status = 'Delivered' 
+                    WHERE Transaction_ID = ? AND User_ID = ? AND Transaction_Status = 'Pending'", conn);
 
-            //try
-            //{
-            //    conn.Open();
-            //    OleDbCommand cmd = conn.CreateCommand();
-            //    cmd.CommandType = System.Data.CommandType.Text; 
-            //    cmd.CommandText = "INSERT INTO [Transaction] (User_ID, Restaurant_ID, Payment_Type, Transaction_Time, Transaction_Status, Voucher_ID, Total_Price) " +
-            //       "VALUES ('" + 1 + "', '" + 24 + "', '" + paymentType + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + "Pending" + "', " +
-            //       123 + ", '" + totalPrice + "')";
+                updateCmd.Parameters.AddWithValue("?", paymentType);
+                updateCmd.Parameters.AddWithValue("?", voucherId);
+                updateCmd.Parameters.AddWithValue("?", discountValue);
+                updateCmd.Parameters.AddWithValue("?", finalPrice);
+                updateCmd.Parameters.AddWithValue("?", transactionId);
+                updateCmd.Parameters.AddWithValue("?", userId);
 
-            //    cmd.ExecuteNonQuery();
+                updateCmd.ExecuteNonQuery();
+            }
 
-            //    MessageBox.Show("Transaction saved successfully!", "Order Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //    conn.Close();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message, "Something went wrong", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    conn.Close();
-            //}
+            Response.Redirect("OrderConfirmation.aspx");
+        }
 
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Home.aspx");
         }
     }
 }

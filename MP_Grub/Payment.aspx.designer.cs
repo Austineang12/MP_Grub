@@ -24,6 +24,15 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox txtFullName;
 
         /// <summary>
+        /// lblFullName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFullName;
+
+        /// <summary>
         /// txtContactNo control.
         /// </summary>
         /// <remarks>
@@ -33,49 +42,49 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.TextBox txtContactNo;
 
         /// <summary>
-        /// ddlBuilding control.
+        /// lblContactNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlBuilding;
+        protected global::System.Web.UI.WebControls.Label lblContactNo;
 
         /// <summary>
-        /// ddlFloorNumber control.
+        /// txtAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFloorNumber;
+        protected global::System.Web.UI.WebControls.TextBox txtAddress;
 
         /// <summary>
-        /// txtRoomNo control.
+        /// lblAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtRoomNo;
+        protected global::System.Web.UI.WebControls.Label lblAddress;
 
         /// <summary>
-        /// txtNote control.
+        /// ddlVoucher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNote;
+        protected global::System.Web.UI.WebControls.DropDownList ddlVoucher;
 
         /// <summary>
-        /// lblNote control.
+        /// lblVoucher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNote;
+        protected global::System.Web.UI.WebControls.Label lblVoucher;
 
         /// <summary>
         /// ddlTransaction control.
@@ -87,13 +96,49 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.DropDownList ddlTransaction;
 
         /// <summary>
-        /// txtDiscount control.
+        /// lblTransaction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtDiscount;
+        protected global::System.Web.UI.WebControls.Label lblTransaction;
+
+        /// <summary>
+        /// txtTotalPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTotalPrice;
+
+        /// <summary>
+        /// lblTotalPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTotalPrice;
+
+        /// <summary>
+        /// txtFinalPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtFinalPrice;
+
+        /// <summary>
+        /// lblFinalPrice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblFinalPrice;
 
         /// <summary>
         /// btnSubmit control.
@@ -112,77 +157,5 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
-
-        /// <summary>
-        /// receiptLogo control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Image receiptLogo;
-
-        /// <summary>
-        /// nameItem control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label nameItem;
-
-        /// <summary>
-        /// quantityItem control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label quantityItem;
-
-        /// <summary>
-        /// priceItem control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label priceItem;
-
-        /// <summary>
-        /// transactionLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label transactionLabel;
-
-        /// <summary>
-        /// transactionType control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label transactionType;
-
-        /// <summary>
-        /// totalLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label totalLabel;
-
-        /// <summary>
-        /// totalPrice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label totalPrice;
     }
 }
