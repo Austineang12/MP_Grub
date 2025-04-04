@@ -6,15 +6,8 @@
     <%-- PAYMENT STYLE --%>
     <style type="text/css">
 
-        * {
-            margin: 0;
-            padding: 0;
-            font-family: 'Bricolage Grotesque', sans-serif;
-            letter-spacing: 0px;
-            color: black;
-        }
 
-        section {
+        /*section {
             height: 100vh;
             display: flex;
             align-items: center;
@@ -24,75 +17,69 @@
             scroll-snap-align: start;
             overflow: hidden;
             
-        }
+        }*/
 
         h5 {
-            margin: 25px 0 20px 0;
             font-weight: normal;
-            letter-spacing: -1px;
             font-size: 16px;
+            color: #404040;
+            font-size: 25px;
+            align-items: center;
         }
 
-        h2{
-            padding-left: 10%;
+        h3{
+            align-items: center;
         }
 
-        #receipt {
-            margin-top: 10%;
-        }
 
         /* CONTAINS THE MAIN SECTIONS */
         .paymentContainer {
             display: flex;
+            margin-top: 10vh;
             flex-direction: column;
-            align-items: center; 
+            align-items: center;
+            z-index: 5;
+            /*max-width: 500px;*/
+            width: 500px;
+            /*height: 400px;*/
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
         }
 
 
         /*SECTIONS*/
         .paymentFirst {
-            background-color: white;
-            height: 10vh;
-            justify-content: flex-start;
-            
-            color: #ff5733;
-            margin: 0;
+            color: #404040;
+            font-size: 25px;
+            align-items: center;
         }
 
         .paymentSecond {
-            height: auto;
+            width: 100%;
             display: flex;
-            flex-direction: row;
-            gap: 10px;
-            margin: 2% 0 5% 0;
-            width: 80%;
-            justify-self: center;
-            justify-content: space-between;
-            align-items: flex-start;
-            overflow: visible;
-            border-radius: 10px;
+            flex-direction: column;
+            align-items: center; 
         }
 
-            .paymentSecond .leftSide, .paymentSecond .rightSide {
-                width: 50%;
-                height: auto;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 0 0 4% 5%;
-                justify-content: center;
-                border-radius: 25px;
-                overflow: visible;
-            }
+        .paymentSecond .leftSide {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-radius: 25px;
+            /*overflow: visible;*/
+        }
 
         /*INPUT FIELDS FOR CUSTOMER AND PAYMENT INFO*/
         /* Common Form Group */
         .form-group {
             position: relative;
-            width: 30vw;
+            width: 100%;
             display: flex;
             align-items: flex-start;
-            margin: 10px 0 0 0;
         }
 
         .leftSide .form-input {
@@ -106,13 +93,13 @@
             text-transform: uppercase;
         }
 
-        #txtNote {
+        /*#txtNote {
             height: 70px;
             padding-top: 42px;
             max-height: 150px;
             min-height: 70px;
             resize: vertical;
-        }
+        }*/
 
         /* Adjusted for Dropdowns - Floating Label Effect */
         #ddlTransaction, #ddlBuilding, #ddlFloorNumber {
@@ -178,165 +165,61 @@
             font-size: 8px;
         }
 
-
-
-        /*SUBMIT AND CANCEL BUTTONS*/
-        .submit-btn, .cancel-btn {
-            width: 75%;
-            height: 10vh;
-            padding: 10px;
-            background: #007bff;
-            color: white;
+        .submit-btn {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: #FB8F52;
+            align-items: center;
+            color: #404040;
             border: none;
-            border-radius: 15px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
-            letter-spacing: 0px;
+            margin-top: 10px;
+            font-size: 1rem;
+            display: block;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
-            .submit-btn:hover {
-                background: #174795;
-            }
-
-        .cancel-btn, #popCancel {
-            background: white;
-            color: black;
-            border: 2px solid white;
-            padding: 2px;
+        .submit-btn:hover {
+            background-color: #E07E48;
         }
 
-            .cancel-btn:hover, #popCancel :hover {
-                background: #c9c7c7;
-                border: 0px;
-            }
-
-        #popCancel {
-            border: 1px solid black;
+        .cancel-btn {
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: white;
+            align-items: center;
+            color: #404040;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1rem;
+            display: block;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
         }
+
+        .cancel-btn:hover {
+            background-color: #F2F2F2;
+        }
+
 
         .paymentButtons {
-            width: calc(85% - 32px);
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 10px;
-            margin: 15% 0 5% 0;
-        }
-
-
-
-        /*PRINTER RECEIPT*/
-        .receiptSection {
             display: flex;
             justify-content: center;
-            align-items: flex-start;
-            height: 50vh;
-            width: 30vw;
-            position: relative;
-            overflow: visible;
-            margin: 10% 0 2% 0;
-        }
-
-        .printer {
-            width: 80%;
-            height: 20vh;
-            background: #333;
-            border-radius: 15px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            padding-top: 2vh;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        .power-on {
-            width: 2vw;
-            height: 2vw;
-            background: red;
-            border-radius: 50%;
-            position: absolute;
-            top: 1vh;
-            left: 1.5vw;
-            box-shadow: 0px 0px 0.5vw rgba(255, 0, 0, 0.7);
-        }
-
-        .paper-out {
-            width: 80%;
-            height: 3vh; /* Adjust height responsively */
-            background: black;
-            border-radius: 10px;
-            position: absolute;
-            bottom: 10%;
-        }
-
-        .receipt {
-            width: 65%;
-            min-height: 30vh;
-            height: auto; /* Adjust height based on viewport */
-            background: white;
-            position: absolute;
-            top: calc(15% + 14.5vh);
-            right: 3vw; /* Use vw for right positioning */
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-            gap: 5px;
-            justify-content: flex-start;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 5% 5% 5%;
-            overflow: visible;
-            overflow-y: auto;
-        }
-
-        .receiptLogo {
-            width: 50%;
-            height: 20%;
-            margin-bottom: 1px; /*Pa-adjust based on size of pic*/
-        }
-
-        #grubLogo {
-            width: 30%;
-            height: 0%;
-        }
-
-        .receiptLine {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 100%;
-            font-family: Helvetica, sans-serif !important;
-            letter-spacing: -1px;
-            font-size: clamp(1rem, 1vw, 1rem);
-            /* Responsive font size */
-            color: black;
-        }
-
-        .quantityPrice {
-            margin-left: 10px;
-            display: flex;
-            justify-content: space-between;
-            width: 35%;
-        }
-
-        .receiptFont {
-            font-size: 16px;
-            letter-spacing: -1px;
-        }
-
-        #totalLabel, #totalPrice {
-            font-weight: bold;
-            font-size: clamp(1rem, 2vw, 2rem);
-            margin-top: 15px;
-        }
-
-        @media (max-width: 760px) {
-            .paymentSecond {
-                flex-direction: column;
-                margin-bottom: 10%;
-            }
+        /*@media (max-width: 760px) {
+            .paymentSecond {*/
+                /*flex-direction: column;*/
+                /*margin-bottom: 10%;*/
+            /*}
 
             .form-group {
                 width: 75vw;
@@ -350,64 +233,40 @@
             .menu-group {
                 width: 68vw;
             }
-
-            .receiptSection {
-                width: 70vw;
-            }
-
-            .receipt {
-                right: 7vw;
-            }
-        }
+        }*/
 
 
-        /*POPUP STYLE NOTIFICATION*/
-        .popup-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .background-duck {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Transparent dark overlay */
-            backdrop-filter: blur(8px); /* Adds a blur effect to the background */
-            z-index: 999;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s ease;
+            height: 100vh;
+            background-image: url('/images/Payment_Duckbg1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
         }
-
-        .popup-box {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
+        @media (max-width: 1000px) {
+            .background-duck {
+                position: fixed;
+                height: 100%;
+                background-image: url('/images/Order_Moblebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
         }
-
-            .popup-box image {
-                width: 50%;
-                height: 20%;
-                margin-bottom: 1px; /*Pa-adjust based on size of pic*/
-            }
-
-            .popup-container.active {
-                visibility: visible;
-                opacity: 1;
-            }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
 
     <div class="paymentContainer">
 
-        <section class="paymentFirst">
-            <h2>Checkout</h2>
-        </section>
+        <div class="paymentFirst">
+            <h3>Checkout</h3>
+        </div>
 
         <section class="paymentSecond">
             <section class="leftSide">
@@ -470,5 +329,6 @@
             </section>
         </section>
     </div>
-
+    <%-- Background Image --%>
+    <div class="background-duck"></div>
 </asp:Content>

@@ -11,21 +11,24 @@
             padding: 0;
         }
         .container {
-            background-color: #f7a76c;
+            background-color: #FB8F52;
             border-radius: 20px;
             padding: 20px;
             width: 320px;
-            margin: 50px auto;
+            margin: 10px auto;
             margin-top: 1%;
             box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
-
-        .logo-container img {
-            width: 120px;
-            margin-bottom: 10px;
+        .brand-container {
+            font-size: 25px;
+            font-family: 'Akshar', sans-serif;
+            text-shadow: 3px 4px 0px rgba(0, 0, 0, 0.25);
+            font-weight: 700;
+            color: #404040;
         }
+
         .image-container img {
             width: 180px;
             display: block;
@@ -47,17 +50,24 @@
             color: gold;
         }
         .button {
-            background-color: #e55b33;
+            font-family: 'Akshar', sans-serif;
+            font-weight: 700;
+            background-color: white;
+            align-items: center;
+            color: #404040;
             border: none;
-            color: white;
-            padding: 12px;
-            margin: 10px;
-            width: 85%;
-            border-radius: 15px;
-            font-size: 16px;
+            padding: 12px 30px;
+            border-radius: 20px;
             cursor: pointer;
-            font-weight: bold;
-            box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
+            margin-top: 10px;
+            font-size: 1rem;
+            display: block;
+            width: 20vw;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #F2F2F2;
         }
     </style>
 
@@ -65,8 +75,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
         <div class="container">
-            <div class="logo-container">
-                <img src="Images/GrubName.png" alt="GRUB Logo">
+            <div class="brand-container">
+                <h1>GRUB</h1>
             </div>
             <div class="image-container">
                <img src="Images/Duck.png" alt="Delivery Duck">
