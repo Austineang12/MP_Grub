@@ -137,6 +137,8 @@
                 <button class="button" onclick="closeModal(); return false;">Cancel</button>
             </div>
         </div>
+    <asp:HiddenField ID="hfReviewText" runat="server" />
+
     <script type="text/javascript">
         function openModal() {
             document.getElementById("reviewModal").style.display = "flex";
@@ -163,13 +165,14 @@
         function submitReview() {
             var reviewText = document.getElementById("reviewText").value.trim();
             
-            if (reviewText === " ") {
+            if (reviewText === "") {
                 alert("Please enter your review before submitting.");
                 return false;
             } else {
                 alert("Thanks for the feedback!");
-                window.location.href = "Home.aspx";
-                return false;
+                document.getElementById('<%= hfReviewText.ClientID %>').value = reviewText;
+                return true;
+
             }
         }
 
