@@ -239,6 +239,11 @@ namespace MP_Grub
         {
             try
             {
+                if (System.Web.HttpContext.Current.Session["TransactionID"] == null ||
+                System.Web.HttpContext.Current.Session["UserID"] == null)
+                {
+                    return "Session expired. Please log in again.";
+                }
                 // Retrieve userID from session
                 int userID = Convert.ToInt32(HttpContext.Current.Session["UserID"].ToString());
                 int foodID = Convert.ToInt32(foodID1);

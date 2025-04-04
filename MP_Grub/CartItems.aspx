@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Main.Master" AutoEventWireup="true" CodeBehind="CartItems.aspx.cs" Inherits="MP_Grub.CartItems" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <style>
+    <style type="text/css">
         body {
             display: flex;
             flex-direction: column;
@@ -237,7 +237,7 @@
         }
     </style>
 
-    <script>
+    <script type="text/javascript">
         function updateQuantity(orderDetailId, newQuantity, newOrderAmount) {
             document.getElementById("qty_" + orderDetailId).innerText = newQuantity;
             document.getElementById("orderAmount_" + orderDetailId).innerText = newOrderAmount.toFixed(2);
