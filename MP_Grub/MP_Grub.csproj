@@ -143,7 +143,6 @@
     <Content Include="Payment.aspx" />
     <Content Include="Profile.aspx" />
     <Content Include="SpecificIssues.aspx" />
-    <Content Include="ThankYou.aspx" />
     <Content Include="Voucher.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -274,13 +273,6 @@
     </Compile>
     <Compile Include="SpecificIssues.aspx.designer.cs">
       <DependentUpon>SpecificIssues.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="ThankYou.aspx.cs">
-      <DependentUpon>ThankYou.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ThankYou.aspx.designer.cs">
-      <DependentUpon>ThankYou.aspx</DependentUpon>
     </Compile>
     <Compile Include="Voucher.aspx.cs">
       <DependentUpon>Voucher.aspx</DependentUpon>
