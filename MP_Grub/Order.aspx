@@ -135,7 +135,7 @@
             gap: 10px;
         }
 
-        .food-button {
+        .food-button, .food-buttonB {
             background-color: #ff7f50;
             color: white;
             border: none;
@@ -148,7 +148,7 @@
             transition: transform 0.2s ease-in-out;
         }
 
-        .food-button:hover{
+        .food-button:hover, .food-buttonB:hover{
             transform: translateY(-5px);
         }
 
@@ -182,28 +182,32 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="restaurant-section">
         <h1 class="lblRestaurant">Restaurants</h1>
-
+        <%-- RESTAURANT NAMES --%>
         <div class="restaurant-container" id="restaurantContainer" runat="server">
             <%-- Retrieved from Database --%>
         </div>
     </div>
 
+    <%-- FOOD ITEMS --%>
     <div id="foodPopup" class="popup">
         <h2 id="restaurantTitle" class="resto-title"></h2>
         <div class="food-item">
-            <div id="foodList" class="food-name"></div>
+            <div id="foodList" class="food-name"> <%-- Retrieved from Database --%> </div>
         </div>
         <button class="food-button" style="background-color: #f44336; margin-top: 20px;" onclick="closePopup(); return false;">Close</button>
     </div>
 
-    <%-- Background Image --%>
+    <%-- FOR ALERT MESSAGE --%>
+    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center;"></div>
+
+    <%-- BACKGROUND IMAGE --%>
     <div class="background-duck"></div>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" >
         let restaurantNames = {};
 
-        // Fetch restaurant names from the server
+        //FETCH RESTAURANT NAMES
         function fetchRestaurantNames() {
             $.ajax({
                 type: "POST",
@@ -220,14 +224,14 @@
                 }
             });
         }
-
-        // Call the function to fetch names on page load
         fetchRestaurantNames();
 
+        //BUILDING POPUP FOOD MENU
         function showPopup(restaurantId) {
             const restaurantTitle = restaurantNames[restaurantId] || "Unknown Restaurant";
             document.getElementById('restaurantTitle').textContent = restaurantTitle + " Menu";
 
+            //FETCH FROM THE FOOD TABLE
             $.ajax({
                 type: "POST",
                 url: "Order.aspx/GetRestaurantMenu",
@@ -254,7 +258,7 @@
                                 <span class="food-price">${food.FoodPrice}</span>
                             </div>
                             <div class="food-actions">
-                                <button class="food-button" data-foodid='${food.FoodID}' onclick="bookmarkFood('${food.FoodID}', this);return false;">Bookmark</button>
+                                <button class="food-buttonB" data-foodid='${food.FoodID}' onclick="bookmarkFood('${food.FoodID}', this);return false;">Bookmark</button>
                                 <button class="food-button" onclick="addToCart('${food.FoodID}','${food.FoodName}', '${food.FoodPrice}');return false;">Add to Cart</button>
                             </div>
                         `;
@@ -263,12 +267,49 @@
                     });
 
                     document.getElementById('foodPopup').classList.add('active');
-                    checkBookmarkStates();
+
+
+                    //CHECKS IF THE FOODIDs IS IN THE BOOKMARK TABLE
+                    $.ajax({
+                        type: "POST",
+                        url: "Order.aspx/GetUserBookmarkedFood",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            //LIST OF FOODIDs IN THE BOOKMARK TABLE
+                            const bookmarkedFoodIDs = response.d;
+                            let foodButtons = document.querySelectorAll('.food-buttonB');
+
+                            foodButtons.forEach(button => {
+                                let foodID = parseInt(button.getAttribute('data-foodid'));
+                                if (bookmarkedFoodIDs.includes(foodID)) {
+                                    $(button).prop("disabled", true);
+                                    $(button).css("background-color", "#d3d3d3");
+                                    $(button).css("cursor", "not-allowed");
+                                    $(button).css("transform", "none");
+                                }
+                                else {
+                                    //RE-ENABLE IF ITEM HAS BEEN REMOVED FROM BOOKMARK TABLE
+                                    $(button).prop("disabled", false);
+                                    $(button).css("background-color", "#ff7f50");
+                                    $(button).css("cursor", "pointer");
+                                    $(button).css("transform", "transform 0.2s ease-in-out");
+                                }
+
+                            });
+                        },
+                        error: function () {
+                            //FOR DEBUGGING ONLY
+                            console.error("Failed to get bookmarked food.");
+                        }
+                    });
                 },
                 error: function (error) {
                     console.error("Error fetching menu:", error);
                 }
             });
+
+            
         }
 
 
@@ -282,63 +323,26 @@
                 dataType: "json",
                 success: function (response) {
                     if (response.d.success) {
-                        var message = document.createElement("div");
-                        message.textContent = "Food has been bookmarked!";
-                        message.classList.add("bookmark-message");
-                        document.body.appendChild(message);
-
-                        // Automatically remove the message after 3 seconds
-                        setTimeout(function () {
-                            message.remove();
-                        }, 3000);
-
-                        // Disable the button and change styles immediately after bookmarking
+                        showToast("Food has been bookmarked!", "#3CB371")
                         $(buttonElement).prop("disabled", true);
                         $(buttonElement).css("background-color", "#d3d3d3");
                         $(buttonElement).css("cursor", "not-allowed");
                         $(buttonElement).css("transform", "none");
-
-                        // Save the disabled state in localStorage with the foodID as key
-                        localStorage.setItem("food_" + foodID, 'disabled');
-
-                        console.log("Bookmark saved:", foodID, "disabled");
-                        // Optionally, you could also call checkBookmarkStates here to immediately reflect changes
-                        checkBookmarkStates();  // To ensure UI is updated if needed
                     } else {
-                        alert("Error: " + response.d.message);
+                        //alert("Error: " + response.d.message);
+                        showToast("Bookmarking failed — please refresh and try again.", "#DC3545")
+
                     }
                 },
                 error: function (xhr, status, error) {
+                    //FOR DEBUGGING ONLY
                     console.error("AJAX Error:", error);
-                    alert("An error occurred while bookmarking the food.");
+                    //alert("An error occurred while bookmarking the food.");
+                    showToast("Oops! Couldn’t bookmark the food due to an error", "#DC3545")
                 }
             });
         }
 
-        // Function to check bookmark states and disable buttons on page load
-        function checkBookmarkStates() {
-            let foodButtons = document.querySelectorAll('.food-button');
-
-            foodButtons.forEach(button => {
-                let foodID = button.getAttribute('data-foodid'); // Assuming each button has a data-foodid attribute
-
-                console.log("Checking foodID:", foodID, "State:", localStorage.getItem(foodID));
-
-                // Check if the foodID is disabled in localStorage
-                if (localStorage.getItem("food_" + foodID) === 'disabled') {
-                    // If found, disable the button and apply styles
-                    $(button).prop("disabled", true);  // Ensure the button is disabled
-                    $(button).css("background-color", "#d3d3d3");  // Grey out the button
-                    $(button).css("cursor", "not-allowed");  // Change cursor to 'not-allowed'
-                    $(button).css("transform", "none");  // Ensure there's no transformation
-                }
-            });
-        }
-
-        // Run the checkBookmarkStates function when the page loads
-        document.addEventListener('DOMContentLoaded', function () {
-            checkBookmarkStates();
-        });
 
 
 
@@ -392,6 +396,18 @@
 
         function closePopup() {
             document.getElementById('foodPopup').classList.remove('active');
+        }
+
+        //ALTERNATIVE FOR ALERT NOTIFICATION
+        function showToast(message, bgColor = '#333') {
+            var toast = document.getElementById('toast');
+            toast.innerHTML = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.display = 'block';
+
+            setTimeout(function () {
+                toast.style.display = 'none';
+            }, 2500); // Hide after 2.5 seconds
         }
     </script>
 </asp:Content>

@@ -228,7 +228,7 @@
             </section>
         </div>
     <%-- FOR ALERT MESSAGE --%>
-    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px;"></div>
+    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center;"></div>
 
     <%-- BACKGROUND IMAGE --%>
     <div class="background-duck"></div>
@@ -271,25 +271,25 @@
                })
                    .then(res => {
                        if (res.ok) {
-                           showToast("Thanks for your feedback!");
+                           showToast("Thanks for your feedback!", "#3CB371");
                            //DELAY REDIRECTING AFTER 1 SECOND
                            setTimeout(function () {
                                window.location.href = "order.aspx";
-                           }, 500);
+                           }, 1000);
                        } else {
-                           showToast("We encountered an issue saving your feedback. We apologize for the inconvenience.");
+                           showToast("We encountered an issue saving your feedback. We apologize for the inconvenience.", "#DC3545");
                            setTimeout(function () {
                                window.location.href = "order.aspx";
-                           }, 500);
+                           }, 1000);
                        }
                    })
                    .catch(err => {
                        //FOR DEBUGGING ONLY
                        console.error("Error submitting feedback", err);
-                       showToast("Oops! There was an error submitting your feedback. We’re sorry for the inconvenience!");
+                       showToast("Oops! There was an error submitting your feedback. We’re sorry for the inconvenience!", "#DC3545");
                        setTimeout(function () {
                            window.location.href = "order.aspx";
-                       }, 500);
+                       }, 1000);
                    });
 
                return false;
@@ -297,9 +297,10 @@
        }
 
        //ALTERNATIVE FOR ALERT NOTIFICATION
-       function showToast(message) {
+       function showToast(message, bgColor ='#333') {
            var toast = document.getElementById('toast');
            toast.innerHTML = message;
+           toast.style.backgroundColor = bgColor;
            toast.style.display = 'block';
 
            setTimeout(function () {
