@@ -147,6 +147,11 @@
             <div>
                 <asp:Button ID="signupbtn" runat="server" Text="Sign Up" CssClass="create-button" OnClick="SignupValidation"/>
             </div>
+            <div style="margin-top: 10px;">
+                <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="False"
+                    Font-Size="14px" Font-Bold="true">
+                </asp:Label>
+            </div>
         </form>
     </div>
 

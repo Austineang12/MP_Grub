@@ -44,7 +44,7 @@ namespace MP_Grub
             }
             else
             {
-                Response.Write("<script>alert('Invalid username or password!');</script>");
+                lblError.Visible = true;
             }
         }
 
@@ -147,7 +147,7 @@ namespace MP_Grub
                 cmd.ExecuteNonQuery();
             }
 
-            // ✅ Fix: Retrieve the last inserted Transaction_ID
+            // Fix: Retrieve the last inserted Transaction_ID
             string getLastTransactionQuery = "SELECT MAX(Transaction_ID) FROM [Transaction] WHERE User_ID = ?";
             using (OleDbCommand cmd = new OleDbCommand(getLastTransactionQuery, conn))
             {

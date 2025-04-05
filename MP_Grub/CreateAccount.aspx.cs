@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web;
 using System.Web.UI;
 using System.Data.OleDb;
@@ -19,62 +20,114 @@ namespace MP_Grub
             string fullNameInput = fullnametxt.Text.Trim();
             string passwordInput = passwordtxt.Text.Trim();
 
-            if (usernameInput.Contains(" "))
-            {
-                lblUsernameError.Text = "Username cannot contain spaces!";
-                lblUsernameError.Visible = true;
-                return;
-            }
-            else
-            {
-                lblUsernameError.Visible = false;
-            }
+            fullNameInput = CapitalizeEachWord(fullNameInput);
 
-            // Full Name validation: No numbers or commas
-            if (Regex.IsMatch(fullNameInput, @"[\d,]")) // Checks if full name contains any digit (0-9) or comma (,)
-            {
-                lblFullNameError.Text = "Full Name cannot contain numbers or commas!";
-                lblFullNameError.Visible = true;
-                return;
-            }
-            else
-            {
-                lblFullNameError.Visible = false;
-            }
+            // Reset error messages
+            lblUsernameError.Text = "";
+            lblFullNameError.Text = "";
+            lblPasswordError.Text = "";
+            lblError.Text = "";
 
-            // Password validation: No spaces
-            if (passwordInput.Contains(" "))
-            {
-                lblPasswordError.Text = "Password cannot contain Spaces!";
-                lblPasswordError.Visible = true;
-                return;
-            }
-            else
-            {
-                lblPasswordError.Visible = false;
-            }
+            lblUsernameError.Visible = false;
+            lblFullNameError.Visible = false;
+            lblPasswordError.Visible = false;
+            lblError.Visible = false;
 
+
+
+            // Required field validation
             if (string.IsNullOrWhiteSpace(usernameInput) ||
                 string.IsNullOrWhiteSpace(fullNameInput) ||
                 string.IsNullOrWhiteSpace(passwordInput))
             {
-                Response.Write("<script>alert('All fields are required!');</script>");
+                lblError.Text = "All fields are required.";
+                lblError.Visible = true;
                 return;
             }
 
+
+
+            // Username validations
+            if (usernameInput.Length <= 5)
+            {
+                lblUsernameError.Text = "Username must be more than 5 characters.";
+                lblUsernameError.Visible = true;
+                return;
+            }
+
+            if (usernameInput.Contains(" "))
+            {
+                lblUsernameError.Text = "Username cannot contain spaces.";
+                lblUsernameError.Visible = true;
+                return;
+            }
+
+            if (usernameInput != usernameInput.ToLower())
+            {
+                lblUsernameError.Text = "Username must be in lowercase only.";
+                lblUsernameError.Visible = true;
+                return;
+            }
+
+            // Full Name validations
+            if (fullNameInput.Length <= 3)
+            {
+                lblFullNameError.Text = "Full Name must be more than 3 characters.";
+                lblFullNameError.Visible = true;
+                return;
+            }
+
+            if (Regex.IsMatch(fullNameInput, @"[\d,]"))
+            {
+                lblFullNameError.Text = "Full Name cannot contain numbers or commas.";
+                lblFullNameError.Visible = true;
+                return;
+            }
+
+            // Password validations
+            if (passwordInput.Length <= 6)
+            {
+                lblPasswordError.Text = "Your password length is too weak.";
+                lblPasswordError.Visible = true;
+                return;
+            }
+
+            if (passwordInput.Contains(" "))
+            {
+                lblPasswordError.Text = "Password cannot contain spaces.";
+                lblPasswordError.Visible = true;
+                return;
+            }
+
+            // If all validations pass, try to register the user
             int userID = RegisterUser(usernameInput, fullNameInput, passwordInput);
 
             if (userID > 0)
             {
-                /*-- Transition to Login.aspx --*/
+                // Redirect with animation
                 string script = "animateRedirect('Login.aspx');";
                 ClientScript.RegisterStartupScript(this.GetType(), "Redirect", script, true);
             }
             else
             {
-                Response.Write("<script>alert('Username already exists or database error occurred!');</script>");
+                lblError.Text = "This username already exists or a database error occurred.";
+                lblError.Visible = true;
+
+                usernametxt.Text = "";
+                fullnametxt.Text = "";
+                passwordtxt.Text = "";
             }
         }
+        private string CapitalizeEachWord(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(input.ToLower());
+        }
+
+
 
         private int RegisterUser(string username, string fullName, string password)
         {

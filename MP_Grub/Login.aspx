@@ -110,6 +110,11 @@
             border-radius: 20px;
             border: 1px solid #ddd;
         }
+        asp\:label {
+            display: block;
+            text-align: center;
+        }
+
     </style>
     <script>
         /*-- Transistion to CreateAccount.aspx --*/
@@ -155,6 +160,11 @@
             </div>
             <div>
                 <asp:Button ID="loginbtn" runat="server" Text="Login" class="login-button" OnClick="LoginValidation" />
+            </div>
+            <div style="margin-top: 10px;">
+                <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="False"
+                    Font-Size="14px" Font-Bold="true" Text="Sorry, your login credentials are incorrect. Please double-check your inputs.">
+                </asp:Label>
             </div>
         </form>
     </div>
