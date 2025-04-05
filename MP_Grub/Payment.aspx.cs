@@ -185,13 +185,15 @@ namespace MP_Grub
                         int userID = Convert.ToInt32(Session["UserID"]);
 
 
+                        CreateNewTransaction(userId);
+
                         Session["TransactionID"] = transactionID;
                         Session["UserID"] = userID;
                         Response.Redirect("OrderConfirmation.aspx");
                     }
                     else
                     {
-
+                        Response.Write("<script>alert('Failed to update the transaction. Please try again.');</script>");
                     }
                 }
             }
@@ -206,6 +208,36 @@ namespace MP_Grub
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("Home.aspx");
+        }
+
+        private void CreateNewTransaction(string userId)
+        {
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+
+                // Create new transaction with 'Pending' status and other fields set to NULL
+                OleDbCommand cmd = new OleDbCommand(@"
+                INSERT INTO [Transaction] (User_ID, Transaction_Status)
+                VALUES (?, 'Pending')", conn);
+
+                cmd.Parameters.AddWithValue("?", userId);
+
+                cmd.ExecuteNonQuery();
+
+                // Retrieve the new Transaction_ID for this transaction
+                OleDbCommand getTransactionCmd = new OleDbCommand("SELECT MAX(Transaction_ID) FROM [Transaction] WHERE User_ID = ?", conn);
+                getTransactionCmd.Parameters.AddWithValue("?", userId);
+                object result = getTransactionCmd.ExecuteScalar();
+                if (result != null)
+                {
+                    // Set the new TransactionID in session
+                    Session["TransactionID"] = Convert.ToInt32(result);
+                }
+            }
+
+            // Redirect to OrderConfirmation.aspx after creating the new transaction
+            Response.Redirect("OrderConfirmation.aspx");
         }
     }
 }
