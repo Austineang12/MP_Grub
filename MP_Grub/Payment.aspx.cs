@@ -77,13 +77,13 @@ namespace MP_Grub
                 OleDbCommand priceCmd = new OleDbCommand("SELECT Total_Price FROM [Transaction] WHERE Transaction_ID = ? AND Transaction_Status = 'Pending'", conn);
                 priceCmd.Parameters.AddWithValue("?", transactionId);
                 object result = priceCmd.ExecuteScalar();
-                txtTotalPrice.Text = result != null ? result.ToString() : "0.00";
+                lblTotalPrice.Text = result != null ? result.ToString() : "0.00";
             }
         }
 
         private void UpdateFinalPrice()
         {
-            double totalPrice = Convert.ToDouble(txtTotalPrice.Text);
+            double totalPrice = Convert.ToDouble(lblTotalPrice.Text);
             double discountValue = 0;
 
             if (ddlVoucher.SelectedValue != "0")
@@ -100,9 +100,9 @@ namespace MP_Grub
             }
 
             double finalPrice = totalPrice - (totalPrice * (discountValue / 100));
-            txtFinalPrice.Text = finalPrice.ToString("F2");
+            lblFinalPrice.Text = finalPrice.ToString("F2");
         }
-
+         
         protected void ddlVoucher_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateFinalPrice();
@@ -116,7 +116,7 @@ namespace MP_Grub
             string voucherId = ddlVoucher.SelectedValue;
 
             double discountValue = 0;
-            double totalPrice = Convert.ToDouble(txtTotalPrice.Text);
+            double totalPrice = Convert.ToDouble(lblTotalPrice.Text);
 
             // If a voucher is selected, get the discount value, delete voucher after using
             if (voucherId != "0")
@@ -143,7 +143,7 @@ namespace MP_Grub
 
             // Calculate the final price after discount
             double finalPrice = totalPrice - (totalPrice * (discountValue / 100));
-            txtFinalPrice.Text = finalPrice.ToString("F2");
+            lblFinalPrice.Text = finalPrice.ToString("F2");
 
             try
             {

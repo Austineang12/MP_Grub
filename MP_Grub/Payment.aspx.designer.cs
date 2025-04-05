@@ -15,15 +15,6 @@ namespace MP_Grub
     {
 
         /// <summary>
-        /// txtFullName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFullName;
-
-        /// <summary>
         /// lblFullName control.
         /// </summary>
         /// <remarks>
@@ -33,13 +24,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblFullName;
 
         /// <summary>
-        /// txtContactNo control.
+        /// txtFullName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtContactNo;
+        protected global::System.Web.UI.WebControls.TextBox txtFullName;
 
         /// <summary>
         /// lblContactNo control.
@@ -51,13 +42,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblContactNo;
 
         /// <summary>
-        /// txtAddress control.
+        /// txtContactNo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAddress;
+        protected global::System.Web.UI.WebControls.TextBox txtContactNo;
 
         /// <summary>
         /// lblAddress control.
@@ -69,13 +60,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblAddress;
 
         /// <summary>
-        /// ddlVoucher control.
+        /// txtAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlVoucher;
+        protected global::System.Web.UI.WebControls.TextBox txtAddress;
 
         /// <summary>
         /// lblVoucher control.
@@ -87,13 +78,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblVoucher;
 
         /// <summary>
-        /// ddlTransaction control.
+        /// ddlVoucher control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTransaction;
+        protected global::System.Web.UI.WebControls.DropDownList ddlVoucher;
 
         /// <summary>
         /// lblTransaction control.
@@ -105,13 +96,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblTransaction;
 
         /// <summary>
-        /// txtTotalPrice control.
+        /// ddlTransaction control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTotalPrice;
+        protected global::System.Web.UI.WebControls.DropDownList ddlTransaction;
 
         /// <summary>
         /// lblTotalPrice control.
@@ -123,15 +114,6 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblTotalPrice;
 
         /// <summary>
-        /// txtFinalPrice control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFinalPrice;
-
-        /// <summary>
         /// lblFinalPrice control.
         /// </summary>
         /// <remarks>
@@ -141,15 +123,6 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblFinalPrice;
 
         /// <summary>
-        /// btnSubmit control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmit;
-
-        /// <summary>
         /// btnCancel control.
         /// </summary>
         /// <remarks>
@@ -157,5 +130,14 @@ namespace MP_Grub
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
+
+        /// <summary>
+        /// btnSubmit control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSubmit;
     }
 }
