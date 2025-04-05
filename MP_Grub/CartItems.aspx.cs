@@ -198,6 +198,32 @@ namespace MP_Grub
             int userID = Convert.ToInt32(Session["UserID"]);
 
 
+            //Check if there are cart items for this transaction
+            int cartItemCount = 0;
+            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            {
+                string query = @"SELECT COUNT(*) FROM Order_Detail 
+                         WHERE Transaction_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
+
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Transaction_ID", transactionID);
+                    cmd.Parameters.AddWithValue("@User_ID", userID);
+
+                    conn.Open();
+                    cartItemCount = Convert.ToInt32(cmd.ExecuteScalar());
+                    conn.Close();
+                }
+            }
+
+            //If cart is empty, show error label and stop redirecting
+            if (cartItemCount == 0)
+            {
+                lblError.Visible = true;
+                return;
+            }
+
+
             decimal totalPrice;
             if (!decimal.TryParse(lblTotalAmount.Text.Replace(",", "").Trim(), out totalPrice))
             {

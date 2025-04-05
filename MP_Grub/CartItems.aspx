@@ -211,7 +211,7 @@
             background-repeat: no-repeat;
             transition: background-image 0.3s ease-in-out;
         }
-
+        
         @media (max-width: 1000px) {
             .background-duck {
                 position: fixed;
@@ -307,6 +307,11 @@
             <div class="buttons">
                 <asp:Button ID="btnOrder" runat="server" Text="Order More" class="order-button" OnClick="btnOrder_Click" />
                 <asp:Button ID="btnPayment" runat="server" Text="Proceed to Payment" class="payment-button" OnClick="btnPayment_Click" />
+            </div>
+            <div style="margin-top: 10px; text-align: center;">
+                <asp:Label ID="lblError" runat="server" ForeColor="Red" Visible="False"
+                    Font-Size="14px" Font-Bold="true" Text="You can't proceed to payment because your cart is empty.">
+                </asp:Label>
             </div>
         </div>
     </div>

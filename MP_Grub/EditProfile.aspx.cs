@@ -2,6 +2,7 @@
 using System.Data.OleDb;
 using System.Web.UI;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace MP_Grub
 {
@@ -48,6 +49,8 @@ namespace MP_Grub
             string contactInput = contact.Text.Trim();
             string addressInput = address.Text.Trim();
 
+            fullNameInput = CapitalizeEachWord(fullNameInput);
+
             // Username validation: No spaces
             if (usernameInput.Contains(" "))
             {
@@ -60,10 +63,42 @@ namespace MP_Grub
                 lblUsernameError.Visible = false;
             }
 
+            //Username character length validation
+            if (usernameInput.Length <= 5)
+            {
+                lblUsernameError.Text = "Username must be more than 5 characters.";
+                lblUsernameError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblUsernameError.Visible = false;
+            }
+
+            //username small case only
+            if (usernameInput != usernameInput.ToLower())
+            {
+                lblUsernameError.Text = "Username must be in lowercase only.";
+                lblUsernameError.Visible = true;
+                return;
+            }
+
             // Full Name Validation: No numbers
             if (Regex.IsMatch(fullNameInput, @"\d")) // Checks if the full name contains any numbers
             {
                 lblFullNameError.Text = "Full Name cannot contain Numbers!";
+                lblFullNameError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblFullNameError.Visible = false;
+            }
+
+            //Full name validation: character length
+            if (fullNameInput.Length <= 3)
+            {
+                lblFullNameError.Text = "Full Name must be more than 3 characters.";
                 lblFullNameError.Visible = true;
                 return;
             }
@@ -83,7 +118,7 @@ namespace MP_Grub
 
                 if (age < 13 || age > 100)
                 {
-                    lblBirthdateError.Text = "Age must be between 13 and 100 years old!";
+                    lblBirthdateError.Text = "Age must be between 13 to 100 years old!";
                     lblBirthdateError.Visible = true;
                     return;
                 }
@@ -99,10 +134,10 @@ namespace MP_Grub
                 return;
             }
 
-            // Contact Validation: Must be exactly 11 characters
-            if (contactInput.Length != 11 || !Regex.IsMatch(contactInput, @"^\d{11}$"))
+            // Contact Validation: Must start with '09' and be exactly 11 digits
+            if (!Regex.IsMatch(contactInput, @"^09\d{9}$"))
             {
-                lblContactError.Text = "Contact should have 11 Characters only!";
+                lblContactError.Text = "Contact must start with '09' and be exactly 11 digits.";
                 lblContactError.Visible = true;
                 return;
             }
@@ -111,10 +146,22 @@ namespace MP_Grub
                 lblContactError.Visible = false;
             }
 
+
             // Address Validation: Cannot contain special characters like @, !, #
             if (Regex.IsMatch(addressInput, @"[@!#\$%\^&\*\(\)_\+\=]"))
             {
-                lblAddressError.Text = "Address cannot contain special characters like @, !, #, etc.";
+                lblAddressError.Text = "Address cannot contain special characters.";
+                lblAddressError.Visible = true;
+                return;
+            }
+            else
+            {
+                lblAddressError.Visible = false;
+            }
+
+            if (addressInput.Length <= 6)
+            {
+                lblAddressError.Text = "Address input is too short.";
                 lblAddressError.Visible = true;
                 return;
             }
@@ -141,6 +188,15 @@ namespace MP_Grub
             }
 
             Response.Redirect("Profile.aspx");
+        }
+
+        private string CapitalizeEachWord(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return input;
+
+            TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
+            return textInfo.ToTitleCase(input.ToLower());
         }
     }
 }
