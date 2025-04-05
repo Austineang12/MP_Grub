@@ -9,18 +9,22 @@
             margin: 20px 0 10px 50px;
         }
         .bookmarkPopup {
+            background-color: white;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-            width: 70vw;
+            width: 40vw;
             display: flex;
             flex-direction: column;
             position: relative;
             border-radius: 20px;
-            height: auto; 
-            margin: 50px 0 100px 0;
+            height: 80vh; 
+            /*margin: 50px 0 100px 0;*/
+            z-index: 5;
         }
 
         .bookmarkContent {
-            z-index: 2;
+            background-color: lightgrey;
+            box-shadow: inset 0px 4px 15px rgba(0, 0, 0, 0.2);
+            /*z-index: 2;*/
             margin-bottom: -20px; /* Negative margin to overlap with the red part */
             position: relative;
             padding: 20px;
@@ -32,14 +36,28 @@
             gap: 10px;
             row-gap: 20px;
             height: auto; 
-    
-            overflow-y: auto; /* Enables vertical scrolling */
-            overflow-x: hidden; /* Prevents horizontal scrolling */
+            overflow-y: auto;
+            height: 480px;
+
+            /* make the scroll bar hidden */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        /* make the scroll bar hidden */
+        .bookmarkContent::-webkit-scrollbar {
+          display: none;
         }
 
 
         .optionButtons {
-            background: #f0eeed;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+
+            /*background: blue;
             height: 200px;
             border-radius: 20px;
             position: relative;
@@ -48,9 +66,27 @@
             align-items: center;
             justify-content: center;
             gap: 10%;
-            margin-top: 20px;
+            margin-top: 20px;*/
         }
-        .optionBtn{
+
+        .optionBtn {
+            font-weight: 700;
+            background-color: #FB8F52;
+            align-items: center;
+            color: #404040;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .optionBtn:hover {
+            background-color: #E07E48;
+}
+
+        /*.optionBtn{
             background: #fff;
             height: 80px;
             width: 250px;
@@ -67,13 +103,13 @@
         .optionBtn:hover {
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease-in-out;
-        }
+        }*/
 
 
         .item{
-            background: #f0eeed;
-            height: 200px;
-            width: 200px;
+            background: white;
+            height: 100px;
+            width: 300px;
             border-radius: 20px;
             display: flex;
             flex-direction: column;
@@ -160,6 +196,33 @@
             transition: all 0.1s ease-in-out;
         }
 
+        /*-- Background Image --*/
+        .background-duck {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('/images/Cart_Duckbg2.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
+        @media (max-width: 1000px) {
+            .background-duck {
+                position: fixed;
+                height: 100%;
+                background-image: url('/images/Order_Moblebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .bookmarkPopup {
+                width: 400px;
+            }
+        }
+
     </style>
     <script type="text/javascript">
         function updateQuantity(foodName, restaurantName, change) {
@@ -219,6 +282,8 @@
             <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout" />
         </div>
     </div>
+    <%-- Background Image --%>
+    <div class="background-duck"></div>
 
     <script type="text/javascript">
 
