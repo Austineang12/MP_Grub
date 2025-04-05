@@ -81,6 +81,11 @@
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
+                <asp:Panel ID="pnlNoOrders" runat="server" Visible="false">
+                    <tr>
+                        <td colspan="4" style="height: 100px;"></td>
+                    </tr>
+                </asp:Panel>
             </tbody>
         </table>
     </div>

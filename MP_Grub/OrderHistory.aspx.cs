@@ -48,6 +48,9 @@ namespace MP_Grub
                         adapter.Fill(dt);
                         rptOrderHistory.DataSource = dt;
                         rptOrderHistory.DataBind();
+
+                        // Show empty row panel if no data
+                        pnlNoOrders.Visible = dt.Rows.Count == 0;
                     }
                 }
             }
