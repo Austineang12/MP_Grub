@@ -198,7 +198,7 @@
     </div>
 
     <%-- FOR ALERT MESSAGE --%>
-    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center;"></div>
+    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center; opacity: 1;transition: opacity 0.5s ease;"></div>
 
     <%-- BACKGROUND IMAGE --%>
     <div class="background-duck"></div>
@@ -301,15 +301,17 @@
                         error: function () {
                             //FOR DEBUGGING ONLY
                             console.error("Failed to get bookmarked food.");
+                            showToast("Oops! Couldn’t bookmark the food due to an error", "#DC3545")
                         }
                     });
                 },
                 error: function (error) {
                     console.error("Error fetching menu:", error);
+                    showToast("Oops! Something went wrong. Please refresh the page and try again.", "#DC3545")
                 }
             });
 
-            
+
         }
 
 
@@ -330,20 +332,16 @@
                         $(buttonElement).css("transform", "none");
                     } else {
                         //alert("Error: " + response.d.message);
-                        showToast("Bookmarking failed — please refresh and try again.", "#DC3545")
-
+                        showToast("Bookmarking failed. — Please refresh and try again.", "#DC3545")
                     }
                 },
                 error: function (xhr, status, error) {
                     //FOR DEBUGGING ONLY
                     console.error("AJAX Error:", error);
-                    //alert("An error occurred while bookmarking the food.");
                     showToast("Oops! Couldn’t bookmark the food due to an error", "#DC3545")
                 }
             });
         }
-
-
 
 
         //INSERTING TO ORDER DETAILS TABLE
@@ -377,19 +375,24 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (response) {
-                            alert(response.d);
+                            if (response.d.success) {
+                                showToast(response.d.message, '#3CB371')
+                            }
+                            else {
+                                showToast(response.d.message, '#DC3545')
+                            }
                         },
                         error: function (xhr, status, error) {
                             console.error("AJAX Error:", error);
                             console.error("Response:", xhr.responseText);
-                            alert("Session error. Please try again. " + error);
+                            showToast("Oops! Couldn’t add the food to the cart due to an error", "#DC3545")
                         }
                     });
                 },
                 error: function (xhr, status, error) {
                     console.error("Session AJAX Error:", error);
                     console.error("Response:", xhr.responseText);
-                    alert("Session error. Please try again. " + error);
+                    showToast("Oops! Couldn’t add the food to the cart due to an error", "#DC3545")
                 }
             });
         }
@@ -399,15 +402,24 @@
         }
 
         //ALTERNATIVE FOR ALERT NOTIFICATION
-        function showToast(message, bgColor = '#333') {
-            var toast = document.getElementById('toast');
-            toast.innerHTML = message;
-            toast.style.backgroundColor = bgColor;
-            toast.style.display = 'block';
+        function showToast(message, backgroundColor) {
+            const toast = document.getElementById("toast");
 
-            setTimeout(function () {
-                toast.style.display = 'none';
-            }, 2500); // Hide after 2.5 seconds
+            toast.style.backgroundColor = backgroundColor;
+            toast.textContent = message;
+            toast.style.display = "block";
+            toast.style.opacity = "1";
+
+            if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
+            void toast.offsetWidth;
+
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.addEventListener("transitionend", function handler() {
+                    toast.style.display = "none";
+                    toast.removeEventListener("transitionend", handler);
+                });
+            }, 2500);
         }
     </script>
 </asp:Content>

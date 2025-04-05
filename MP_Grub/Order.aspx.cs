@@ -187,7 +187,7 @@ namespace MP_Grub
         }
 
         [WebMethod(EnableSession = true)]
-        public static string AddToCart(int foodId, string foodName, string foodPrice)
+        public static object AddToCart(int foodId, string foodName, string foodPrice)
         {
             if (System.Web.HttpContext.Current.Session["TransactionID"] == null ||
                 System.Web.HttpContext.Current.Session["UserID"] == null)
@@ -205,30 +205,72 @@ namespace MP_Grub
                     conn.Open();
                     decimal price = decimal.Parse(Regex.Replace(foodPrice, "[^0-9.]", ""));
 
-                    // Insert new order into Order_Detail
-                    string query = "INSERT INTO Order_Detail (Transaction_ID, Food_ID, Quantity, Order_Amount, Is_Cart, User_ID) VALUES (?, ?, 1, ?, 'YES', ?)";
-                    using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                    // Check if the item is already in the cart
+                    string checkQuery = "SELECT Quantity FROM Order_Detail WHERE Transaction_ID = ? AND Food_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
+                    using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("?", transactionId);
-                        cmd.Parameters.AddWithValue("?", foodId);
-                        cmd.Parameters.AddWithValue("?", price);
-                        cmd.Parameters.AddWithValue("?", userId);
+                        checkCmd.Parameters.AddWithValue("?", transactionId);
+                        checkCmd.Parameters.AddWithValue("?", foodId);
+                        checkCmd.Parameters.AddWithValue("?", userId);
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
-                        if (rowsAffected > 0)
+                        object result = checkCmd.ExecuteScalar();
+
+                        if (result != null)
                         {
-                            return "Item added to cart!";
+                            // Item already exists, update quantity and amount
+                            int currentQuantity = Convert.ToInt32(result);
+                            int newQuantity = currentQuantity + 1;
+                            decimal newAmount = newQuantity * price;
+
+                            string updateQuery = "UPDATE Order_Detail SET Quantity = ?, Order_Amount = ? WHERE Transaction_ID = ? AND Food_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
+                            using (OleDbCommand updateCmd = new OleDbCommand(updateQuery, conn))
+                            {
+                                updateCmd.Parameters.AddWithValue("?", newQuantity);
+                                updateCmd.Parameters.AddWithValue("?", newAmount);
+                                updateCmd.Parameters.AddWithValue("?", transactionId);
+                                updateCmd.Parameters.AddWithValue("?", foodId);
+                                updateCmd.Parameters.AddWithValue("?", userId);
+
+                                int rowsAffected = updateCmd.ExecuteNonQuery();
+                                if (rowsAffected > 0)
+                                {
+                                    return new { success = true, message = "Cart updated. Quantity increased." };
+                                }
+                                else
+                                {
+                                    return new { success = false, message = "Failed to update the cart item." };
+                                }
+                            }
                         }
                         else
                         {
-                            return "Failed to add item to cart.";
+                            // Item doesn't exist yet, insert new record
+                            string insertQuery = "INSERT INTO Order_Detail (Transaction_ID, Food_ID, Quantity, Order_Amount, Is_Cart, User_ID) VALUES (?, ?, ?, ?, 'YES', ?)";
+                            using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
+                            {
+                                insertCmd.Parameters.AddWithValue("?", transactionId);
+                                insertCmd.Parameters.AddWithValue("?", foodId);
+                                insertCmd.Parameters.AddWithValue("?", 1); // initial quantity
+                                insertCmd.Parameters.AddWithValue("?", price); // price * 1
+                                insertCmd.Parameters.AddWithValue("?", userId);
+
+                                int rowsAffected = insertCmd.ExecuteNonQuery();
+                                if (rowsAffected > 0)
+                                {
+                                    return new { success = true, message = "Item added to cart!" };
+                                }
+                                else
+                                {
+                                    return new { success = false, message = "Failed to add the item to your cart." };
+                                }
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                return "Error: " + ex.Message;
+                return new { success = false, message = "Error: " + ex.Message };
             }
         }
 

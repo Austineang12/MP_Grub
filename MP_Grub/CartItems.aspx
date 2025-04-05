@@ -242,6 +242,26 @@
             document.getElementById("qty_" + orderDetailId).innerText = newQuantity;
             document.getElementById("orderAmount_" + orderDetailId).innerText = newOrderAmount.toFixed(2);
         }
+
+        function showToast(message, backgroundColor) {
+            const toast = document.getElementById("toast");
+
+            toast.style.backgroundColor = backgroundColor;
+            toast.textContent = message;
+            toast.style.display = "block";
+            toast.style.opacity = "1";
+
+            if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
+            void toast.offsetWidth;
+
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.addEventListener("transitionend", function handler() {
+                    toast.style.display = "none";
+                    toast.removeEventListener("transitionend", handler);
+                });
+            }, 2500);
+        }
     </script>
 
 </asp:Content>

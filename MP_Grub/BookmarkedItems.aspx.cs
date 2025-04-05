@@ -31,7 +31,7 @@ namespace MP_Grub
 
                     if (!string.IsNullOrEmpty(bookmarkID) && !string.IsNullOrEmpty(newQuantity))
                     {
-                        UpdateFoodQuantity(bookmarkID, newQuantity);
+                        UpdateQuantity(bookmarkID, newQuantity);
                     }
                 }
                 else if (action == "delete")
@@ -39,11 +39,10 @@ namespace MP_Grub
                     string bookmarkID = Request.Form["bookmarkID"].ToString();
                     if (!string.IsNullOrEmpty(bookmarkID))
                     {
-                        DeleteBookmark(bookmarkID);
+                        RemoveBookmark(bookmarkID);
                     }
                 }
 
-                // ✅ Always rebind after a POST
                 BindBookmarkedItems();
             }
             else if (!IsPostBack)
@@ -115,7 +114,7 @@ namespace MP_Grub
 
 
 
-        private void UpdateFoodQuantity(string bookmarkID, string newQuantity)
+        private void UpdateQuantity(string bookmarkID, string newQuantity)
         {
             string query = "UPDATE Bookmark SET Food_Quantity = @Quantity WHERE Bookmark_ID = @BookmarkID";
 
@@ -131,7 +130,7 @@ namespace MP_Grub
             }
         }
 
-        private void DeleteBookmark(string bookmarkID)
+        private void RemoveBookmark(string bookmarkID)
         {
             string userID = Request.QueryString["userID"];
             string deleteQuery = @"
@@ -144,14 +143,14 @@ namespace MP_Grub
                 OleDbCommand cmd = new OleDbCommand(deleteQuery, conn);
                 cmd.Parameters.AddWithValue("@BookmarkID", Convert.ToInt32(bookmarkID));
                 cmd.Parameters.AddWithValue("@UserID", userID);
-
+                Response.Write("<script >showToast('Bookmark removed.', '#3CB371');</script>");
                 try
                 {
                     conn.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery(); // Execute the delete query
-                    System.Diagnostics.Debug.WriteLine("Rows affected: " + rowsAffected); // Log how many rows were deleted
+                    int rowsAffected = cmd.ExecuteNonQuery(); 
+                    System.Diagnostics.Debug.WriteLine("Rows affected: " + rowsAffected);
 
-                    // Check if deletion was successful
+
                     if (rowsAffected == 0)
                     {
                         System.Diagnostics.Debug.WriteLine("No rows were deleted. Check the query or the data.");

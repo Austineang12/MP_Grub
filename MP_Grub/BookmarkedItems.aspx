@@ -8,6 +8,7 @@
             color: black;
             margin: 20px 0 10px 50px;
         }
+
         .bookmarkPopup {
             background-color: white;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
@@ -16,7 +17,7 @@
             flex-direction: column;
             position: relative;
             border-radius: 20px;
-            height: 80vh; 
+            height: 80vh;
             /*margin: 50px 0 100px 0;*/
             z-index: 5;
         }
@@ -25,7 +26,8 @@
             background-color: lightgrey;
             box-shadow: inset 0px 4px 15px rgba(0, 0, 0, 0.2);
             /*z-index: 2;*/
-            margin-bottom: -20px; /* Negative margin to overlap with the red part */
+            margin-bottom: -20px;
+            /* Negative margin to overlap with the red part */
             position: relative;
             padding: 20px;
             padding-bottom: 40px;
@@ -35,7 +37,7 @@
             align-items: center;
             gap: 10px;
             row-gap: 20px;
-            height: auto; 
+            height: auto;
             overflow-y: auto;
             height: 480px;
 
@@ -46,7 +48,7 @@
 
         /* make the scroll bar hidden */
         .bookmarkContent::-webkit-scrollbar {
-          display: none;
+            display: none;
         }
 
 
@@ -58,15 +60,15 @@
             margin-bottom: 30px;
 
             /*background: blue;
-            height: 200px;
-            border-radius: 20px;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10%;
-            margin-top: 20px;*/
+                    height: 200px;
+                    border-radius: 20px;
+                    position: relative;
+                    z-index: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10%;
+                    margin-top: 20px;*/
         }
 
         .optionBtn {
@@ -82,31 +84,32 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+
         .optionBtn:hover {
             background-color: #E07E48;
-}
+        }
 
         /*.optionBtn{
-            background: #fff;
-            height: 80px;
-            width: 250px;
-            font-weight: bold;
-            font-size: 18px;
-            border-radius: 20px;
-            border: none;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        #CheckoutBtn{
-            background: #FB8F52;
-            width: 300px;
-        }
-        .optionBtn:hover {
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease-in-out;
-        }*/
+                    background: #fff;
+                    height: 80px;
+                    width: 250px;
+                    font-weight: bold;
+                    font-size: 18px;
+                    border-radius: 20px;
+                    border: none;
+                    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+                }
+                #CheckoutBtn{
+                    background: #FB8F52;
+                    width: 300px;
+                }
+                .optionBtn:hover {
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+                    transition: all 0.3s ease-in-out;
+                }*/
 
 
-        .item{
+        .item {
             background: white;
             height: 100px;
             width: 300px;
@@ -119,38 +122,44 @@
 
             position: relative;
             overflow: hidden;
+            row-gap: 1%;
         }
+
         .item:hover .hiddenHover {
-            display: flex; /* Show it on hover */
+            display: flex;
+            /* Show it on hover */
         }
-        .foodName{
+
+        .foodName {
             font-size: 18px;
             text-align: center;
             color: black;
             font-weight: bold;
         }
-        .foodStore{
+
+        .foodStore {
             font-size: 14px;
             color: black;
         }
 
         /*Hidden*/
-        .hiddenHover{
+        .hiddenHover {
             background: #d1d0cf;
-            height: 100%; /* Make it match the item div's height */
-            width: 100%;  /* Make it match the item div's width */
-            border-radius: 20px; /* Match the item div's border radius */
-            display: none; /* Initially hidden */
-            position: absolute; /* Position it absolutely inside .item */
-            top: 0; /* Align it with the top */
-            left: 0; /* Align it with the left */
+            height: 100%;
+            width: 100%;
+            border-radius: 20px;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10; /* Ensure it's on top when visible */
+            z-index: 10;
             gap: 10px;
         }
-        .quantityContainer{
+
+        .quantityContainer {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -161,9 +170,11 @@
             width: 80%;
             margin-top: 10px;
         }
-        .quantityButtonMinus, .quantityButtonPlus{
+
+        .quantityButtonMinus,
+        .quantityButtonPlus {
             width: 50px;
-            height:30px;
+            height: 30px;
             border-radius: 10px;
             border: none;
             font-weight: bold;
@@ -171,15 +182,19 @@
             background: #fff;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .quantityButtonMinus:hover, .quantityButtonPlus:hover {
+
+        .quantityButtonMinus:hover,
+        .quantityButtonPlus:hover {
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.1s ease-in-out;
         }
-        .quantityButtonPlus{
+
+        .quantityButtonPlus {
             background: #FB8F52;
         }
-        .removeBtn{
-            width: 80%; /* Adjust this value as needed */
+
+        .removeBtn {
+            width: 80%;
             height: 45px;
             background-color: #cf3a23;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -191,6 +206,7 @@
             font-size: 16px;
             font-weight: bold;
         }
+
         .removeBtn:hover {
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.1s ease-in-out;
@@ -209,6 +225,7 @@
             background-repeat: no-repeat;
             transition: background-image 0.3s ease-in-out;
         }
+
         @media (max-width: 1000px) {
             .background-duck {
                 position: fixed;
@@ -218,55 +235,13 @@
                 background-position: center;
                 background-repeat: no-repeat;
             }
+
             .bookmarkPopup {
                 width: 400px;
             }
         }
 
     </style>
-    <script type="text/javascript">
-        function updateQuantity(foodName, restaurantName, change) {
-            var quantityLabel = document.getElementById(`quantity_${foodName}_${restaurantName}`);
-            var currentQuantity = parseInt(quantityLabel.innerText);
-
-            var newQuantity = currentQuantity + change;
-
-            quantityLabel.innerText = newQuantity;
-
-            var bookmarkID = `${foodName}_${restaurantName}`;
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "UpdateBookmarkQuantity.aspx", true); 
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send(`bookmarkID=${bookmarkID}&newQuantity=${newQuantity}`);
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    console.log('Quantity updated successfully.');
-                } else {
-                    console.log('Error updating quantity.');
-                }
-            };
-        }
-
-
-        function removeBookmark(bookmarkID) {
-            if (confirm("Are you sure you want to remove this item?")) {
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "RemoveBookmark.aspx", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.send("bookmarkID=" + bookmarkID);
-        
-                // Reload page after removing item
-                xhr.onload = function () {
-                    if (xhr.status == 200) {
-                        location.reload();
-                    }
-                };
-            }
-        }
-
-
-    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="bookmarkPopup">
@@ -279,22 +254,24 @@
         <%-- CANCEL/CHECKOUT BUTTONS --%>
         <div class="optionButtons">
             <input class="optionBtn" id="BackBtn" type="button" value="Back" onclick="goBackOrHome();"/>
-            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout" />
+            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout"/>
         </div>
     </div>
     <%-- Background Image --%>
     <div class="background-duck"></div>
+
+    <%-- FOR ALERT MESSAGE --%>
+    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center; opacity: 1;transition: opacity 0.5s ease;"></div>
 
     <script type="text/javascript">
 
         window.history.replaceState(null, null, window.location.href);
 
         function goBackOrHome() {
-            // Go back to the previous page if possible, else go to home page
             if (window.history.length > 1) {
                 window.history.back();
             } else {
-                window.location.href = '/Home.aspx';
+                window.location.href = '/Order.aspx';
             }
         }
 
@@ -308,11 +285,8 @@
             let newQuantity = currentQuantity + change;
 
             if (newQuantity < 1) newQuantity = 1; // Prevent quantity less than 1
-
-            // Update label immediately
             label.innerText = newQuantity;
 
-            // Send POST to update the database
             const formData = new FormData();
             formData.append("bookmarkID", bookmarkID);
             formData.append("newQuantity", newQuantity);
@@ -321,10 +295,12 @@
             fetch(window.location.href, {
                 method: "POST",
                 body: formData
+
             }).then(response => {
                 if (!response.ok) {
-                    alert("Failed to update quantity.");
+                    console.error("Quantity Status:", "Failed to update quantity.");
                 }
+
             }).catch(error => {
                 console.error("Error:", error);
             });
@@ -340,20 +316,49 @@
             fetch(window.location.href, {
                 method: "POST",
                 body: formData
+
             }).then(response => {
                 if (!response.ok) {
-                    alert("Failed to remove bookmark.");
-                } else {
-                    // Remove item visually if request was successful
-                    const itemToRemove = document.getElementById(`bookmark_${bookmarkID}`);
+                    /*alert("Failed to remove bookmark.");*/
+                    showToast('Unable to delete bookmark due to an error.', '#DC3545')
+                }
+
+                else {
+                    const itemToRemove = document.getElementById(`bookmark_${
+                    bookmarkID}`);
+
                     if (itemToRemove) {
                         itemToRemove.remove();
                     }
+
                 }
+
             }).catch(error => {
                 console.error("Error while removing bookmark:", error);
             });
         }
+
+        //ALTERNATIVE FOR ALERT NOTIFICATION
+        function showToast(message, backgroundColor) {
+            const toast = document.getElementById("toast");
+
+            toast.style.backgroundColor = backgroundColor;
+            toast.textContent = message;
+            toast.style.display = "block";
+            toast.style.opacity = "1";
+
+            if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
+            void toast.offsetWidth;
+
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.addEventListener("transitionend", function handler() {
+                    toast.style.display = "none";
+                    toast.removeEventListener("transitionend", handler);
+                });
+            }, 2500);
+        }
+
 
     </script>
 </asp:Content>

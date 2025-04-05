@@ -11,6 +11,7 @@ namespace MP_Grub
 {
     public partial class CartItems : System.Web.UI.Page
     {
+        private static string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -30,7 +31,7 @@ namespace MP_Grub
             int userId = Convert.ToInt32(Session["UserID"]);
             int transactionId = Convert.ToInt32(Session["TransactionID"]);
 
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 string query = @"
                     SELECT 
@@ -89,7 +90,7 @@ namespace MP_Grub
 
         private void UpdateQuantity(int orderDetailId, int change)
         {
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 string getQuantityQuery = "SELECT Quantity, Food_ID FROM Order_Detail WHERE OrderDetail_ID = ?";
                 int currentQuantity = 0;
@@ -151,7 +152,7 @@ namespace MP_Grub
                         conn.Open();
                         updateCmd.ExecuteNonQuery();
                         conn.Close();
-                       
+
                     }
                     LoadCartItems();
                 }
@@ -200,7 +201,7 @@ namespace MP_Grub
 
             //Check if there are cart items for this transaction
             int cartItemCount = 0;
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 string query = @"SELECT COUNT(*) FROM Order_Detail 
                          WHERE Transaction_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
@@ -247,8 +248,6 @@ namespace MP_Grub
         {
             string query = "UPDATE [Transaction] SET Total_Price = ? WHERE Transaction_ID = ?";
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\GrubDB.accdb;";
-
             try
             {
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
@@ -275,7 +274,7 @@ namespace MP_Grub
             Button btn = (Button)sender;
             int orderDetailId = Convert.ToInt32(btn.CommandArgument);
 
-            using (OleDbConnection conn = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|/GrubDB.accdb"))
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 string query = "DELETE FROM Order_Detail WHERE OrderDetail_ID = ?";
 
