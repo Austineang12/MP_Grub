@@ -114,17 +114,17 @@ namespace MP_Grub
             using (OleDbConnection conn = new OleDbConnection(connectionString))
             {
                 conn.Open();
-
-                //Check if a vacant Order_Detail record exists
+                //CHECKING IF THERE IS VACANT IN ORDER_DETAIL
                 string checkQuery = "SELECT COUNT(*) FROM Order_Detail WHERE Transaction_ID = ? AND User_ID = ? AND Is_Cart = 'NO'";
                 using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
                 {
-                    checkCmd.Parameters.AddWithValue("?", Convert.ToInt32(transactionId)); // Ensure Transaction_ID is INT
-                    checkCmd.Parameters.AddWithValue("?", userId); // Ensure User_ID is treated as a string if necessary
+                    checkCmd.Parameters.AddWithValue("?", Convert.ToInt32(transactionId));
+                    checkCmd.Parameters.AddWithValue("?", userId);
 
                     int existingCount = (int)checkCmd.ExecuteScalar();
 
-                    if (existingCount == 0) // No vacant record exists, create one
+                    //NO VACANT RECORD EXISTS, CREATE ONE
+                    if (existingCount == 0)
                     {
                         string insertQuery = "INSERT INTO Order_Detail (Transaction_ID, User_ID, Is_Cart) VALUES (?, ?, 'NO')";
                         using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
@@ -315,6 +315,33 @@ namespace MP_Grub
             }
         }
 
+        //CHECKING IF FOOD ITEM IS ALREADY IN THE BOOKMARK TABLE
+        //TO DISABLE THE BOOKMARK BUTTON THAT IS ALREADY HAVE BEEN BOOKMARKED.
+        [WebMethod(EnableSession = true)]
+        public static List<int> GetUserBookmarkedFood()
+        {
+            List<int> bookmarkedFoodIds = new List<int>();
+            int userID = Convert.ToInt32(HttpContext.Current.Session["UserID"]);
+
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT Food_ID FROM Bookmark WHERE User_ID = ?";
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("?", userID);
+                    using (OleDbDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            bookmarkedFoodIds.Add(Convert.ToInt32(reader["Food_ID"]));
+                        }
+                    }
+                }
+            }
+
+            return bookmarkedFoodIds;
+        }
 
 
 
