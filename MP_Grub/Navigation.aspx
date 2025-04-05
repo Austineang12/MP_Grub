@@ -37,12 +37,14 @@
             height: auto;
             border-radius: 12px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
         }
 
         .swipe-ducks {
             display: flex;
-            width: 15vw;
+            width: 200px;
             height: auto;
+            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
         }
 
         .background-duck {
@@ -59,7 +61,7 @@
         }
 
         /*-- Responsive Design --*/
-        @media (max-width: 700px) {
+        @media (max-width: 1000px) {
             .background-duck {
                 position: fixed;
                 height: 100%;
@@ -72,10 +74,10 @@
                 width: 200px;
             }
             .swipe-ducks {
-                width: 20vw;
+                width: 150px;
             }
             .button-container {
-                gap: 15px;
+                gap: 5px;
             }
         }
         

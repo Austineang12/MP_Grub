@@ -20,6 +20,7 @@
             margin-top: 1%;
             box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.2);
             text-align: center;
+            z-index: 5;
         }
 
         .brand-container {
@@ -108,6 +109,30 @@
         .modal .button {
             margin-top: 10px;
         }
+
+        .background-duck {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('/images/Feedback_Duckbg1.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        @media (max-width: 1000px) {
+            .background-duck {
+                position: fixed;
+                height: 100%;
+                background-image: url('/images/Feedback_Mobilebg1.png') !important;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+        }
     </style>
 
 
@@ -127,6 +152,9 @@
             <asp:Button ID="btnMessageReview" runat="server" Text="Send a Message Review" CssClass="button" OnClientClick="openModal(); return false;" />
             <asp:Button ID="btnSubmit" runat="server" Text="Submit" CssClass="button" OnClick="btnSubmit_Click" />
         </div>
+        
+        <%-- Background Image --%>
+        <div class="background-duck"></div>
 
         <!-- Review Modal -->
         <div id="reviewModal" class="modal">

@@ -3,10 +3,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .restaurant-section {
@@ -20,7 +21,7 @@
             font-family: 'Akshar', sans-serif;
             color: white;
             font-weight: 700;
-            font-size: 35px;
+            font-size: 30px;
             z-index: 3;
         }
 
@@ -152,7 +153,7 @@
         }
 
         .background-duck {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;

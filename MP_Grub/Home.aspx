@@ -4,15 +4,17 @@
     <title>Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/> 
     <style type="text/css">
+        /*html, body {
+            height: 100%;
+            margin: 0;
+        }*/
+
         body {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: absolute;
-            top: 10vh;
-            height: 100vh;
-            padding-top: 90px;
+            min-height: 100vh;
         }
 
         .Navigation_Section {
@@ -31,7 +33,7 @@
         }
 
         .Navigation_Section:hover {
-            transform: translateY(-10px);
+            background-color: #F2F2F2; 
         }
 
         .Navigation_text {
@@ -86,7 +88,7 @@
             cursor: pointer;
             margin-top: 20px;
             font-size: 1rem;
-            width: 20vw;
+            /*width: 20vw;*/
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -102,7 +104,7 @@
         }
 
         /*-- Responsive Design --*/
-        @media (max-width: 768px) {
+        @media (max-width: 1000px) {
             .background-duck {
                 position: absolute;
                 width: 100%;
@@ -114,11 +116,10 @@
             }   
 
             .Navigation_Section {
-                top: 5vh;
                 right: auto;
                 left: 50%;
                 transform: translateX(-50%);
-                width: 80%;
+                width: 70%;
             }
 
             .button-container {
@@ -126,41 +127,26 @@
             }
 
             .order-button {
+                margin-top: 100px;
                 width: 50vw;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .order-button {
-                width: 50vw;
-            }
-
-            .btnNavigation {
-                width: 100px;
-            }
-
-            .Navigation_text {
-                font-size: 16px;
-            }
-
-            .clickMe {
-                font-size: 14px;
             }
         }
     </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
-    <div class="Navigation_Section">
-        <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
-        <div class="duck-container">
-            <asp:ImageButton ID="Navigation" runat="server" CssClass="btnNavigation" ImageUrl="~/images/CryingDuck.png" OnClick="Navigation_Click" />
-            <span class="clickMe">CLICK ME!</span>
+    <div class="container">
+        <div class="Navigation_Section">
+            <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
+            <div class="duck-container">
+                <asp:ImageButton ID="Navigation" runat="server" CssClass="btnNavigation" ImageUrl="~/images/CryingDuck.png" OnClick="Navigation_Click" />
+                <span class="clickMe">CLICK ME!</span>
+            </div>
         </div>
-    </div>
-    <div class="button-container">
-        <asp:Button ID="btnOrder" runat="server" Text="Order Now" CssClass="order-button" OnClick="Button_OrderNow" />
-    </div>
+        <div class="button-container">
+            <asp:Button ID="btnOrder" runat="server" Text="Order Now" CssClass="order-button" OnClick="Button_OrderNow" />
+        </div>
 
-    <div class="background-duck"></div>
+        <div class="background-duck"></div>
+    </div>
 </asp:Content>

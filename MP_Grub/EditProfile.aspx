@@ -55,6 +55,12 @@
             border: 1px solid #ddd;
         }
 
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
         .btn-container {
             margin-top: 15px;
         }
@@ -78,7 +84,7 @@
         }
 
         .profile-background {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;

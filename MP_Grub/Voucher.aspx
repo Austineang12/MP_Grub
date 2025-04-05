@@ -63,12 +63,11 @@
             align-items: center;
             color: #404040;
             border: none;
-            padding: 12px 30px;
+            padding: 12px 80px;
             border-radius: 20px;
             cursor: pointer;
             margin-top: 20px;
             font-size: 1rem;
-            width: 20vw;
             transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
         }
 
@@ -83,7 +82,7 @@
         }
 
         .profile-background {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -105,7 +104,7 @@
     <div class="voucher-container">
         <div class="voucher-box">
             <h2 class="voucher-header">Claim Today's Voucher</h2>
-            <asp:Image ID="VoucherImage" runat="server" CssClass="voucher-image" ImageUrl="~/images/default.png" />
+            <asp:Image ID="VoucherImage" runat="server" CssClass="voucher-image" ImageUrl="~/images/Duck.png" />
             <asp:Button ID="GenerateVoucherBtn" runat="server" CssClass="btn-generate" Text="Claim" OnClick="GenerateVoucher" />
             <asp:Label ID="lblMessage" runat="server" CssClass="voucher-label"></asp:Label>
         </div>
