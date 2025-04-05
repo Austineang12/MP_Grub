@@ -185,8 +185,7 @@
                 <div class="form-group">
                     <asp:Label ID="lblTransaction" runat="server" AssociatedControlID="ddlTransaction" CssClass="form-label">Payment Type</asp:Label>
                     <asp:DropDownList ID="ddlTransaction" runat="server" CssClass="form-input">
-                        <asp:ListItem Text="Cash" Value="Cash on Delivery" />
-                        <asp:ListItem Text="Cash" Value="GCash" />
+                        <asp:ListItem Text="Cash" Value="COD" />
                         <asp:ListItem Text="Card" Value="Card" />
                     </asp:DropDownList>
                 </div>

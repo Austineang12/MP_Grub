@@ -65,28 +65,22 @@
             <thead>
                 <tr>
                     <th>Transaction ID</th>
-                    <th>Date</th>
-                    <th>Restaurant</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
+                    <th>Payment Type</th>
+                    <th>Voucher Used</th>
+                    <th>Total Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <%-- Example row (You can replace these with a repeater or data binding later) --%>
-                <tr>
-                    <td>#10023</td>
-                    <td>2025-04-03</td>
-                    <td>Grub Grill</td>
-                    <td>₱450.00</td>
-                    <td>Delivered</td>
-                </tr>
-                <tr>
-                    <td>#10022</td>
-                    <td>2025-03-28</td>
-                    <td>Pizza Spot</td>
-                    <td>₱320.00</td>
-                    <td>Cancelled</td>
-                </tr>
+                <asp:Repeater ID="rptOrderHistory" runat="server">
+                    <ItemTemplate>
+                        <tr>
+                            <td><%# Eval("Transaction_ID") %></td>
+                            <td><%# Eval("Payment_Type") %></td>
+                            <td><%# Eval("Discount_Value") == DBNull.Value || Convert.ToDecimal(Eval("Discount_Value")) == 0 ? "None" : Eval("Discount_Value") + "%" %></td>
+                            <td>₱<%# Eval("Final_Price", "{0:N2}") %></td>
+                        </tr>
+                    </ItemTemplate>
+                </asp:Repeater>
             </tbody>
         </table>
     </div>
