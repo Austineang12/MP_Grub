@@ -24,22 +24,40 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.Label lblIssue;
 
         /// <summary>
-        /// lblDetails control.
+        /// lblDetailedIssue control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDetails;
+        protected global::System.Web.UI.WebControls.Label lblDetailedIssue;
 
         /// <summary>
-        /// homebtn control.
+        /// btnToggleReports control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button homebtn;
+        protected global::System.Web.UI.WebControls.Button btnToggleReports;
+
+        /// <summary>
+        /// allReportsContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl allReportsContainer;
+
+        /// <summary>
+        /// rptAllReports control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptAllReports;
 
         /// <summary>
         /// bgimage control.

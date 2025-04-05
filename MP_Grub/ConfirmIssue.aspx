@@ -13,25 +13,29 @@
             background-color: #f9f9f9;
             font-family: Arial, sans-serif;
             padding-top: 90px;
+            margin: 0;
         }
+
         .container {
             background-color: white;
-            padding: 25px 70px;
+            padding: 30px 70px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
-            width: 400px;
+            width: 600px;
             color: #404040;
             z-index: 5;
             gap: 15px;
-            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
+            transition: 0.3s ease-in-out, color 0.3s ease-in-out;
         }
+
         .message {
-            font-size: 16px;
-            margin-bottom: 15px;
+            font-size: 18px;
+            margin-bottom: 20px;
             color: #404040;
             font-weight: bold;
         }
+
         .btn {
             font-family: 'Akshar', sans-serif;
             font-weight: 700;
@@ -60,10 +64,64 @@
             object-fit: cover;
         }
 
+        #allReportsContainer {
+            margin-top: 30px;
+            text-align: left;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        table td {
+            font-size: 14px;
+        }
+
+        .report-section {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .report-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .report-item strong {
+            font-weight: bold;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                width: 80%;
+            }
+        }
+
         @media (max-width: 800px) {
             .container {
-                padding: 30px 40px;
-                width: 300px;
+                padding: 25px 40px;
+                width: 90%;
+            }
+
+            table th, table td {
+                font-size: 12px;
+            }
+
+            .message {
+                font-size: 14px;
             }
         }
     </style>
@@ -71,13 +129,48 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="container">
-        <p class="message">Thank you for reaching out! We have received your report and will get back to you as soon as possible.</p>
+        <h2>Report Verification</h2>
 
-        <h3>Latest Report:</h3>
-        <p><strong>Issue:</strong> <asp:Label ID="lblIssue" runat="server"></asp:Label></p>
-        <p><strong>Details:</strong> <asp:Label ID="lblDetails" runat="server"></asp:Label></p>
+        <h3>Latest Report</h3>
+        <div class="report-section">
+            <div class="report-item">
+                <strong>Issue:</strong> 
+                <asp:Label ID="lblIssue" runat="server" Font-Bold="true"></asp:Label><br />
+            </div>
+            <div class="report-item">
+                <strong>Comments:</strong> 
+                <asp:Label ID="lblDetailedIssue" runat="server"></asp:Label><br />
+            </div>
+        </div>
 
-        <asp:Button ID="homebtn" runat="server" Text="Home" CssClass="btn" OnClick="GoToHomePage" />
+        <hr />
+
+        <asp:Button ID="btnToggleReports" runat="server" Text="View All Reports" CssClass="btn btn-primary" OnClick="btnToggleReports_Click" />
+        <asp:Button ID="GoToHomePage" runat="server" Text="Go to Home" CssClass="btn btn-secondary" OnClick="GoToHomePage_Click" />
+
+        <div id="allReportsContainer" runat="server" visible="false">
+            <h3>All Reports Under Your Account</h3>
+            <asp:Repeater ID="rptAllReports" runat="server">
+                <HeaderTemplate>
+                    <table border="1" width="100%">
+                        <tr>
+                            <th>Support ID</th>
+                            <th>Issue</th>
+                            <th>Detailed Issue</th>
+                        </tr>
+                </HeaderTemplate>
+                <ItemTemplate>
+                        <tr>
+                            <td><%# Eval("Support_ID") %></td>
+                            <td><%# Eval("Specified_Issue") %></td>
+                            <td><%# Eval("Detailed_Issue") %></td>
+                        </tr>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
+            </asp:Repeater>
+        </div>
     </div>
     <div>
         <asp:Image ID="bgimage" runat="server" CssClass="profile-background" ImageUrl="~/images/Profile-bg5.png" />
