@@ -94,16 +94,16 @@ namespace MP_Grub
 
                         // Build the HTML for each food item
                         string divItem = $@"
-                    <div class='item' id='bookmark_{bookmarkID}'>
-                        <label class='foodName'>{foodName}</label>
-                        <label class='foodStore'>{restaurantName}</label>
-                        <div class='hiddenHover'>
-                            <input class='removeBtn' type='button' value='Remove' onclick='removeBookmark(""{bookmarkID}"")' />
-                            <input class='addCartBtn' type='button' value='Add to Cart' onclick='addToCart('${foodID}','${foodName}', '${foodPrice}');return false;'/>
-                        </div>
-                    </div>";
+                            <div class='item' id='bookmark_{bookmarkID}'>
+                                <label class='foodName'>{foodName}</label>
+                                <label class='foodStore'>{restaurantName}</label>
+                                <div class='hiddenHover'>
+                                    <input class='removeBtn' type='button' value='Remove' onclick='removeBookmark(""{bookmarkID}"")' />
+                                    <input class='addCartBtn' type='button' value='Add to Cart' onclick=""addToCart('{foodID}', '{foodName}', '{foodPrice}')"" />
+                                </div>
+                            </div>";
 
-                        
+
                         Literal lit = new Literal();
                         lit.Text = divItem;
                         bookmarkContent.Controls.Add(lit);
@@ -249,7 +249,7 @@ namespace MP_Grub
             }
         }
 
-
+        //FOR REMOVE BUTTON
         private void RemoveBookmark(string bookmarkID)
         {
             string userID = Request.QueryString["userID"];
@@ -263,11 +263,11 @@ namespace MP_Grub
                 OleDbCommand cmd = new OleDbCommand(deleteQuery, conn);
                 cmd.Parameters.AddWithValue("@BookmarkID", Convert.ToInt32(bookmarkID));
                 cmd.Parameters.AddWithValue("@UserID", userID);
-                Response.Write("<script >showToast('Bookmark removed.', '#3CB371');</script>");
+                
                 try
                 {
                     conn.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery(); 
+                    int rowsAffected = cmd.ExecuteNonQuery();
                     System.Diagnostics.Debug.WriteLine("Rows affected: " + rowsAffected);
 
 
@@ -285,6 +285,96 @@ namespace MP_Grub
                     conn.Close();
                 }
             }
+        }
+
+        //FOR ADD-TO-CART BUTTON
+        protected void TransferBookmarksToOrderDetails()
+        {
+            string userID = Request.QueryString["userID"];
+            using (OleDbConnection conn = new OleDbConnection(connectionString))
+            {
+                conn.Open();
+
+                string query = @"
+            SELECT 
+                Bookmark.Food_ID, 
+                Food.Food_Name, 
+                Food.Food_Price, 
+                Bookmark.Food_Quantity
+            FROM Bookmark
+            INNER JOIN Food ON Bookmark.Food_ID = Food.Food_ID
+            WHERE Bookmark.User_ID = @UserID";
+
+                using (OleDbCommand cmd = new OleDbCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserID", userID);
+                    OleDbDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        int foodID = Convert.ToInt32(reader["Food_ID"]);
+                        string foodName = reader["Food_Name"].ToString();
+                        decimal foodPrice = Convert.ToDecimal(reader["Food_Price"]);
+                        int foodQuantity = Convert.ToInt32(reader["Food_Quantity"]);
+
+                        //CALCULATE TOTALPRICE
+                        decimal orderAmount = foodQuantity * foodPrice;
+
+                        //CHECKS IF FOOD_ID EXISTS IN THE ORDER_DETAIL
+                        string checkQuery = "SELECT COUNT(*) FROM Order_Detail WHERE Transaction_ID = ? AND Food_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
+
+                        using (OleDbCommand checkCmd = new OleDbCommand(checkQuery, conn))
+                        {
+                            checkCmd.Parameters.AddWithValue("?", Convert.ToInt32(Session["TransactionID"]));
+                            checkCmd.Parameters.AddWithValue("?", foodID);
+                            checkCmd.Parameters.AddWithValue("?", userID);
+
+                            int existingCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                            if (existingCount == 0)
+                            {
+                                //INSERT IF FOOD_ID IS NOT YET EXISTED IN ORDER_DETAIL
+                                string insertQuery = "INSERT INTO Order_Detail (Transaction_ID, Food_ID, Quantity, Order_Amount, Is_Cart, User_ID) VALUES (?, ?, ?, ?, 'YES', ?)";
+
+                                using (OleDbCommand insertCmd = new OleDbCommand(insertQuery, conn))
+                                {
+                                    insertCmd.Parameters.AddWithValue("?", Convert.ToInt32(Session["TransactionID"]));
+                                    insertCmd.Parameters.AddWithValue("?", foodID);
+                                    insertCmd.Parameters.AddWithValue("?", foodQuantity);
+                                    insertCmd.Parameters.AddWithValue("?", orderAmount);
+                                    insertCmd.Parameters.AddWithValue("?", userID);
+
+                                    insertCmd.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                //IF ITEM EXISTS, JUST UPDATE THE EXISTING RECORD IN ORDER_DETAIL
+                                string updateQuery = "UPDATE Order_Detail SET Quantity = Quantity + ?, Order_Amount = Order_Amount + ? WHERE Transaction_ID = ? AND Food_ID = ? AND User_ID = ? AND Is_Cart = 'YES'";
+
+                                using (OleDbCommand updateCmd = new OleDbCommand(updateQuery, conn))
+                                {
+                                    updateCmd.Parameters.AddWithValue("?", foodQuantity);
+                                    updateCmd.Parameters.AddWithValue("?", orderAmount);
+                                    updateCmd.Parameters.AddWithValue("?", Convert.ToInt32(Session["TransactionID"]));
+                                    updateCmd.Parameters.AddWithValue("?", foodID);
+                                    updateCmd.Parameters.AddWithValue("?", userID);
+
+                                    updateCmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                conn.Close();
+            }
+        }
+
+        protected void btnTransferToOrder_Click(object sender, EventArgs e)
+        {
+            TransferBookmarksToOrderDetails();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "showToast", "showToast('All bookmarks transferred to order details.', '#3CB371');", true);
         }
     }
 }

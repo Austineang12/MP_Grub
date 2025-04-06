@@ -223,7 +223,8 @@
         <%-- CANCEL/CHECKOUT BUTTONS --%>
         <div class="optionButtons">
             <input class="optionBtn" id="BackBtn" type="button" value="Back" onclick="goBackOrHome();"/>
-            <input class="optionBtn" id="CheckoutBtn" type="button" value="Checkout"/>
+            <asp:Button ID="AddCartAllBtn" class="optionBtn" runat="server" Text="Add All to Cart" OnClick="btnTransferToOrder_Click" />
+
         </div>
     </div>
     <%-- Background Image --%>
@@ -232,10 +233,10 @@
     <%-- FOR ALERT MESSAGE --%>
     <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center; opacity: 1;transition: opacity 0.5s ease;"></div>
 
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript">
 
         window.history.replaceState(null, null, window.location.href);
-
         function goBackOrHome() {
             if (window.history.length > 1) {
                 window.history.back();
@@ -248,7 +249,7 @@
         function addToCart(foodID, foodName, price) {
             $.ajax({
                 type: "POST",
-                url: "Order.aspx/GetSessionData",
+                url: "BookmarkedItems.aspx/GetSessionData",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (sessionResponse) {
@@ -259,7 +260,7 @@
                         return;
                     }
 
-                    Console.log("foodID: ", foodID,"\nfoodName: ", foodName,"\nprice:", price);
+                    console.log("foodID: ", foodID, "\nfoodName: ", foodName, "\nprice:", price);
                     var transactionId = sessionResponse.d.TransactionID;
                     var userId = sessionResponse.d.UserID;
 
@@ -321,6 +322,7 @@
 
                     if (itemToRemove) {
                         itemToRemove.remove();
+                        showToast('Bookmark removed.', '#3CB371');
                     }
 
                 }
@@ -348,7 +350,7 @@
                     toast.style.display = "none";
                     toast.removeEventListener("transitionend", handler);
                 });
-            }, 2500);
+            }, 1000);
         }
 
 
