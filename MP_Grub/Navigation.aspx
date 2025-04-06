@@ -8,9 +8,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            max-width: 700px;
-            max-height: 500px;
+            /*padding: 20px;*/
+            /*max-width: 700px;*/
+            /*max-height: 500px;*/
+            max-height: 100vh;
             width: 100%;
             text-align: center;
             z-index: 5;
@@ -20,30 +21,45 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 30vh;
-            padding: 20px;
+            /*height: 30vh;
+            padding: 20px;*/
+            height: 100vh;
+            padding: 0;
         }
 
         .button-container {
-            display: flex;
-            justify-content: center;
+            display: flex;  
+            /*justify-content: center;*/
             align-items: center;
             gap: 30px;
         }
 
-        .options, .image-container {
-            display: flex;
-            width: 300px;
-            height: auto;
+        .image-container {
+            /*display: flex;*/
+            /*width: 300px;*/
+            /*height: auto;*/
+            
+            max-height: 90vh;
+            max-width: 100%;
             border-radius: 12px;
+            overflow: hidden;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-            transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
+            /*transition: 0.3s ease-in-out, color 0.3s ease-in-out;*/ 
+        }
+        .image-container img{
+            height: 70vh;
+            width: auto;
+            object-fit: contain;
+            display: block;
         }
 
         .swipe-ducks {
-            display: flex;
+            /*display: flex;*/
+            /*width: 200px;*/
             width: 200px;
+            /*height: 200px;*/
             height: auto;
+            object-fit: contain;
             transition: 0.3s ease-in-out, color 0.3s ease-in-out; 
         }
 
@@ -70,7 +86,7 @@
                 background-position: center;
                 background-repeat: no-repeat;
             }
-            .options {
+            /*.options {
                 width: 200px;
             }
             .swipe-ducks {
@@ -78,7 +94,7 @@
             }
             .button-container {
                 gap: 5px;
-            }
+            }*/
         }
 
     </style>
@@ -88,7 +104,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="page-container">
         <div class="navigation-outline">
-            <div class="button-container">
+            <div class="button-container" id="buttonContainer" runat="server">
                 <asp:ImageButton ID="NoDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/No_Duck.png" OnClick="btnLeft_Click"/>
                 <div class="image-container" id="imageContainer" runat="server">
                     <%-- IMAGES RETRIEVED FROM THE DATABASE --%>

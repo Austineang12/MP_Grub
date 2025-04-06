@@ -30,7 +30,6 @@ namespace MP_Grub
                 System.Diagnostics.Debug.WriteLine("userID:" + userId, "transaction:" + transactionId);
                 EnsureOrderDetailExists(transactionId, userId);
             }
-
         }
 
         private List<int> displayedFoodIDs = new List<int>();
@@ -39,6 +38,7 @@ namespace MP_Grub
         {
             try
             {
+                NoDuck.Visible = false;
                 string query = "SELECT Food_ID FROM Food ORDER BY RND(Food_ID)";
                 using (OleDbConnection conn = new OleDbConnection(connectionString))
                 {
@@ -52,7 +52,7 @@ namespace MP_Grub
                         int foodID = Convert.ToInt32(reader["Food_ID"]);
                         foodIDs.Add(foodID); totalFoodCount++;
 
-                    }    
+                    }
                     reader.Close();
 
                     if (foodIDs.Count > 0)
@@ -72,6 +72,7 @@ namespace MP_Grub
                     {
                         NoDuck.Enabled = false;  // Disable the "Left" button once all images have been shown
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "showToast", "showToast('All items have been shown!', '#DC3545');", true);
+                        Response.Redirect("CartItems.aspx");
                     }
                 }
             }
@@ -116,11 +117,14 @@ namespace MP_Grub
 
                         // Create the "Yes" button to allow the user to swipe right
                         ImageButton yesDuckButton = new ImageButton();
+                        yesDuckButton.CssClass = "swipe-ducks";
                         yesDuckButton.CommandArgument = foodID.ToString();
                         //yesDuckButton.Text = "Swipe Right";
-                        yesDuckButton.ImageUrl = imageBase64;
+                        yesDuckButton.ImageUrl = "images/Yes_Duck.png";
                         yesDuckButton.Click += new ImageClickEventHandler(this.btnRight_Click);
-                        imageContainer.Controls.Add(yesDuckButton);
+                        buttonContainer.Controls.Add(yesDuckButton);
+
+                        NoDuck.Visible = true;
                     }
 
                     reader.Close();
@@ -145,7 +149,9 @@ namespace MP_Grub
             {
                 int foodID = Convert.ToInt32(button.CommandArgument);
                 SaveToOrderDetail(foodID);
+
             }
+            LoadRandomImage();
         }
 
         //SAVING TO ORDER_DETAIL TABLE
@@ -233,7 +239,7 @@ namespace MP_Grub
                                 }
                             }
 
-                            
+
                         }
                     }
                 }
