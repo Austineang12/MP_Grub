@@ -165,7 +165,7 @@
                 <%-- Contact Number (ReadOnly) --%>
                 <div class="form-group">
                     <asp:Label ID="lblContactNo" runat="server" CssClass="form-label">Contact Number</asp:Label>
-                    <asp:TextBox ID="txtContactNo" runat="server" CssClass="form-input" ReadOnly="True" placeholder=" "></asp:TextBox>
+                    <asp:TextBox ID="txtContactNo" runat="server" CssClass="form-input" placeholder=" "></asp:TextBox>
                 </div>
 
                 <%-- Address (Editable) --%>

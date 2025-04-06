@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.OleDb;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace MP_Grub
@@ -110,6 +111,29 @@ namespace MP_Grub
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+
+            if (string.IsNullOrWhiteSpace(txtContactNo.Text) || string.IsNullOrWhiteSpace(txtAddress.Text))
+            {
+                Response.Write("<script>alert('Please ensure your contact information and address are filled to proceed.');</script>");
+                return;
+            }
+
+            string contactNumber = txtContactNo.Text.Trim();
+
+            if (!contactNumber.StartsWith("09") || contactNumber.Length != 11 || !contactNumber.All(char.IsDigit))
+            {
+                Response.Write("<script>alert('Invalid contact number. It must start with 09 and be exactly 11 digits.');</script>");
+                return;
+            }
+
+            string address = txtAddress.Text.Trim();
+
+            if (address.Length <= 5)
+            {
+                Response.Write("<script>alert('Address is too short.');</script>");
+                return;
+            }
+
             string userId = Session["UserID"].ToString();
             string transactionId = Session["TransactionID"].ToString();
             string paymentType = ddlTransaction.SelectedValue;
