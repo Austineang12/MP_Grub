@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>GRUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Akshar:wght@300;400;700&display=swap" rel="stylesheet"/>  
-    <style>
+    <style type="text/css">
         .navigation-outline {
             display: flex;
             justify-content: center;
@@ -31,7 +31,7 @@
             gap: 30px;
         }
 
-        .options {
+        .options, .image-container {
             display: flex;
             width: 300px;
             height: auto;
@@ -80,21 +80,22 @@
                 gap: 5px;
             }
         }
-        
+
     </style>
+    
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="page-container">
         <div class="navigation-outline">
             <div class="button-container">
-                <%--<asp:Button ID="btnLeft" runat="server" Text="Swipe Left" CssClass="left-button" OnClick="btnLeft_Click" />--%>
-                <asp:ImageButton ID="NoDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/No_Duck.png" OnClick="btnLeft_Click" />
-                <div class="image-container">
-                    <asp:Image ID="carouselImage" runat="server" ImageUrl="~/Navigation_Images/1.png" CssClass="options" />
+                <asp:ImageButton ID="NoDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/No_Duck.png" OnClick="btnLeft_Click"/>
+                <div class="image-container" id="imageContainer" runat="server">
+                    <%-- IMAGES RETRIEVED FROM THE DATABASE --%>
                 </div>
-                <%--<asp:Button ID="btnRight" runat="server" Text="Swipe Right" CssClass="right-button" OnClick="btnRight_Click" />--%>
-                <asp:ImageButton ID="YesDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/Yes_Duck.png" OnClick="btnRight_Click" />
+                <%--<asp:ImageButton ID="YesDuck" runat="server" CssClass="swipe-ducks" ImageUrl="~/images/Yes_Duck.png" OnClick="btnRight_Click" CommandArgument="<%# Eval('Food_ID') %>" />--%>
+
+                    <%-- REMOVED YESDUCK BUTTON, BEING CREATED IN THE BACK-END --%>
             </div>
         </div>
     </div>
@@ -103,4 +104,78 @@
 
     <%-- Background Image --%>
     <div class="background-duck"></div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        let currentImage = null;
+        //FOR SWIPE RIGHT
+        <%--document.getElementById('<%= YesDuck.ClientID %>').addEventListener('click', function () {
+            if (currentImage) {
+                const foodID = currentImage.getAttribute('data-id');
+                saveToOrderDetail(foodID);
+            }
+        });--%>
+
+        function saveToOrderDetail(foodID) {
+            $.ajax({
+                type: "POST",
+                url: "Navigation.aspx/GetSessionData",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (sessionResponse) {
+                    if (!sessionResponse.d.IsValid) {
+                        console.error("Session error:", sessionResponse.d.Message);
+                        alert(sessionResponse.d.Message);
+                        window.location.href = "Login.aspx";
+                        return;
+                    }
+
+                    var transactionId = sessionResponse.d.TransactionID;
+                    var userId = sessionResponse.d.UserID;
+
+                    $.ajax({
+                        url: 'Navigation.aspx/SaveToOrderDetail',
+                        method: 'POST',
+                        data: JSON.stringify({ foodID: foodID }),
+                        contentType: 'application/json',
+                        success: function (response) {
+                            console.log('Food added to order details: ' + foodID);
+
+                        },
+                        error: function (error) {
+                            console.error('Error saving to order details: ' + error);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Session AJAX Error:", error);
+                    console.error("Response:", xhr.responseText);
+                    showToast("Oops! Couldn’t add the food to the cart due to an error", "#DC3545")
+                }
+            });
+            
+        }
+        
+
+        //ALTERNATIVE FOR ALERT NOTIFICATION
+        function showToast(message, backgroundColor = '#333') {
+            const toast = document.getElementById("toast");
+
+            toast.style.backgroundColor = backgroundColor;
+            toast.textContent = message;
+            toast.style.display = "block";
+            toast.style.opacity = "1";
+
+            if (toast.hideTimeout) clearTimeout(toast.hideTimeout);
+            void toast.offsetWidth;
+
+            toast.hideTimeout = setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.addEventListener("transitionend", function handler() {
+                    toast.style.display = "none";
+                    toast.removeEventListener("transitionend", handler);
+                });
+            }, 1000);
+        }
+    </script>
 </asp:Content>
