@@ -16,7 +16,15 @@
         }
 
         .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: white;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .signup-box {
@@ -29,6 +37,7 @@
             text-align: center;
             padding: 20px 40px;
             background-color: #fff;
+            z-index: 5;
         }
         .signup-box h2 {
             margin-bottom: 20px;
@@ -78,6 +87,8 @@
             text-align: center;
             border-bottom-left-radius: 50px;
             border-top-left-radius: 50px;
+            box-shadow: -7px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            z-index: 5;
         }
         .alternate-section h2 {
             font-size: 2.5rem;
@@ -155,13 +166,13 @@
         </form>
     </div>
 
-    <div class="container">
-        <%-- Alternate section --%>
-        <div class="alternate-section">
-            <h2>Welcome Back!</h2>
-            <p>Already have an account?</p>
-            <button class="alternate-button" onclick="animateRedirect('Login.aspx')">Login</button>
-        </div>
+    
+    <%-- Alternate section --%>
+    <div class="alternate-section">
+        <h2>Welcome Back!</h2>
+        <p>Already have an account?</p>
+        <button class="alternate-button" onclick="animateRedirect('Login.aspx')">Login</button>
     </div>
+    <div class="container"></div>
 </body>
 </html>

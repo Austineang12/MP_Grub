@@ -15,7 +15,15 @@
         }
 
         .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: white;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         #welcomeSection {
@@ -30,6 +38,8 @@
             text-align: center;
             border-bottom-right-radius: 50px;
             border-top-right-radius: 50px;
+            box-shadow: 7px 4px 4px 0px rgba(0, 0, 0, 0.25);
+            z-index: 5;
         }
         #welcomeSection h1 {
             font-size: 60px;
@@ -57,7 +67,7 @@
             align-items: center;
             text-align: center;
             padding: 20px 40px;
-            background-color: #fff;
+            z-index: 5;
         }
         #loginSection h2 {
             font-size: 2rem;
@@ -140,14 +150,12 @@
     </script>
 </head>
 <body>
-    <div class="container">
-        <!-- Welcome Section -->
-        <div id="welcomeSection">
-            <h1>GRUB</h1>
-            <h2>Hello, Welcome!</h2>
-            <p>Don't have an account?</p>
-            <button class="welcome-button" onclick="animateRedirect('CreateAccount.aspx')">Create Account</button>
-        </div>
+    <!-- Welcome Section -->
+    <div id="welcomeSection">
+        <h1>GRUB</h1>
+        <h2>Hello, Welcome!</h2>
+        <p>Don't have an account?</p>
+        <button class="welcome-button" onclick="animateRedirect('CreateAccount.aspx')">Create Account</button>
     </div>
 
     <!-- Login Section -->
@@ -168,5 +176,6 @@
             </div>
         </form>
     </div>
+    <div class="container"></div>
 </body>
 </html>
