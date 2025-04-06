@@ -135,7 +135,7 @@
         <div class="report-section">
             <div class="report-item">
                 <strong>Issue:</strong> 
-                <asp:Label ID="lblIssue" runat="server" Font-Bold="true"></asp:Label><br />
+                <asp:Label ID="lblIssue" runat="server"></asp:Label><br />
             </div>
             <div class="report-item">
                 <strong>Comments:</strong> 

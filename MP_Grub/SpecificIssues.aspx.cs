@@ -43,10 +43,10 @@ namespace MP_Grub
                     int newSupportID = (maxID != DBNull.Value) ? Convert.ToInt32(maxID) + 1 : 1;
 
 
-                    string insertQuery = "INSERT INTO Support (Support_ID, Specified_Issue, Detailed_Issue, User_ID) VALUES (@SupportID, @Specified_Issue, @Detailed_Issue, @UserID)";
+                    string insertQuery = "INSERT INTO Support (Support_ID, Specified_Issue, Detailed_Issue, User_ID) VALUES (@Support_ID, @Specified_Issue, @Detailed_Issue, @UserID)";
                     using (OleDbCommand cmd = new OleDbCommand(insertQuery, conn))
                     {
-                        cmd.Parameters.AddWithValue("@SupportID", newSupportID);
+                        cmd.Parameters.AddWithValue("@Suppor_tID", newSupportID);
                         cmd.Parameters.AddWithValue("@Specified_Issue", issue);
 
 
@@ -55,7 +55,7 @@ namespace MP_Grub
                         else
                             cmd.Parameters.AddWithValue("@Detailed_Issue", string.IsNullOrEmpty(issueDetail) ? DBNull.Value : (object)issueDetail);
 
-                        cmd.Parameters.AddWithValue("@UserID", userID);
+                        cmd.Parameters.AddWithValue("@User_ID", userID);
 
                         cmd.ExecuteNonQuery();
                     }
