@@ -159,41 +159,7 @@
             gap: 10px;
         }
 
-        .quantityContainer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: black;
-            /*background: #f0eeed;*/
-            border-radius: 10px;
-
-            width: 80%;
-            margin-top: 10px;
-        }
-
-        .quantityButtonMinus,
-        .quantityButtonPlus {
-            width: 50px;
-            height: 30px;
-            border-radius: 10px;
-            border: none;
-            font-weight: bold;
-            font-size: 16px;
-            background: #fff;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .quantityButtonMinus:hover,
-        .quantityButtonPlus:hover {
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.1s ease-in-out;
-        }
-
-        .quantityButtonPlus {
-            background: #FB8F52;
-        }
-
-        .removeBtn {
+        .removeBtn, .addCartBtn {
             width: 80%;
             height: 45px;
             background-color: #cf3a23;
@@ -206,8 +172,11 @@
             font-size: 16px;
             font-weight: bold;
         }
+        .addCartBtn{
+            background-color: #FB8F52;
+        }
 
-        .removeBtn:hover {
+        .removeBtn:hover, .addCartBtn:hover {
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
             transition: all 0.1s ease-in-out;
         }
@@ -275,34 +244,57 @@
             }
         }
 
-        function updateQuantity(bookmarkID, change) {
-            const labelID = `quantity_${bookmarkID}`;
-            const label = document.getElementById(labelID);
+        //INSERTING TO ORDER DETAILS TABLE
+        function addToCart(foodID, foodName, price) {
+            $.ajax({
+                type: "POST",
+                url: "Order.aspx/GetSessionData",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (sessionResponse) {
+                    if (!sessionResponse.d.IsValid) {
+                        console.error("Session error:", sessionResponse.d.Message);
+                        showToast(sessionResponse.d.Message);
+                        window.location.href = "Login.aspx";
+                        return;
+                    }
 
-            if (!label) return;
+                    Console.log("foodID: ", foodID,"\nfoodName: ", foodName,"\nprice:", price);
+                    var transactionId = sessionResponse.d.TransactionID;
+                    var userId = sessionResponse.d.UserID;
 
-            let currentQuantity = parseInt(label.innerText);
-            let newQuantity = currentQuantity + change;
-
-            if (newQuantity < 1) newQuantity = 1; // Prevent quantity less than 1
-            label.innerText = newQuantity;
-
-            const formData = new FormData();
-            formData.append("bookmarkID", bookmarkID);
-            formData.append("newQuantity", newQuantity);
-            formData.append("action", "update");
-
-            fetch(window.location.href, {
-                method: "POST",
-                body: formData
-
-            }).then(response => {
-                if (!response.ok) {
-                    console.error("Quantity Status:", "Failed to update quantity.");
+                    $.ajax({
+                        type: "POST",
+                        url: "BookmarkedItems.aspx/AddToCart",
+                        data: JSON.stringify({
+                            foodId: foodID,
+                            foodName: foodName,
+                            foodPrice: price,
+                            transactionId: transactionId,
+                            userId: userId
+                        }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.d.success) {
+                                showToast(response.d.message, '#3CB371')
+                            }
+                            else {
+                                showToast(response.d.message, '#DC3545')
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("AJAX Error:", error);
+                            console.error("Response:", xhr.responseText);
+                            showToast("Oops! Couldn’t add the food to the cart due to an error", "#DC3545")
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Session AJAX Error:", error);
+                    console.error("Response:", xhr.responseText);
+                    showToast("Oops! Couldn’t add the food to the cart due to an error", "#DC3545")
                 }
-
-            }).catch(error => {
-                console.error("Error:", error);
             });
         }
 

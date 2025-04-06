@@ -337,4 +337,8 @@
     </div>
     <%-- Background Image --%>
     <div class="background-duck"></div>
+
+    <%-- FOR ALERT MESSAGE --%>
+    <div id="toast" style="display: none; position: fixed; top: 0px; left: 50%; transform: translateX(-50%); background-color: #333; color: #fff; padding: 10px 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); font-size: 16px; z-index: 9999; width: 100%; height: auto;letter-spacing: 0px; text-align: center; opacity: 1;transition: opacity 0.5s ease;"></div>
+
 </asp:Content>

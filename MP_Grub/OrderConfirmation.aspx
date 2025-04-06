@@ -40,17 +40,11 @@
             }
 
             @keyframes gradientShift {
-                0% {
-                    background: linear-gradient(45deg, #a3d9ff, #d0eaff);
-                }
+                0% { background: linear-gradient(45deg, #a3d9ff, #d0eaff);}
 
-                50% {
-                    background: linear-gradient(45deg, #d0eaff, #a3d9ff);
-                }
+                50% {background: linear-gradient(45deg, #d0eaff, #a3d9ff); }
 
-                100% {
-                    background: linear-gradient(45deg, #a3d9ff, #d0eaff);
-                }
+                100% { background: linear-gradient(45deg, #a3d9ff, #d0eaff);}
             }
 
             #notificationText {
@@ -210,7 +204,7 @@
 
             @media (max-width: 800px) {
                 .container {
-                    width: 90vw;
+                    width: 80vw;
                     max-width: 100%;
                 }
 

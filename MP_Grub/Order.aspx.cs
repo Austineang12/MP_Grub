@@ -234,11 +234,11 @@ namespace MP_Grub
                                 int rowsAffected = updateCmd.ExecuteNonQuery();
                                 if (rowsAffected > 0)
                                 {
-                                    return new { success = true, message = "Cart updated. Quantity increased." };
+                                    return new { success = true, message = "Item added to cart!" };
                                 }
                                 else
                                 {
-                                    return new { success = false, message = "Failed to update the cart item." };
+                                    return new { success = false, message = "Failed to update the cart item due to an error." };
                                 }
                             }
                         }

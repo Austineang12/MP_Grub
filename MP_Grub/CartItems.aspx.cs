@@ -119,12 +119,12 @@ namespace MP_Grub
                     int newQuantity = currentQuantity + change;
                     if (newQuantity < 1)
                     {
-                        Response.Write("<script>alert('Quantity cannot be less than 1.');</script>");
+                        Response.Write("<script>showToast('Quantity cannot be less than 1.');</script>");
                         return;
                     }
                     if (newQuantity > 100)
                     {
-                        Response.Write("<script>alert('Quantity cannot exceed 100.');</script>");
+                        Response.Write("<script>showToast('Quantity cannot exceed 100.');</script>");
                         return;
                     }
 
@@ -158,7 +158,9 @@ namespace MP_Grub
                 }
                 catch (Exception ex)
                 {
-                    Response.Write("<script>alert('An error occurred: " + ex.Message + "');</script>");
+                    //FOR DEBUGGIN ONLY
+                    string debugMsg = $"console.log('An error occurred: {ex.Message}');";
+                    ClientScript.RegisterStartupScript(this.GetType(), "ConsoleLog", debugMsg, true);
                 }
             }
         }
@@ -228,7 +230,7 @@ namespace MP_Grub
             decimal totalPrice;
             if (!decimal.TryParse(lblTotalAmount.Text.Replace(",", "").Trim(), out totalPrice))
             {
-                Response.Write("<script>alert('Error: Invalid total price format.');</script>");
+                Response.Write("<script>console.log('Error: Invalid total price format.');</script>");
                 return;
             }
 
@@ -263,7 +265,7 @@ namespace MP_Grub
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error updating total price: " + ex.Message + "');</script>");
+                Response.Write("<script>console.log('Error updating total price: " + ex.Message + "');</script>");
             }
         }
 

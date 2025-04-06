@@ -419,7 +419,7 @@
                     toast.style.display = "none";
                     toast.removeEventListener("transitionend", handler);
                 });
-            }, 2500);
+            }, 1000);
         }
     </script>
 </asp:Content>
