@@ -260,7 +260,7 @@
                         return;
                     }
 
-                    console.log("foodID: ", foodID, "\nfoodName: ", foodName, "\nprice:", price);
+                    console.log("foodID: " + foodID + "\nfoodName: " + foodName + "\nprice: " + price + " (" + typeof price + ")");
                     var transactionId = sessionResponse.d.TransactionID;
                     var userId = sessionResponse.d.UserID;
 
@@ -333,7 +333,7 @@
         }
 
         //ALTERNATIVE FOR ALERT NOTIFICATION
-        function showToast(message, backgroundColor) {
+        function showToast(message, backgroundColor='#333') {
             const toast = document.getElementById("toast");
 
             toast.style.backgroundColor = backgroundColor;
@@ -355,4 +355,6 @@
 
 
     </script>
+
+    
 </asp:Content>

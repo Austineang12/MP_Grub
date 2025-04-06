@@ -119,12 +119,13 @@ namespace MP_Grub
                     int newQuantity = currentQuantity + change;
                     if (newQuantity < 1)
                     {
-                        Response.Write("<script>showToast('Quantity cannot be less than 1.');</script>");
+                        Response.Write("<script>alert('Quantity cannot be less than 1.');</script>");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "showToast", "showToast('Quantity cannot be less than 1.');", true);
                         return;
                     }
                     if (newQuantity > 100)
                     {
-                        Response.Write("<script>showToast('Quantity cannot exceed 100.');</script>");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "showToast", "showToast('Quantity cannot exceed 100.');", true);
                         return;
                     }
 

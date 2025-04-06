@@ -16,7 +16,7 @@ namespace MP_Grub
         protected void Page_Load(object sender, EventArgs e)
         {
             string userID = Request.QueryString["userID"];
-
+            BindBookmarkedItems();
             if (string.IsNullOrEmpty(userID))
             {
                 Response.Redirect("~/Login.aspx");
@@ -78,9 +78,10 @@ namespace MP_Grub
 
                 conn.Open();
                 OleDbDataReader reader = cmd.ExecuteReader();
-                CultureInfo culture = new CultureInfo("en-PH");
+                
                 if (reader.HasRows)
                 {
+                    CultureInfo culture = new CultureInfo("en-PH");
                     // Iterate over the rows to populate the bookmarks
                     while (reader.Read())
                     {
@@ -99,7 +100,7 @@ namespace MP_Grub
                                 <label class='foodStore'>{restaurantName}</label>
                                 <div class='hiddenHover'>
                                     <input class='removeBtn' type='button' value='Remove' onclick='removeBookmark(""{bookmarkID}"")' />
-                                    <input class='addCartBtn' type='button' value='Add to Cart' onclick=""addToCart('{foodID}', '{foodName}', '{foodPrice}')"" />
+                                    <input class='addCartBtn' type='button' value='Add to Cart'  onclick=""addToCart('{foodID}', '{foodName}', '{foodPrice}')""  />
                                 </div>
                             </div>";
 

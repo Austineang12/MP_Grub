@@ -325,7 +325,7 @@
                     }
 
                     //ALTERNATIVE FOR ALERT NOTIFICATION
-                    function showToast(message, backgroundColor) {
+                    function showToast(message, backgroundColor ='#333') {
                         const toast = document.getElementById("toast");
 
                         toast.style.backgroundColor = backgroundColor;
