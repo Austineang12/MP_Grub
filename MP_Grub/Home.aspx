@@ -136,13 +136,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="content" runat="server">
     <div class="container">
-        <div class="Navigation_Section">
-            <h1 class="Navigation_text">HINDI KA MAKAPILI?</h1>
-            <div class="duck-container">
-                <asp:ImageButton ID="Navigation" runat="server" CssClass="btnNavigation" ImageUrl="~/images/CryingDuck.png" OnClick="Navigation_Click" />
-                <span class="clickMe">CLICK ME!</span>
-            </div>
-        </div>
         <div class="button-container">
             <asp:Button ID="btnOrder" runat="server" Text="Order Now" CssClass="order-button" OnClick="Button_OrderNow" />
         </div>

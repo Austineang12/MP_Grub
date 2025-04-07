@@ -20,10 +20,7 @@ namespace MP_Grub
             }
 
         }
-        protected void Navigation_Click(object sender, ImageClickEventArgs e)
-        {
-            Response.Redirect("~/Navigation.aspx");
-        }
+
         protected void Button_OrderNow(object sender, EventArgs e)
         {
             Response.Redirect("~/Order.aspx");
