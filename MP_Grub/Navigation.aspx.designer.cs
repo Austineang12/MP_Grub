@@ -15,6 +15,15 @@ namespace MP_Grub
     {
 
         /// <summary>
+        /// buttonContainer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl buttonContainer;
+
+        /// <summary>
         /// NoDuck control.
         /// </summary>
         /// <remarks>
@@ -24,22 +33,13 @@ namespace MP_Grub
         protected global::System.Web.UI.WebControls.ImageButton NoDuck;
 
         /// <summary>
-        /// carouselImage control.
+        /// imageContainer control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image carouselImage;
-
-        /// <summary>
-        /// YesDuck control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton YesDuck;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl imageContainer;
 
         /// <summary>
         /// lblError control.
